@@ -1,5 +1,5 @@
 # Mitochondria Pipeline
-Snakefile to call Mitochondria Short Variant Discovery. Converting the Terra [WDL scripts][2] into sankefiles.
+Snakefile to call Mitochondria Short Variant Discovery. Converting the Terra [WDL scripts](2) into sankefiles.
 
 
 ### Resources
