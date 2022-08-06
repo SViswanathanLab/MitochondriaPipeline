@@ -19,7 +19,7 @@ rule SubsetBamtoChrM:
     params:
         gatk = config["gatk_path"],
 	contig_name = config["contig_name"]
-    logs:
+    log:
     	"logs/SubsetBamtoChrM/{tumors}.txt"
     shell:
     	"set -e
