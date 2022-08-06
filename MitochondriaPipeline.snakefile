@@ -1,19 +1,21 @@
 configfile: "config/config.yaml"
 configfile: "config/samples.yaml"
 
-include: "AlignAndCall.snakefile"
-include: "AlignAndMarkDuplicates.snakefile"
-
+#include: "AlignAndCall.snakefile"
+#include: "AlignAndMarkDuplicates.snakefile"
 
 rule all:
-	input: 
-  
+	input:
+		expand("results/SubsetBamtoChrM/{samples}_chrM.bam", tumor=config["pairings"]),
+		expand("results/SubsetBamtoChrM/{samples}_chrM.bai", tumor=config["pairings"])
+
 rule SubsetBamtoChrM:
     input:
     	tumor_filepath = lambda wildcards: config["samples"][wildcards.tumor],
 	normal_filepath = lambda wildcards: config["samples"][config["pairings"][wildcards.tumor]]
     output:
-    	
+    	bam = "results/SubsetBamtoChrM/{samples}_chrM.bam",
+	bai = "results/SubsetBamtoChrM/{samples}_chrM.bai"
     params:
         gatk = config["gatk_path"],
 	contig_name = config["contig_name"]
@@ -27,5 +29,4 @@ rule SubsetBamtoChrM:
       	--read-filter MateOnSameContigOrNoMappedMateReadFilter \
       	--read-filter MateUnmappedAndUnmappedReadFilter \
       	-I {input.tumor_filepath} \
-      	--read-index {input.input_bai} \
-      	-output {output.}) 2> {log}"
+      	-output {output.bam}) 2> {log}"
