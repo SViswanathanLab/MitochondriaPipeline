@@ -5,9 +5,9 @@ configfile: "config/samples.yaml"
 #include: "AlignAndMarkDuplicates.snakefile"
 
 rule all:
-	input:
-		expand("results/SubsetBamtoChrM/{samples}_chrM.bam", samples=config["pairings"]),
-		expand("results/SubsetBamtoChrM/{samples}_chrM.bai", samples=config["pairings"])
+    input:
+	expand("results/SubsetBamtoChrM/{samples}_chrM.bam", samples=config["pairings"]),
+	expand("results/SubsetBamtoChrM/{samples}_chrM.bai", samples=config["pairings"])
 
 rule SubsetBamtoChrM:
     input:
