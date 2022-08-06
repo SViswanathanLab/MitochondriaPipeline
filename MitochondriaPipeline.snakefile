@@ -6,8 +6,8 @@ configfile: "config/samples.yaml"
 
 rule all:
     input:
-	expand("results/SubsetBamtoChrM/{tumors}_chrM.bam", tumors=config["pairings"]),
-	expand("results/SubsetBamtoChrM/{tumors}_chrM.bai", tumors=config["pairings"])
+	expand("results/SubsetBamtoChrM/{tumor}_chrM.bam", tumor=config["pairings"]),
+	expand("results/SubsetBamtoChrM/{tumor}_chrM.bai", tumor=config["pairings"])
 
 rule SubsetBamtoChrM:
     input:
@@ -20,7 +20,7 @@ rule SubsetBamtoChrM:
         gatk = config["gatk_path"],
 	contig_name = config["contig_name"]
     log:
-    	"logs/SubsetBamtoChrM/{tumors}.txt"
+    	"logs/SubsetBamtoChrM/{tumor}.txt"
     shell:
 	"({params.gatk} PrintReads \
       	-L {params.contig_name} \
