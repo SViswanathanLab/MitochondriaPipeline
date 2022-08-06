@@ -1,11 +1,5 @@
-import os
-import re
-
 configfile: "config/config.yaml"
 configfile: "config/samples.yaml"
-
-#include: "AlignAndCall.snakefile"
-#include: "AlignAndMarkDuplicates.snakefile"
 
 rule all:
     input:
@@ -17,8 +11,8 @@ rule SubsetBamtoChrM:
     	tumor_filepath = lambda wildcards: config["samples"][wildcards.tumor],
 	normal_filepath = lambda wildcards: config["samples"][config["pairings"][wildcards.tumor]]
     output:
-    	bam = protected("results/SubsetBamtoChrM/{tumor}_chrM.bam"),
-	bai = protected("results/SubsetBamtoChrM/{tumor}_chrM.bai")
+    	bam = protected(expand("results/SubsetBamtoChrM/{sample}.bam", sample=config["samples"])),
+	bai = protected(expand("results/SubsetBamtoChrM/{sample}.bai", sample=config["samples"]))
     params:
         gatk = config["gatk_path"],
 	contig_name = config["contig_name"]
