@@ -1,2 +1,2 @@
-# MitochondriaPipeline
-Mitochondrial short variant discovery (SNVs + Indels)
+# Mitochondria Pipeline
+
