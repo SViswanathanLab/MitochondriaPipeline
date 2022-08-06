@@ -1,6 +1,8 @@
 ## Tools Path
 gatk_path: /mnt/storage/apps/gatk-4.2.5.0/gatk
 
+## Parameters
+contig_name: "chrM"
 
 ## Path to reference files
 reference_genome: /mnt/storage/labs/sviswanathan/GATK_ref/Homo_sapiens_assembly38.fasta
