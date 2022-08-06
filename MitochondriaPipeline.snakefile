@@ -20,7 +20,7 @@ rule SubsetBamtoChrM:
     log:
     	"logs/SubsetBamtoChrM/{tumor}.txt"
     shell:
-    	"print(lambda wildcards: config["samples"][wildcards.tumor])"
+    	"echo lambda wildcards: config["samples"][wildcards.tumor]"
 	
 	#"({params.gatk} PrintReads \
       	#-L {params.contig_name} \
