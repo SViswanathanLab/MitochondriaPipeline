@@ -1,3 +1,6 @@
+import os
+import re
+
 configfile: "config/config.yaml"
 configfile: "config/samples.yaml"
 
