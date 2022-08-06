@@ -9,8 +9,8 @@ configfile: "config/samples.yaml"
 
 rule all:
     input:
-	expand("results/SubsetBamtoChrM/{tumor}_chrM.bam", tumor=config["pairings"]),
-	expand("results/SubsetBamtoChrM/{tumor}_chrM.bai", tumor=config["pairings"])
+	expand("results/SubsetBamtoChrM/{tumor}.bam", tumor=config["pairings"]),
+	expand("results/SubsetBamtoChrM/{tumor}.bai", tumor=config["pairings"])
 
 rule SubsetBamtoChrM:
     input:
