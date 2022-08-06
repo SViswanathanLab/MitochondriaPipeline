@@ -22,10 +22,9 @@ rule SubsetBamtoChrM:
     log:
     	"logs/SubsetBamtoChrM/{tumors}.txt"
     shell:
-	"
-	({params.gatk} PrintReads \
+	"({params.gatk} PrintReads \
       	-L {params.contig_name} \
       	--read-filter MateOnSameContigOrNoMappedMateReadFilter \
       	--read-filter MateUnmappedAndUnmappedReadFilter \
       	-I {input.tumor_filepath} \
-      	-output {output.bam}) 2> {log}"
+      	-O {output.bam}) 2> {log}"
