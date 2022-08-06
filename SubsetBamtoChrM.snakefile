@@ -5,7 +5,7 @@ configfile: "config/samples.yaml"
 
 rule all:
     input:
-	#expand("results/SubsetBamtoChrM/{sample}.bam", sample=config["samples"])
+	expand("results/SubsetBamtoChrM/{sample}.bam", sample=config["samples"])
 
 rule SubsetBamtoChrM:
     input:
