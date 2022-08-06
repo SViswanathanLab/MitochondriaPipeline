@@ -1,1 +1,1 @@
-
+configfile: "config/config.yaml"
