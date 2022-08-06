@@ -5,8 +5,7 @@ configfile: "config/samples.yaml"
 
 rule all:
     input:
-	expand("results/SubsetBamtoChrM/{sample}.bam", sample=config["samples"]),
-	expand("results/SubsetBamtoChrM/{sample}.bai", sample=config["samples"])
+	expand("results/SubsetBamtoChrM/{sample}.bam", sample=config["samples"])
 
 rule SubsetBamtoChrM:
     input:
@@ -14,7 +13,7 @@ rule SubsetBamtoChrM:
 	normal_filepath = lambda wildcards: config["samples"][config["pairings"][wildcards.tumor]]
     output:
     	bam = "results/SubsetBamtoChrM/{sample}.bam",
-	bai = "results/SubsetBamtoChrM/{sample}.bai"
+	bai = protected("results/SubsetBamtoChrM/{sample}.bai")
     params:
         gatk = config["gatk_path"],
 	contig_name = config["contig_name"]
