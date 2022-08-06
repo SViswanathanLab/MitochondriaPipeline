@@ -1,4 +1,5 @@
 configfile: "config/config.yaml"
+configfile: "config/samples.yaml"
 
 include: "AlignAndCall.snakefile"
 include: "AlignAndMarkDuplicates.snakefile"
