@@ -6,7 +6,7 @@ Snakefile to call Mitochondria Short Variant Discovery. Converting the Terra [WD
 
 ## Steps in each file
 
-### MitochondriaPipeline.snakefile
+### SubsetBamToChrM.snakefile
 1. SubsetBamToChrM
 2. RevertSam
 3. AlignAndCall.AlignAndCall as AlignAndCall
