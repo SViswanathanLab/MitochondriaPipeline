@@ -10,7 +10,10 @@ rule all:
   
 rule SubsetBamtoChrM:
     input:
+    	tumor_filepath = lambda wildcards: config["samples"][wildcards.tumor],
+	normal_filepath = lambda wildcards: config["samples"][config["pairings"][wildcards.tumor]]
     output:
+    	
     params:
         gatk = config["gatk_path"],
 	contig_name = config["contig_name"]
@@ -18,12 +21,11 @@ rule SubsetBamtoChrM:
     	"logs/SubsetBamtoChrM/{tumors}.txt"
     shell:
     	"set -e
+	
 	({params.gatk} PrintReads \
-      	~{"-R " + ref_fasta} \
       	-L {params.contig_name} \
       	--read-filter MateOnSameContigOrNoMappedMateReadFilter \
       	--read-filter MateUnmappedAndUnmappedReadFilter \
-        ~{"--gcs-project-for-requester-pays " + requester_pays_project} \
-      	-I {input.input_bam} \
-      	--read-index ~{input_bai} \
-      	-output ~{basename}.bam) 2> {log}"
+      	-I {input.tumor_filepath} \
+      	--read-index {input.input_bai} \
+      	-output {output.}) 2> {log}"
