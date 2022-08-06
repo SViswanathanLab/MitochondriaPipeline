@@ -14,8 +14,8 @@ rule SubsetBamtoChrM:
     	tumor_filepath = lambda wildcards: config["samples"][wildcards.tumor],
 	normal_filepath = lambda wildcards: config["samples"][config["pairings"][wildcards.tumor]]
     output:
-    	bam = "results/SubsetBamtoChrM/{samples}_chrM.bam",
-	bai = "results/SubsetBamtoChrM/{samples}_chrM.bai"
+    	bam = protected("results/SubsetBamtoChrM/{samples}_chrM.bam"),
+	bai = protected("results/SubsetBamtoChrM/{samples}_chrM.bai")
     params:
         gatk = config["gatk_path"],
 	contig_name = config["contig_name"]
