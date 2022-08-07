@@ -54,6 +54,10 @@ rule AlignAndMarkDuplicates:
     input:
         bam = "results/RevertSam/{tumor}/{tumor}.bam",
     output:
+        mba_bam = "results/AlignAndMarkDuplicates/{tumor}/{tumor}_mba.bam",
+        md.bam = "results/AlignAndMarkDuplicates/{tumor}/{tumor}_md.bam"
+        bam = "results/AlignAndMarkDuplicates/{tumor}/{tumor}.bam"
+        metrics = "results/AlignAndMarkDuplicates/{tumor}/{tumor}.metrics"
     params:
         bwa = config["bwa"],
         java = config["java"],
@@ -84,7 +88,7 @@ rule AlignAndMarkDuplicates:
          ATTRIBUTES_TO_REMOVE=MD \
          ALIGNED_BAM=/dev/stdin \
          UNMAPPED_BAM={input.bam} \
-         OUTPUT=mba.bam \
+         OUTPUT={output.mba_bam} \
          REFERENCE_SEQUENCE={params.reference_genome} \
          PAIRED_RUN=true \
          SORT_ORDER="unsorted" \
@@ -106,9 +110,9 @@ rule AlignAndMarkDuplicates:
          
          {params.java} -Xms4000m -jar {params.picard_jar} \
          MarkDuplicates \
-         INPUT=mba.bam \
-         OUTPUT=md.bam \
-         METRICS_FILE=~{metrics_filename} \
+         INPUT={output.mba_bam} \
+         OUTPUT={output.md.bam} \
+         METRICS_FILE={output.metrics} \
          VALIDATION_STRINGENCY=SILENT \
          ~{"READ_NAME_REGEX=" + read_name_regex} \
          OPTICAL_DUPLICATE_PIXEL_DISTANCE=2500 \
@@ -118,7 +122,7 @@ rule AlignAndMarkDuplicates:
 
          {params.java} -Xms4000m -jar {params.picard_jar} \
          SortSam \
-         INPUT=md.bam \
+         INPUT={output.md.bam} \
          OUTPUT={output.bam} \
          SORT_ORDER="coordinate" \
          CREATE_INDEX=true \
