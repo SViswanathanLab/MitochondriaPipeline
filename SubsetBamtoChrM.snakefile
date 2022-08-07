@@ -488,7 +488,7 @@ rule GetContamination:
         """(set -e
 
         # | \
-        {params.java} -jar {params.haplocheckCLI_path} "$(dirname {input.input_vcf})" | \
+        {params.java} -jar {params.haplocheckCLI_path} "$(dirname "{input.input_vcf}")" | \
         sed 's/\"//g' /dev/stdin > {output.output_noquotes}
 
         grep "SampleID" {output.output_noquotes} > {output.headers}
