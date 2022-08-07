@@ -387,5 +387,5 @@ rule MergeStats:
     shell:
         """(set -e
 
-        {params.gatk} MergeMutectStats --stats ~{input.shifted_stats} --stats ~{input.non_shifted_stats} -O {params.raw_combined_stats}) 2> {log}"""
+        {params.gatk} MergeMutectStats --stats ~{input.shifted_stats} --stats ~{input.non_shifted_stats} -O {output.raw_combined_stats}) 2> {log}"""
 
