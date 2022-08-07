@@ -22,7 +22,11 @@ rule all:
         expand("results/CallMt/{tumor}/{tumor}.vcf.gz", tumor=config["pairings"]),
         expand("results/CallMt/{tumor}/{tumor}.vcf.gz.tbi", tumor=config["pairings"]),
         expand("results/CallMt/{tumor}/{tumor}.vcf.gz.stats", tumor=config["pairings"]),
-        expand("results/CallMt/{tumor}/bamout.bam", tumor=config["pairings"])
+        expand("results/CallMt/{tumor}/bamout.bam", tumor=config["pairings"]),
+        expand("results/CallShiftedMt/{tumor}/{tumor}.vcf.gz", tumor=config["pairings"]),
+        expand("results/CallShiftedMt/{tumor}/{tumor}.vcf.gz.tbi", tumor=config["pairings"]),
+        expand("results/CallShiftedMt/{tumor}/{tumor}.vcf.gz.stats", tumor=config["pairings"]),
+        expand("results/CallShiftedMt/{tumor}/bamout.bam", tumor=config["pairings"])
         
         
 rule SubsetBamtoChrM:
