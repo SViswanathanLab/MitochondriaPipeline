@@ -58,7 +58,7 @@ rule AlignAndMarkDuplicates:
     input:
         bam = "results/RevertSam/{tumor}/{tumor}.bam",
     output:
-        bwa_log = "results/AlignAndMarkDuplicates/{tumor}/{tumor}.bwa.stderr.log"
+        bwa_log = "results/AlignAndMarkDuplicates/{tumor}/{tumor}.bwa.stderr.log",
         mba_bam = "results/AlignAndMarkDuplicates/{tumor}/{tumor}_mba.bam",
         md_bam = "results/AlignAndMarkDuplicates/{tumor}/{tumor}_md.bam",
         bam = "results/AlignAndMarkDuplicates/{tumor}/{tumor}.bam",
