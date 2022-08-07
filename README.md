@@ -20,9 +20,6 @@ Snakefile to call Mitochondria Short Variant Discovery. Converting the Terra [WD
 3. AlignAndCall.AlignAndCall as AlignAndCall
 4. CoverageAtEveryBase 
 5. SplitMultiAllelicSites
-### AlignmentPipeline.wdl
-1. GetBwaVersion
-2. AlignAndMarkDuplicates
 ### AlignAndCall.wdl
 1. AlignAndMarkDuplicates.AlignmentPipeline as AlignToMt
 2. AlignAndMarkDuplicates.AlignmentPipeline as AlignToShiftedMt
@@ -35,4 +32,6 @@ Snakefile to call Mitochondria Short Variant Discovery. Converting the Terra [WD
 9. SplitMultiAllelicsAndRemoveNonPassSites
 10. GetContamination
 11. Filter as FilterContamination
-
+### AlignmentPipeline.wdl
+1. GetBwaVersion
+2. AlignAndMarkDuplicates
