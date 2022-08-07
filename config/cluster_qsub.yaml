@@ -6,8 +6,8 @@ __default__:
     binding:    linear:1
 
 AlignAndMarkDuplicates:
-    h_vmem:    100G  # per-core-mem
+    h_vmem:    100G  
     h_rt:    300:00:00
-    pe: smp 4
-    binding:    linear:4
+    pe: smp 1
+    binding:    linear:1
     
