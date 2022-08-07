@@ -461,39 +461,48 @@ rule SplitMultiAllelicsAndRemoveNonPassSites:
 rule GetContamination:
     input:
         input_vcf = "results/SplitMultiAllelicsAndRemoveNonPassSites/{tumor}/{tumor}_splitAndPassOnly.vcf"
+    output:
+        output_noquotes = "results/GetContamination/{tumor}/{tumor}_output_noquotes.txt",
+        headers = "results/GetContamination/{tumor}/{tumor}_headers.txt",
+        output_data = "results/GetContamination/{tumor}/{tumor}_output_data.txt",
+        contamination = "results/GetContamination/{tumor}/{tumor}_contamination.txt",
+        major_hg = "results/GetContamination/{tumor}/{tumor}_major_hg.txt",
+        minor_hg = "results/GetContamination/{tumor}/{tumor}_minor_hg.txt",
+        mean_het_major = "results/GetContamination/{tumor}/{tumor}_mean_het_major.txt",
+        mean_het_minor = "results/GetContamination/{tumor}/{tumor}_mean_het_minor.txt"
     params:
         java = config["java"],
-        picard_jar = config["picard_jar"]
+        picard_jar = config["picard_jar"],
+        haplocheckCLI_path = config["haplocheckCLI_path"]
     log:
         "logs/GetContamination/{tumor}.txt"
     shell:
         """(set -e
         PARENT_DIR="$(dirname "{input.input_vcf}")"
-        {params.java} -jar /usr/mtdnaserver/haplocheckCLI.jar "${PARENT_DIR}"
+        {params.java} -jar {params.haplocheckCLI_path} "${PARENT_DIR}" | \
+        sed 's/\"//g' /dev/stdin > {output.output_noquotes}
 
-        sed 's/\"//g' output > output-noquotes
-
-        grep "SampleID" output-noquotes > headers
+        grep "SampleID" {output.output_noquotes} > {output.headers}
         FORMAT_ERROR="Bad contamination file format"
-        if [ `awk '{print $2}' headers` != "Contamination" ]; then
+        if [ `awk '{print $2}' {output.headers}` != "Contamination" ]; then
           echo $FORMAT_ERROR; exit 1
         fi
-        if [ `awk '{print $6}' headers` != "HgMajor" ]; then
+        if [ `awk '{print $6}' {output.headers}` != "HgMajor" ]; then
           echo $FORMAT_ERROR; exit 1
         fi
-        if [ `awk '{print $8}' headers` != "HgMinor" ]; then
+        if [ `awk '{print $8}' {output.headers}` != "HgMinor" ]; then
           echo $FORMAT_ERROR; exit 1
         fi
-        if [ `awk '{print $14}' headers` != "MeanHetLevelMajor" ]; then
+        if [ `awk '{print $14}' {output.headers}` != "MeanHetLevelMajor" ]; then
           echo $FORMAT_ERROR; exit 1
         fi
-        if [ `awk '{print $15}' headers` != "MeanHetLevelMinor" ]; then
+        if [ `awk '{print $15}' {output.headers}` != "MeanHetLevelMinor" ]; then
           echo $FORMAT_ERROR; exit 1
         fi
 
-        grep -v "SampleID" output-noquotes > output-data
-        awk -F "\t" '{print $2}' output-data > contamination.txt
-        awk -F "\t" '{print $6}' output-data > major_hg.txt
-        awk -F "\t" '{print $8}' output-data > minor_hg.txt
-        awk -F "\t" '{print $14}' output-data > mean_het_major.txt
-        awk -F "\t" '{print $15}' output-data > mean_het_minor.txt) 2> {log}"""
+        grep -v "SampleID" {output.output_noquotes} > {output.output_data}
+        awk -F "\t" '{print $2}' {output.output_data} > {output.contamination}
+        awk -F "\t" '{print $6}' {output.output_data} > {output.major_hg}
+        awk -F "\t" '{print $8}' {output.output_data} > {output.minor_hg}
+        awk -F "\t" '{print $14}' {output.output_data} > {output.mean_het_major}
+        awk -F "\t" '{print $15}' {output.output_data} > {output.mean_het_minor}) 2> {log}"""
