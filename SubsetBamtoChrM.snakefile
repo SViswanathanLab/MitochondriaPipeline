@@ -331,7 +331,7 @@ rule CallShiftedMt:
         {params.gatk} --java-options "-Xmx2000m" Mutect2 \
         -R {params.mt_ref} \
         -I {input.bam} \
-        -L chrM:576-16024 \
+        -L chrM:8025-9144 \
         --read-filter MateOnSameContigOrNoMappedMateReadFilter \
         --read-filter MateUnmappedAndUnmappedReadFilter \
         -O {output.vcf} \
