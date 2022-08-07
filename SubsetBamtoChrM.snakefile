@@ -30,7 +30,9 @@ rule all:
         expand("results/LiftoverAndCombineVcfs/{tumor}/{tumor}.shifted_back.vcf", tumor=config["pairings"]),
         expand("results/LiftoverAndCombineVcfs/{tumor}/{tumor}.rejected.vcf", tumor=config["pairings"]),
         expand("results/LiftoverAndCombineVcfs/{tumor}/{tumor}.merged.vcf", tumor=config["pairings"]),
-        expand("results/MergeStats/{tumor}/{tumor}.raw.combined.stats", tumor=config["pairings"])
+        expand("results/MergeStats/{tumor}/{tumor}.raw.combined.stats", tumor=config["pairings"]),
+        expand("results/InitialFilter/{tumor}/{tumor}.filtered.vcf", tumor=config["pairings"]),
+        expand("results/InitialFilter/{tumor}/{tumor}.vcf", tumor=config["pairings"])
                
 rule SubsetBamtoChrM:
     input:
@@ -388,4 +390,44 @@ rule MergeStats:
         """(set -e
 
         {params.gatk} MergeMutectStats --stats ~{input.shifted_stats} --stats ~{input.non_shifted_stats} -O {output.raw_combined_stats}) 2> {log}"""
+
+rule InitialFilter:
+    input:
+        raw_vcf = "results/LiftoverAndCombineVcfs/{tumor}/{tumor}.merged.vcf",
+        raw_vcf_stats = "results/MergeStats/{tumor}/{tumor}.raw.combined.stats"
+    output:
+        filtered_vcf = "results/InitialFilter/{tumor}/{tumor}.filtered.vcf",
+        output_vcf = "results/InitialFilter/{tumor}/{tumor}.vcf"
+    params:
+        gatk = config["gatk_path"],
+        mt_ref = config["mt_ref"],
+        max_alt_allele_count = config["max_alt_allele_count"],
+        vaf_filter_threshold = config["vaf_filter_threshold"],
+        blacklisted_sites = config["blacklisted_sites"]
+    log:
+        "logs/InitialFilter/{tumor}.txt"
+    shell:
+        """(set -e
+        
+        # We need to create these files regardless, even if they stay empty
+        touch bamout.bam
+
+        {params.gatk} --java-options "-Xmx2500m" FilterMutectCalls \
+        -V {input.raw_vcf} \
+        -R {params.mt_ref} \
+        -O {output.filtered_vcf} \
+        --stats {input.raw_vcf_stats} \
+        #~{m2_extra_filtering_args} \
+        --max-alt-allele-count {params.max_alt_allele_count} \
+        --mitochondria-mode \
+        --min-allele-fraction {params.vaf_filter_threshold} \
+        #~{"--f-score-beta " + f_score_beta} \
+        #~{"--contamination-estimate " + max_contamination}
+
+        {params.gatk} VariantFiltration \
+        -V {output.filtered_vcf}\
+        -O {output.output_vcf} \
+        --apply-allele-specific-filters \
+        --mask {params.blacklisted_sites} \
+        --mask-name "blacklisted_site") 2> {log}"""
 
