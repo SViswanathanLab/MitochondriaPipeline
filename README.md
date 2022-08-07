@@ -9,7 +9,8 @@ Snakefile to call Mitochondria Short Variant Discovery. Converting the Terra [WD
 2. RevertSam
 3. AlignAndMarkDuplicates - On Not Shifted MT Reference Genome
 4. AlignAndMarkDuplicates - On Shifted MT Reference Genome
-
+5. CollectWgsMetrics
+6. M2 as CallMt
 
 
 ## Steps in each WDL file
