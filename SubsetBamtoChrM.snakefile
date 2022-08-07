@@ -378,8 +378,8 @@ rule LiftoverAndCombineVcfs:
  
 rule MergeStats:
     input:
-        shifted_stats = "/home/mi724/Tools/MitochondriaPipeline/results/CallShiftedMt/{tumor}/{tumor}.vcf.gz.stats",
-        non_shifted_stats = "/home/mi724/Tools/MitochondriaPipeline/results/CallMt/{tumor}/{tumor}.vcf.gz.stats"
+        shifted_stats = "/Tools/MitochondriaPipeline/results/CallShiftedMt/{tumor}/{tumor}.vcf.gz.stats",
+        non_shifted_stats = "/Tools/MitochondriaPipeline/results/CallMt/{tumor}/{tumor}.vcf.gz.stats"
     output:
         raw_combined_stats = "results/MergeStats/{tumor}/{tumor}.raw.combined.stats"
     params:
