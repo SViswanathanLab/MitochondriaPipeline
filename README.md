@@ -13,7 +13,13 @@ Snakefile to call Mitochondria Short Variant Discovery. Converting the Terra [WD
 6. M2 as CallMt
 7. M2 as CallShiftedMt
 8. LiftoverAndCombineVcfs
-
+9. MergeStats
+10. Filter as InitialFilter
+11. SplitMultiAllelicsAndRemoveNonPassSites
+12. GetContamination
+13. Filter as FilterContamination
+14. CoverageAtEveryBase 
+15. SplitMultiAllelicSites
 
 ## Steps in each WDL file
 
