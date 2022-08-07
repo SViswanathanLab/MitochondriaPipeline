@@ -284,6 +284,7 @@ rule CallMt:
         max_reads_per_alignment_start = config["max_reads_per_alignment_start"],
         mt_ref = config["mt_ref"]
     log:
+        "logs/CallMt/{tumor}.txt"
     shell:
         """(set -e
 
