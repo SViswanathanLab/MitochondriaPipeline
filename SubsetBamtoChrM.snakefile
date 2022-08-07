@@ -433,7 +433,7 @@ rule SplitMultiAllelicsAndRemoveNonPassSites:
     input:
         filtered_vcf = "results/InitialFilter/{tumor}/{tumor}.vcf"
     output:
-        split_vcf = "results/SplitMultiAllelicsAndRemoveNonPassSites/{tumor}/{tumor}_split.vcf"
+        split_vcf = "results/SplitMultiAllelicsAndRemoveNonPassSites/{tumor}/{tumor}_split.vcf",
         splitAndPassOnly_vcf = "results/SplitMultiAllelicsAndRemoveNonPassSites/{tumor}/{tumor}_splitAndPassOnly.vcf"
     log:
         "logs/SplitMultiAllelicsAndRemoveNonPassSites/{tumor}.txt"
