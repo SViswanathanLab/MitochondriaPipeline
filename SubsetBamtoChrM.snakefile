@@ -69,7 +69,7 @@ rule AlignAndMarkDuplicates:
     log:
         "logs/AlignAndMarkDuplicates/{tumor}.txt"
     shell:
-        """set -o pipefail
+        """(set -o pipefail
          set -e
          
          bwa_version=$({params.bwa} 2>&1 | grep -e '^Version' | sed 's/Version: //')
@@ -128,4 +128,4 @@ rule AlignAndMarkDuplicates:
          OUTPUT={output.bam} \
          SORT_ORDER="coordinate" \
          CREATE_INDEX=true \
-         MAX_RECORDS_IN_RAM=300000"""
+         MAX_RECORDS_IN_RAM=300000) 2> {log}"""
