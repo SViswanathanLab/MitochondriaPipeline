@@ -111,5 +111,24 @@ rule AlignAndMarkDuplicates:
          UNMAPPED_READ_STRATEGY=COPY_TO_TAG \
          ALIGNER_PROPER_PAIR_FLAGS=true \
          UNMAP_CONTAMINANT_READS=true \
-         ADD_PG_TAG_TO_READS=false) 2> {log}"""
+         ADD_PG_TAG_TO_READS=false
+         
+         {params.java} -Xms4000m -jar {params.picard_jar} \
+         MarkDuplicates \
+         INPUT={output.mba_bam} \
+         OUTPUT={output.md_bam} \
+         METRICS_FILE={output.metrics} \
+         VALIDATION_STRINGENCY=SILENT \
+         OPTICAL_DUPLICATE_PIXEL_DISTANCE=2500 \
+         ASSUME_SORT_ORDER="queryname" \
+         CLEAR_DT="false" \
+         ADD_PG_TAG_TO_READS=false
+
+         {params.java} -Xms4000m -jar {params.picard_jar} \
+         SortSam \
+         INPUT={output.md_bam} \
+         OUTPUT={output.bam} \
+         SORT_ORDER="coordinate" \
+         CREATE_INDEX=true \
+         MAX_RECORDS_IN_RAM=300000) 2> {log}"""
          
