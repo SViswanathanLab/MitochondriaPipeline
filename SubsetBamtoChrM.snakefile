@@ -266,3 +266,36 @@ rule CollectWgsMetrics:
         THEORETICAL_SENSITIVITY_OUTPUT={output.theoretical_sensitivity}
         
         Rscript {params.coverage_script} --input {output.metrics} --mean_output {output.mean_coverage} --median_output {output.median_coverage}) 2> {log}"""
+
+rule CallMt:
+    input:
+        bam = "results/AlignAndMarkDuplicates/{tumor}/{tumor}.bam"
+    output:
+        vcf = protected("results/CallMt/{tumors}/{tumors}.vcf.gz"),
+        tbi = protected("results/CallMt/{tumors}/{tumors}.vcf.gz.tbi"),
+        stats = protected("results/CallMt/{tumors}/{tumors}.vcf.gz.stats"),
+        bamout = protected("results/CallMt/{tumors}/{tumors}_bamout.bam")
+    params:
+        gatk = config["gatk_path"],
+        max_reads_per_alignment_start = config["max_reads_per_alignment_start"],
+        mt_ref = config["mt_ref"]
+    log:
+    shell:
+        """(set -e
+
+        # We need to create these files regardless, even if they stay empty
+        #touch bamout.bam
+
+        {params.gatk} --java-options "-Xmx2000m" Mutect2 \
+        -R {params.mt_ref} \
+        -I {input.bam} \
+        -L chrM:576-16024 \
+        --read-filter MateOnSameContigOrNoMappedMateReadFilter \
+        --read-filter MateUnmappedAndUnmappedReadFilter \
+        -O {output.vcf} \
+        --annotation StrandBiasBySample \
+        --bam-output {output.bamout} \
+        --mitochondria-mode \
+        --max-reads-per-alignment-start {params.max_reads_per_alignment_start} \
+        --max-mnp-distance 0) 2> {log}"""
+
