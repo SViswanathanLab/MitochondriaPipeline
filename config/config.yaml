@@ -3,6 +3,7 @@ gatk_path: /mnt/storage/apps/gatk-4.2.5.0/gatk
 java: /usr/bin/java
 tabix: /usr/bin/tabix
 picard_jar: /home/ma1111/tools/picard.jar
+bwa: /usr/bin/bwa
 
 ## Parameters
 contig_name: "chrM"
