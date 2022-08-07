@@ -71,5 +71,5 @@ rule AlignAndMarkDuplicates:
     log:
         "logs/AlignAndMarkDuplicates/{tumor}.txt"
     shell:
-        """tumor=os.path.basename({input.bam}
+        """tumor=os.path.basename({input.bam})
         echo {{tumor}}"""
