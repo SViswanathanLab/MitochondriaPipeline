@@ -7,7 +7,8 @@ Snakefile to call Mitochondria Short Variant Discovery. Converting the Terra [WD
 ## Steps in order
 1. SubsetBamToChrM
 2. RevertSam
-3. AlignAndMarkDuplicates
+3. AlignAndMarkDuplicates - On Not Shifted MT Reference Genome
+4. AlignAndMarkDuplicates - On Shifted MT Reference Genome
 
 
 
