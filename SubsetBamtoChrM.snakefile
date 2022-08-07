@@ -481,7 +481,8 @@ rule GetContamination:
     params:
         java = config["java"],
         picard_jar = config["picard_jar"],
-        haplocheckCLI_path = config["haplocheckCLI_path"]
+        haplocheckCLI_path = config["haplocheckCLI_path"],
+        GetContamination = config["GetContamination"]
     log:
         "logs/GetContamination/{tumor}.txt"
     shell:
@@ -498,4 +499,4 @@ rule GetContamination:
         {params.java} -jar {params.haplocheckCLI_path} "$(dirname "{input.input_vcf}")" | \
         sed 's/\\\"//g' /dev/stdin > {output.output_noquotes}
         
-        `grep 'SampleID' {output.output_noquotes}`) 2> {log}"""
+        sh {params.GetContamination} {output.output_noquotes} {output.headers}) 2> {log}"""
