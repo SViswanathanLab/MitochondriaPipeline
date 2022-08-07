@@ -273,7 +273,8 @@ rule CollectWgsMetrics:
 
 rule CallMt:
     input:
-        bam = "results/AlignAndMarkDuplicates/{tumor}/{tumor}.bam"
+        bam = "results/AlignAndMarkDuplicates/{tumor}/{tumor}.bam",
+        bai = "results/AlignAndMarkDuplicates/{tumor}/{tumor}.bai"
     output:
         vcf = protected("results/CallMt/{tumor}/{tumor}.vcf.gz"),
         tbi = protected("results/CallMt/{tumor}/{tumor}.vcf.gz.tbi"),
@@ -305,7 +306,8 @@ rule CallMt:
 
 rule CallShiftedMt:
     input:
-        bam = "results/AlignAndMarkDuplicates/{tumor}/{tumor}.bam"
+        bam = "results/AlignShiftedMTAndMarkDuplicates/{tumor}/{tumor}.bam",
+        bai = "results/AlignShiftedMTAndMarkDuplicates/{tumor}/{tumor}.bai"
     output:
         vcf = protected("results/CallShiftedMt/{tumor}/{tumor}.vcf.gz"),
         tbi = protected("results/CallShiftedMt/{tumor}/{tumor}.vcf.gz.tbi"),
