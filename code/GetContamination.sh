@@ -1,4 +1,3 @@
-#!/usr/bin/bash
+#!/bin/bash
 
-#`grep 'SampleID' "$1" > "$2"`
-echo "Hello"
+$(eval grep 'SampleID' $1 > $2)
