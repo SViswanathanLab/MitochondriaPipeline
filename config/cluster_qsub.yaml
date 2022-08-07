@@ -4,3 +4,10 @@ __default__:
     h_rt:   100:0:0
     pe: smp 1
     binding:    linear:1
+
+AlignAndMarkDuplicates:
+    h_vmem:    50G  # per-core-mem
+    h_rt:    300:00:00
+    pe: smp 4
+    binding:    linear:4
+    
