@@ -5,7 +5,8 @@ configfile: "config/samples.yaml"
 
 rule all:
     input:
-        expand("results/SubsetBamtoChrM/{tumor}.bam", tumor=config["pairings"])
+        expand("results/SubsetBamtoChrM/{tumor}.bam", tumor=config["pairings"]),
+        expand("results/RevertSam/{tumor}.bam", tumor=config["pairings"])
 
 rule SubsetBamtoChrM:
     input:
@@ -48,5 +49,3 @@ rule RevertSam:
         ATTRIBUTE_TO_CLEAR=CO \
         SORT_ORDER=queryname \
         RESTORE_ORIGINAL_QUALITIES=false) 2> {log}"
-
-
