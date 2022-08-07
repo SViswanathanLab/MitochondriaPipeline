@@ -1,3 +1,5 @@
+import os
+
 configfile: "config/config.yaml"
 configfile: "config/samples.yaml"
 
@@ -73,6 +75,7 @@ rule AlignAndMarkDuplicates:
          set -e
          
          bwa_version=$({params.bwa} 2>&1 | grep -e '^Version' | sed 's/Version: //')
+         tumor=os.path.basename({input.bam})
          
          {params.java} -Xms5000m -jar {params.picard_jar} \
          SamToFastq \
