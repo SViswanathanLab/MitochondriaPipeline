@@ -19,10 +19,10 @@ rule all:
         expand("results/CollectWgsMetrics/{tumor}/theoretical_sensitivity.txt", tumor=config["pairings"]),
         expand("results/CollectWgsMetrics/{tumor}/mean_coverage.txt", tumor=config["pairings"]),
         expand("results/CollectWgsMetrics/{tumor}/median_coverage.txt", tumor=config["pairings"]),
-        expand("results/CallMt/{tumors}/{tumors}.vcf.gz"), tumor=config["pairings"]),
-        expand("results/CallMt/{tumors}/{tumors}.vcf.gz.tbi"), tumor=config["pairings"]),
-        expand("results/CallMt/{tumors}/{tumors}.vcf.gz.stats"), tumor=config["pairings"]),
-        expand("results/CallMt/{tumors}/{tumors}_bamout.bam") tumor=config["pairings"])
+        expand("results/CallMt/{tumors}/{tumors}.vcf.gz", tumor=config["pairings"]),
+        expand("results/CallMt/{tumors}/{tumors}.vcf.gz.tbi", tumor=config["pairings"]),
+        expand("results/CallMt/{tumors}/{tumors}.vcf.gz.stats", tumor=config["pairings"]),
+        expand("results/CallMt/{tumors}/{tumors}_bamout.bam", tumor=config["pairings"])
         
         
 rule SubsetBamtoChrM:
