@@ -74,7 +74,7 @@ rule AlignAndMarkDuplicates:
          
          bwa_version=$({params.bwa} 2>&1 | grep -e '^Version' | sed 's/Version: //')
          
-         ({params.java} -Xms5000m -jar {params.picard_jar} \
+         {params.java} -Xms5000m -jar {params.picard_jar} \
          SamToFastq \
          INPUT={input.bam} \
          FASTQ=/dev/stdout \
@@ -128,4 +128,4 @@ rule AlignAndMarkDuplicates:
          OUTPUT={output.bam} \
          SORT_ORDER="coordinate" \
          CREATE_INDEX=true \
-         MAX_RECORDS_IN_RAM=300000) 2> {log}"
+         MAX_RECORDS_IN_RAM=300000"
