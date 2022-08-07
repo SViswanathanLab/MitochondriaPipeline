@@ -4,7 +4,6 @@ java: /usr/bin/java
 tabix: /usr/bin/tabix
 picard_jar: /home/ma1111/tools/picard.jar
 bwa: /usr/bin/bwa
-MitochondriaPipeline_path: /Tools/MitochondriaPipeline/
 
 ## R Scripts
 coverage_script: code/coverage.R
