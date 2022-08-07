@@ -7,10 +7,10 @@ rule all:
     input:
         expand("results/SubsetBamtoChrM/{tumor}/{tumor}.bam", tumor=config["pairings"]),
         expand("results/RevertSam/{tumor}/{tumor}.bam", tumor=config["pairings"]),
-        #expand("results/AlignAndMarkDuplicates/{tumor}/{tumor}_mba.bam", tumor=config["pairings"]),
-        #expand("results/AlignAndMarkDuplicates/{tumor}/{tumor}_md.bam", tumor=config["pairings"]),
-        #expand("results/AlignAndMarkDuplicates/{tumor}/{tumor}.bam", tumor=config["pairings"]),
-        #expand("results/AlignAndMarkDuplicates/{tumor}/{tumor}.metrics", tumor=config["pairings"])
+        expand("results/AlignAndMarkDuplicates/{tumor}/{tumor}_mba.bam", tumor=config["pairings"]),
+        expand("results/AlignAndMarkDuplicates/{tumor}/{tumor}_md.bam", tumor=config["pairings"]),
+        expand("results/AlignAndMarkDuplicates/{tumor}/{tumor}.bam", tumor=config["pairings"]),
+        expand("results/AlignAndMarkDuplicates/{tumor}/{tumor}.metrics", tumor=config["pairings"])
         
 rule SubsetBamtoChrM:
     input:
