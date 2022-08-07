@@ -13,7 +13,7 @@ contig_name: "chrM"
 coverage_cap: 100000
 read_length_for_optimization: 151
 max_reads_per_alignment_start: 75
-max_alt_allele_count: 4,
+max_alt_allele_count: 4
 vaf_filter_threshold: 0
 
 ## Path to Reference Files
