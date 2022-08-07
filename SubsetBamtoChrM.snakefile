@@ -19,10 +19,10 @@ rule all:
         expand("results/CollectWgsMetrics/{tumor}/theoretical_sensitivity.txt", tumor=config["pairings"]),
         expand("results/CollectWgsMetrics/{tumor}/mean_coverage.txt", tumor=config["pairings"]),
         expand("results/CollectWgsMetrics/{tumor}/median_coverage.txt", tumor=config["pairings"]),
-        expand("results/CallMt/{tumors}/{tumors}.vcf.gz", tumor=config["pairings"]),
-        expand("results/CallMt/{tumors}/{tumors}.vcf.gz.tbi", tumor=config["pairings"]),
-        expand("results/CallMt/{tumors}/{tumors}.vcf.gz.stats", tumor=config["pairings"]),
-        expand("results/CallMt/{tumors}/{tumors}_bamout.bam", tumor=config["pairings"])
+        expand("results/CallMt/{tumor}/{tumor}.vcf.gz", tumor=config["pairings"]),
+        expand("results/CallMt/{tumor}/{tumor}.vcf.gz.tbi", tumor=config["pairings"]),
+        expand("results/CallMt/{tumor}/{tumor}.vcf.gz.stats", tumor=config["pairings"]),
+        expand("results/CallMt/{tumor}/{tumor}_bamout.bam", tumor=config["pairings"])
         
         
 rule SubsetBamtoChrM:
@@ -275,10 +275,10 @@ rule CallMt:
     input:
         bam = "results/AlignAndMarkDuplicates/{tumor}/{tumor}.bam"
     output:
-        vcf = protected("results/CallMt/{tumors}/{tumors}.vcf.gz"),
-        tbi = protected("results/CallMt/{tumors}/{tumors}.vcf.gz.tbi"),
-        stats = protected("results/CallMt/{tumors}/{tumors}.vcf.gz.stats"),
-        bamout = protected("results/CallMt/{tumors}/{tumors}_bamout.bam")
+        vcf = protected("results/CallMt/{tumor}/{tumor}.vcf.gz"),
+        tbi = protected("results/CallMt/{tumor}/{tumor}.vcf.gz.tbi"),
+        stats = protected("results/CallMt/{tumor}/{tumor}.vcf.gz.stats"),
+        bamout = protected("results/CallMt/{tumor}/{tumor}_bamout.bam")
     params:
         gatk = config["gatk_path"],
         max_reads_per_alignment_start = config["max_reads_per_alignment_start"],
