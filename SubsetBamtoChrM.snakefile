@@ -431,19 +431,21 @@ rule InitialFilter:
 
 rule SplitMultiAllelicsAndRemoveNonPassSites:
     input:
+        filtered_vcf = "results/InitialFilter/{tumor}/{tumor}.vcf"
     output:
-        split_vcf = 
-        splitAndPassOnly_vcf 
+        split_vcf = "results/SplitMultiAllelicsAndRemoveNonPassSites/{tumor}/{tumor}_split.vcf"
+        splitAndPassOnly_vcf = "results/SplitMultiAllelicsAndRemoveNonPassSites/{tumor}/{tumor}_splitAndPassOnly.vcf"
     log:
         "logs/SplitMultiAllelicsAndRemoveNonPassSites/{tumor}.txt"
     params:
-        gatk = config["gatk_path"]
+        gatk = config["gatk_path"],
+        mt_ref = config["mt_ref"]
     shell:
         """(set -e
 
         {params.gatk} LeftAlignAndTrimVariants \
-        -R {params.ref_fasta} \
-        -V {filtered_vcf} \
+        -R {params.mt_ref} \
+        -V {input.filtered_vcf} \
         -O {output.split_vcf} \
         --split-multi-allelics \
         --dont-trim-alleles \
