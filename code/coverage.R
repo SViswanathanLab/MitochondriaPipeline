@@ -3,7 +3,7 @@ library(optparse)
 option_list <- list(
                 make_option(c("--input"), type = "character", help = "Input File"),
                 make_option(c("--mean_output"), type = "character", help = "mean_coverage.txt"),
-                make_option(c("--median_output"), type = "character", help = "median_coverage.txt"),)
+                make_option(c("--median_output"), type = "character", help = "median_coverage.txt"))
 
 parseobj <- OptionParser(option_list=option_list, usage = "usage: Rscript %prog [options]")
 opt <- parse_args(parseobj)
