@@ -56,14 +56,13 @@ rule RevertSam:
 
 rule AlignAndMarkDuplicates:
     input:
-        bam = "results/RevertSam/{tumor}/{tumor}.bam",
+        bam = "results/RevertSam/{tumor}/{tumor}.bam"
     output:
         bwa_log = "results/AlignAndMarkDuplicates/{tumor}/{tumor}.bwa.stderr.log",
         mba_bam = "results/AlignAndMarkDuplicates/{tumor}/{tumor}_mba.bam",
         md_bam = "results/AlignAndMarkDuplicates/{tumor}/{tumor}_md.bam",
         bam = "results/AlignAndMarkDuplicates/{tumor}/{tumor}.bam",
-        metrics = "results/AlignAndMarkDuplicates/{tumor}/{tumor}.metrics",
-        bwa_version = $({params.bwa} 2>&1 | grep -e '^Version' | sed 's/Version: //')
+        metrics = "results/AlignAndMarkDuplicates/{tumor}/{tumor}.metrics"
     params:
         bwa = config["bwa"],
         java = config["java"],
@@ -106,7 +105,7 @@ rule AlignAndMarkDuplicates:
          MAX_INSERTIONS_OR_DELETIONS=-1 \
          PRIMARY_ALIGNMENT_STRATEGY=MostDistant \
          PROGRAM_RECORD_ID="bwamem" \
-         PROGRAM_GROUP_VERSION={output.bwa_version} \
+         PROGRAM_GROUP_VERSION="$({params.bwa} 2>&1 | grep -e '^Version' | sed 's/Version: //')" \
          PROGRAM_GROUP_COMMAND_LINE="{params.bwa} mem -K 100000000 -p -v 3 -t 2 -Y {params.reference_genome}" \
          PROGRAM_GROUP_NAME="bwamem" \
          UNMAPPED_READ_STRATEGY=COPY_TO_TAG \
