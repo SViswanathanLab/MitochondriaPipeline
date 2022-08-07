@@ -496,4 +496,9 @@ rule GetContamination:
         touch {output.mean_het_minor}
 
         {params.java} -jar {params.haplocheckCLI_path} "$(dirname "{input.input_vcf}")" | \
-        sed 's/\\\"//g' /dev/stdin > {output.output_noquotes}) 2> {log}"""
+        sed 's/\\\"//g' /dev/stdin > {output.output_noquotes}
+        
+        grep \"SampleID\" {output.output_noquotes} > {output.headers}
+        if [ `awk '{{print $2}}' {output.headers}` != \"Contamination\" ]; then
+          echo \"Bad contamination file format\"; exit 1
+        fi) 2> {log}"""
