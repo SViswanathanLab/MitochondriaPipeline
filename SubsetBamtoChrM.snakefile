@@ -341,3 +341,33 @@ rule CallShiftedMt:
         --max-reads-per-alignment-start {params.max_reads_per_alignment_start} \
         --max-mnp-distance 0) 2> {log}"""
 
+rule LiftoverAndCombineVcfs:
+    input:
+        vcf = "results/CallMt/{tumor}/{tumor}.vcf.gz",
+        shifted_vcf = "results/CallShiftedMt/{tumor}/{tumor}.vcf.gz"
+    output:
+        shifted_back = "results/LiftoverAndCombineVcfs/{tumor}/{tumor}.shifted_back.vcf",
+        rejected = "results/LiftoverAndCombineVcfs/{tumor}/{tumor}.rejected.vcf",
+        merged = "results/LiftoverAndCombineVcfs/{tumor}/{tumor}.merged.vcf"
+    params:
+        mt_ref = config["mt_ref"],
+        java = config["java"],
+        picard_jar = config["picard_jar"],
+        shift_back_chain = config["shift_back_chain"]
+    log:
+        "logs/LiftoverAndCombineVcfs/{tumor}.txt"
+    shell:
+        """(set -e
+
+        {params.java} -jar {params.picard_jar} LiftoverVcf \
+        I={input.shifted_vcf} \
+        O={output.shifted_back} \
+        R={params.mt_ref} \
+        CHAIN={params.shift_back_chain} \
+        REJECT={params.rejected}
+
+        {params.java} -jar {params.picard_jar} MergeVcfs \
+        I={input.shifted_vcf} \
+        I={input.vcf} \
+        O={params.merged}) 2> {log}"""
+ 
