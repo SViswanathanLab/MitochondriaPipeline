@@ -72,7 +72,6 @@ rule AlignAndMarkDuplicates:
     log:
         "logs/AlignAndMarkDuplicates/{tumor}.txt"
     shell:
-        
         """(set -o pipefail
          set -e
          
