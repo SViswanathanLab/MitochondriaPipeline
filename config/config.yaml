@@ -38,6 +38,7 @@ mt_shifted_pac: /mnt/storage/labs/sviswanathan/mt_gs_files/Homo_sapiens_assembly
 mt_shifted_amb: /mnt/storage/labs/sviswanathan/mt_gs_files/Homo_sapiens_assembly38.chrM.shifted_by_8000_bases.fasta.amb
 
 
+shift_back_chain: /mnt/storage/labs/sviswanathan/mt_gs_files/ShiftBack.chain
 
 
 
