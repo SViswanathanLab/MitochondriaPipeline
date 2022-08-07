@@ -63,7 +63,7 @@ rule AlignAndMarkDuplicates:
         java = config["java"],
         picard_jar = config["picard_jar"],
         gatk = config["gatk_path"],
-        reference_genome = config["reference_genome"]
+        reference_genome = config["mt_ref"]
     log:
         "logs/AlignAndMarkDuplicates/{tumor}.txt"
     shell:
