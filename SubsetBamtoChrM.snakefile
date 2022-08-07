@@ -457,3 +457,6 @@ rule GetContamination:
 
 rule FilterContamination:
     
+rule CoverageAtEveryBase:
+
+rule SplitMultiAllelicSites:
