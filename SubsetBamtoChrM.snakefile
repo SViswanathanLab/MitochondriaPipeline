@@ -487,29 +487,35 @@ rule GetContamination:
     shell:
         """(set -e
         touch {output.output_noquotes}
+        touch {output.headers}
+        touch  {output.output_data}
+        touch {output.contamination}
+        touch {output.major_hg}
+        touch {output.minor_hg}
+        touch {output.mean_het_major}
+        touch {output.mean_het_minor}
 
         {params.java} -jar {params.haplocheckCLI_path} "$(dirname "{input.input_vcf}")" | \
         sed 's/\\\"//g' /dev/stdin > {output.output_noquotes}
 
-        grep "SampleID" {output.output_noquotes} > {output.headers}
-        FORMAT_ERROR="Bad contamination file format"
-        if [ `awk '{{print $2}}' {output.headers}` != "Contamination" ]; then
-          echo $FORMAT_ERROR; exit 1
+        grep \"SampleID\" {output.output_noquotes} > {output.headers}
+        if [ `awk '{{print $2}}' {output.headers}` != \"Contamination\" ]; then
+          echo \"Bad contamination file format\"; exit 1
         fi
-        if [ `awk '{{print $6}}' {output.headers}` != "HgMajor" ]; then
-          echo $FORMAT_ERROR; exit 1
+        if [ `awk '{{print $6}}' {output.headers}` != \"HgMajor\" ]; then
+          echo \"Bad contamination file format\"; exit 1
         fi
-        if [ `awk '{{print $8}}' {output.headers}` != "HgMinor" ]; then
-          echo $FORMAT_ERROR; exit 1
+        if [ `awk '{{print $8}}' {output.headers}` != \"HgMinor\" ]; then
+          echo \"Bad contamination file format\"; exit 1
         fi
-        if [ `awk '{{print $14}}' {output.headers}` != "MeanHetLevelMajor" ]; then
-          echo $FORMAT_ERROR; exit 1
+        if [ `awk '{{print $14}}' {output.headers}` != \"MeanHetLevelMajor\" ]; then
+          echo \"Bad contamination file format\"; exit 1
         fi
-        if [ `awk '{{print $15}}' {output.headers}` != "MeanHetLevelMinor" ]; then
-          echo $FORMAT_ERROR; exit 1
+        if [ `awk '{{print $15}}' {output.headers}` != \"MeanHetLevelMinor\" ]; then
+          echo \"Bad contamination file format\"; exit 1
         fi
 
-        grep -v "SampleID" {output.output_noquotes} > {output.output_data}
+        grep -v \"SampleID\" {output.output_noquotes} > {output.output_data}
         awk -F \"\\t\" '{{print $2}}' {output.output_data} > {output.contamination}
         awk -F \"\\t\" '{{print $6}}' {output.output_data} > {output.major_hg}
         awk -F \"\\t\" '{{print $8}}' {output.output_data} > {output.minor_hg}
