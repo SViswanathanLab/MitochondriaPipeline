@@ -303,3 +303,35 @@ rule CallMt:
         --max-reads-per-alignment-start {params.max_reads_per_alignment_start} \
         --max-mnp-distance 0) 2> {log}"""
 
+rule CallShiftedMt:
+    input:
+        bam = "results/AlignAndMarkDuplicates/{tumor}/{tumor}.bam"
+    output:
+        vcf = protected("results/CallShiftedMt/{tumor}/{tumor}.vcf.gz"),
+        tbi = protected("results/CallShiftedMt/{tumor}/{tumor}.vcf.gz.tbi"),
+        stats = protected("results/CallShiftedMt/{tumor}/{tumor}.vcf.gz.stats"),
+        bamout = protected("results/CallShiftedMt/{tumor}/bamout.bam")
+    params:
+        gatk = config["gatk_path"],
+        max_reads_per_alignment_start = config["max_reads_per_alignment_start"],
+        mt_ref = config["mt_shifted_ref"]
+    log:
+        "logs/CallShiftedMt/{tumor}.txt"
+    shell:
+        """(set -e
+
+        touch {output.bamout}
+
+        {params.gatk} --java-options "-Xmx2000m" Mutect2 \
+        -R {params.mt_ref} \
+        -I {input.bam} \
+        -L chrM:576-16024 \
+        --read-filter MateOnSameContigOrNoMappedMateReadFilter \
+        --read-filter MateUnmappedAndUnmappedReadFilter \
+        -O {output.vcf} \
+        --annotation StrandBiasBySample \
+        --bam-output {output.bamout} \
+        --mitochondria-mode \
+        --max-reads-per-alignment-start {params.max_reads_per_alignment_start} \
+        --max-mnp-distance 0) 2> {log}"""
+
