@@ -1,3 +1,5 @@
 #!/bin/bash
 
-$(grep "SampleID" $1 > $2)
+echo $1;
+echo $2;
+$(grep "SampleID" $1 > $2);
