@@ -83,7 +83,7 @@ rule AlignAndMarkDuplicates:
          FASTQ=/dev/stdout \
          INTERLEAVE=true \
          NON_PF=true | \
-         {params.bwa} mem -K 100000000 -p -v 3 -t 2 -Y {params.reference_genome} /dev/stdin - 2> >(tee {output.bwa_log} >&2) | \
+         {params.bwa} mem -K 100000000 -v 3 -t 2 -Y {params.reference_genome} /dev/stdin - 2> >(tee {output.bwa_log} >&2) | \
          {params.java} -Xms3000m -jar {params.picard_jar} \
          MergeBamAlignment \
          VALIDATION_STRINGENCY=SILENT \
