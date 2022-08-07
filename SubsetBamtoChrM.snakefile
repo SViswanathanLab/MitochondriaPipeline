@@ -489,7 +489,7 @@ rule GetContamination:
         touch {output.output_noquotes}
 
         {params.java} -jar {params.haplocheckCLI_path} "$(dirname "{input.input_vcf}")" | \
-        sed 's/\"//g' /dev/stdin > {output.output_noquotes}
+        sed 's/\\\"//g' /dev/stdin > {output.output_noquotes}
 
         grep "SampleID" {output.output_noquotes} > {output.headers}
         FORMAT_ERROR="Bad contamination file format"
