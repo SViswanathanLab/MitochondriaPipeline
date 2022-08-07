@@ -62,14 +62,14 @@ rule AlignAndMarkDuplicates:
         mba_bam = "results/AlignAndMarkDuplicates/{tumor}/{tumor}_mba.bam",
         md_bam = "results/AlignAndMarkDuplicates/{tumor}/{tumor}_md.bam",
         bam = "results/AlignAndMarkDuplicates/{tumor}/{tumor}.bam",
-        metrics = "results/AlignAndMarkDuplicates/{tumor}/{tumor}.metrics"
+        metrics = "results/AlignAndMarkDuplicates/{tumor}/{tumor}.metrics",
+        bwa_version = $({params.bwa} 2>&1 | grep -e '^Version' | sed 's/Version: //')
     params:
         bwa = config["bwa"],
         java = config["java"],
         picard_jar = config["picard_jar"],
         gatk = config["gatk_path"],
         reference_genome = config["mt_ref"],
-        bwa_version=$({params.bwa} 2>&1 | grep -e '^Version' | sed 's/Version: //')
     log:
         "logs/AlignAndMarkDuplicates/{tumor}.txt"
     shell:
@@ -106,7 +106,7 @@ rule AlignAndMarkDuplicates:
          MAX_INSERTIONS_OR_DELETIONS=-1 \
          PRIMARY_ALIGNMENT_STRATEGY=MostDistant \
          PROGRAM_RECORD_ID="bwamem" \
-         PROGRAM_GROUP_VERSION={params.bwa_version} \
+         PROGRAM_GROUP_VERSION={output.bwa_version} \
          PROGRAM_GROUP_COMMAND_LINE="{params.bwa} mem -K 100000000 -p -v 3 -t 2 -Y {params.reference_genome}" \
          PROGRAM_GROUP_NAME="bwamem" \
          UNMAPPED_READ_STRATEGY=COPY_TO_TAG \
