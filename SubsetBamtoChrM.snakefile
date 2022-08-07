@@ -32,7 +32,9 @@ rule all:
         expand("results/LiftoverAndCombineVcfs/{tumor}/{tumor}.merged.vcf", tumor=config["pairings"]),
         expand("results/MergeStats/{tumor}/{tumor}.raw.combined.stats", tumor=config["pairings"]),
         expand("results/InitialFilter/{tumor}/{tumor}.filtered.vcf", tumor=config["pairings"]),
-        expand("results/InitialFilter/{tumor}/{tumor}.vcf", tumor=config["pairings"])
+        expand("results/InitialFilter/{tumor}/{tumor}.vcf", tumor=config["pairings"]),
+        expand("results/SplitMultiAllelicsAndRemoveNonPassSites/{tumor}/{tumor}_split.vcf", tumor=config["pairings"]),
+        expand("results/SplitMultiAllelicsAndRemoveNonPassSites/{tumor}/{tumor}_splitAndPassOnly.vcf", tumor=config["pairings"])
                
 rule SubsetBamtoChrM:
     input:
