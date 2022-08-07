@@ -12,6 +12,7 @@ coverage_script: code/coverage.R
 contig_name: "chrM"
 coverage_cap: 100000
 read_length_for_optimization: 151
+max_reads_per_alignment_start: 75
 
 ## Path to Reference Files
 reference_genome: /mnt/storage/labs/sviswanathan/GATK_ref/Homo_sapiens_assembly38.fasta
