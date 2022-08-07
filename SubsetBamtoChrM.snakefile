@@ -71,4 +71,4 @@ rule AlignAndMarkDuplicates:
     log:
         "logs/AlignAndMarkDuplicates/{tumor}.txt"
     shell:
-        "print(os.path.basename({input.bam})"
+        "python os.path.basename({input.bam}"
