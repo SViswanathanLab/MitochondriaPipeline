@@ -5,16 +5,16 @@ configfile: "config/samples.yaml"
 
 rule all:
     input:
-        expand("results/SubsetBamtoChrM/{tumor}.bam", tumor=config["pairings"]),
-        expand("results/RevertSam/{tumor}.bam", tumor=config["pairings"])
+        expand("results/SubsetBamtoChrM/{tumor}/{tumor}.bam", tumor=config["pairings"]),
+        expand("results/RevertSam/{tumor}/{tumor}.bam", tumor=config["pairings"])
 
 rule SubsetBamtoChrM:
     input:
         tumor_filepath = lambda wildcards: config["samples"][wildcards.tumor],
         #normal_filepath = lambda wildcards: config["samples"][config["pairings"][wildcards.tumor]]
     output:
-        bam = "results/SubsetBamtoChrM/{tumor}.bam",
-        bai = "results/SubsetBamtoChrM/{tumor}.bai"
+        bam = "results/SubsetBamtoChrM/{tumor}/{tumor}.bam",
+        bai = "results/SubsetBamtoChrM/{tumor}/{tumor}.bai"
     params:
         gatk = config["gatk_path"],
         contig_name = config["contig_name"]
@@ -30,9 +30,9 @@ rule SubsetBamtoChrM:
 
 rule RevertSam:
     input:
-        bam = "results/SubsetBamtoChrM/{tumor}.bam"
+        bam = "results/SubsetBamtoChrM/{tumor}/{tumor}.bam"
     output:
-        bam = "results/RevertSam/{tumor}.bam",
+        bam = "results/RevertSam/{tumor}/{tumor}.bam",
     params:
         java = config["java"],
         picard_jar = config["picard_jar"]
@@ -52,17 +52,21 @@ rule RevertSam:
 
 rule AlignAndMarkDuplicates:
     input:
+        bam = "results/RevertSam/{tumor}/{tumor}.bam",
     output:
     params:
         bwa = config["bwa"],
         java = config["java"],
         picard_jar = config["picard_jar"],
-        gatk = config["gatk_path"]
+        gatk = config["gatk_path"],
+        reference_genome = config["reference_genome"]
     log:
     shell:
         "set -o pipefail
          set -e
          
          gatk_version=$({params.bwa} 2>&1 | grep -e '^Version' | sed 's/Version: //')
+         
+         
          
          "
