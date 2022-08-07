@@ -246,7 +246,8 @@ rule CollectWgsMetrics:
         mt_ref_index = config["mt_ref_index"],
         java = config["java"],
         picard_jar = config["picard_jar"],
-        read_length_for_optimization = config["read_length_for_optimization"]
+        read_length_for_optimization = config["read_length_for_optimization"],
+        coverage_script = config["coverage_script"]
     log:
         "logs/CollectWgsMetrics/{tumor}.txt"
     shell:
@@ -263,9 +264,5 @@ rule CollectWgsMetrics:
         COVERAGE_CAP= {params.coverage_cap}\
         INCLUDE_BQ_HISTOGRAM=true \
         THEORETICAL_SENSITIVITY_OUTPUT={output.theoretical_sensitivity}
-
-        R --vanilla <<CODE
-        df = read.table({output.metrics},skip=6,header=TRUE,stringsAsFactors=FALSE,sep='\t',nrows=1)
-        write.table(floor(df[,"MEAN_COVERAGE"]), {output.mean_coverage}, quote=F, col.names=F, row.names=F)
-        write.table(df[,"MEDIAN_COVERAGE"], {output.median_coverage}, quote=F, col.names=F, row.names=F)
-        CODE)) 2> {log}"""
+        
+        Rscript {params.coverage_script} --input {output.metrics} --mean_output {output.mean_coverage} --median_output {output.median_coverage}) 2> {log}"""
