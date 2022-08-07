@@ -13,6 +13,8 @@ contig_name: "chrM"
 coverage_cap: 100000
 read_length_for_optimization: 151
 max_reads_per_alignment_start: 75
+max_alt_allele_count: 4,
+vaf_filter_threshold: 0
 
 ## Path to Reference Files
 reference_genome: /mnt/storage/labs/sviswanathan/GATK_ref/Homo_sapiens_assembly38.fasta
@@ -39,6 +41,7 @@ mt_shifted_amb: /mnt/storage/labs/sviswanathan/mt_gs_files/Homo_sapiens_assembly
 
 
 shift_back_chain: /mnt/storage/labs/sviswanathan/mt_gs_files/ShiftBack.chain
+blacklisted_sites: /mnt/storage/labs/sviswanathan/mt_gs_files/blacklist_sites.hg38.chrM.bed
 
 
 
