@@ -49,3 +49,20 @@ rule RevertSam:
         ATTRIBUTE_TO_CLEAR=CO \
         SORT_ORDER=queryname \
         RESTORE_ORIGINAL_QUALITIES=false) 2> {log}"
+
+rule AlignAndMarkDuplicates:
+    input:
+    output:
+    params:
+        bwa = config["bwa"],
+        java = config["java"],
+        picard_jar = config["picard_jar"],
+        gatk = config["gatk_path"]
+    log:
+    shell:
+        "set -o pipefail
+         set -e
+         
+         gatk_version=$({params.bwa} 2>&1 | grep -e '^Version' | sed 's/Version: //')
+         
+         "
