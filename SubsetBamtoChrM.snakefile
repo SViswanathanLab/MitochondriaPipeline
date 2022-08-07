@@ -378,18 +378,19 @@ rule LiftoverAndCombineVcfs:
  
 rule MergeStats:
     input:
-        shifted_stats = "Tools/MitochondriaPipeline/results/CallShiftedMt/{tumor}/{tumor}.vcf.gz.stats",
-        non_shifted_stats = "Tools/MitochondriaPipeline/results/CallMt/{tumor}/{tumor}.vcf.gz.stats"
+        shifted_stats = "results/CallShiftedMt/{tumor}/{tumor}.vcf.gz.stats",
+        non_shifted_stats = "results/CallMt/{tumor}/{tumor}.vcf.gz.stats"
     output:
         raw_combined_stats = "results/MergeStats/{tumor}/{tumor}.raw.combined.stats"
     params:
         gatk = config["gatk_path"]
+        
     log:
         "logs/MergeStats/{tumor}.txt"
     shell:
         """(set -e
 
-        {params.gatk} MergeMutectStats --stats ~{input.shifted_stats} --stats ~{input.non_shifted_stats} -O {output.raw_combined_stats}) 2> {log}"""
+        {params.gatk} MergeMutectStats --stats {input.shifted_stats} --stats {input.non_shifted_stats} -O {output.raw_combined_stats}) 2> {log}"""
 
 rule InitialFilter:
     input:
