@@ -246,7 +246,7 @@ rule CollectWgsMetrics:
         mt_ref_index = config["mt_ref_index"],
         java = config["java"],
         picard_jar = config["picard_jar"],
-        gatk = config["gatk_path"]
+        read_length_for_optimization = config["read_length_for_optimization"]
     log:
         "logs/CollectWgsMetrics/{tumor}.txt"
     shell:
@@ -259,7 +259,7 @@ rule CollectWgsMetrics:
         REFERENCE_SEQUENCE={params.mt_ref} \
         OUTPUT={output.metrics} \
         USE_FAST_ALGORITHM=true \
-        READ_LENGTH=~{read_length_for_optimization} \
+        READ_LENGTH={params.read_length_for_optimization} \
         COVERAGE_CAP= {params.coverage_cap}\
         INCLUDE_BQ_HISTOGRAM=true \
         THEORETICAL_SENSITIVITY_OUTPUT={output.theoretical_sensitivity}
