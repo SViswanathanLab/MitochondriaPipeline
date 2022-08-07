@@ -4,7 +4,7 @@ Snakefile to call Mitochondria Short Variant Discovery. Converting the Terra [WD
 ## How to run
 /mnt/storage/apps/anaconda3/bin/snakemake -s /home/mi724/Tools/MitochondriaPipeline/MitochondriaPipeline.snakefile --cluster-config /home/mi724/Tools/MitochondriaPipeline/config/cluster_qsub.yaml --cluster "qsub -l h_vmem={cluster.h_vmem},h_rt={cluster.h_rt} -pe {cluster.pe} -binding {cluster.binding}" --jobs 30 --rerun-incomplete
 
-## Steps in order
+## Steps in order inside Snakefile
 1. SubsetBamToChrM
 2. RevertSam
 3. AlignAndMarkDuplicates - On Not Shifted MT Reference Genome
