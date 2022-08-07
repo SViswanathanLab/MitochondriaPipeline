@@ -432,3 +432,27 @@ rule InitialFilter:
         --mask {params.blacklisted_sites} \
         --mask-name "blacklisted_site") 2> {log}"""
 
+rule SplitMultiAllelicsAndRemoveNonPassSites:
+    input:
+    output:
+        split_vcf = 
+        splitAndPassOnly_vcf 
+    log:
+        "logs/SplitMultiAllelicsAndRemoveNonPassSites/{tumor}.txt"
+    params:
+        gatk = config["gatk_path"]
+    shell:
+        """(set -e
+
+        {params.gatk} LeftAlignAndTrimVariants \
+        -R {params.ref_fasta} \
+        -V {filtered_vcf} \
+        -O {output.split_vcf} \
+        --split-multi-allelics \
+        --dont-trim-alleles \
+        --keep-original-ac
+
+        {params.gatk} SelectVariants \
+        -V {output.split_vcf} \
+        -O {output.splitAndPassOnly_vcf} \
+        --exclude-filtered) 2> {log}"""
