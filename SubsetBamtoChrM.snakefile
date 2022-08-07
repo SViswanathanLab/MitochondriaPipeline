@@ -102,7 +102,7 @@ rule AlignAndMarkDuplicates:
          MAX_INSERTIONS_OR_DELETIONS=-1 \
          PRIMARY_ALIGNMENT_STRATEGY=MostDistant \
          PROGRAM_RECORD_ID="bwamem" \
-         PROGRAM_GROUP_VERSION="${bwa_version}" \
+         PROGRAM_GROUP_VERSION="{{echo $bwa_version}}" \
          PROGRAM_GROUP_COMMAND_LINE="{params.bwa} mem -K 100000000 -p -v 3 -t 2 -Y {params.reference_genome}" \
          PROGRAM_GROUP_NAME="bwamem" \
          UNMAPPED_READ_STRATEGY=COPY_TO_TAG \
