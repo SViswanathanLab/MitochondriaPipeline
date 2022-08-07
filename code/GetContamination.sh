@@ -1,3 +1,3 @@
 #!/bin/bash
 
-$(eval grep "SampleID" $1 > $2)
+$(grep "SampleID" $1 > $2)
