@@ -418,12 +418,9 @@ rule InitialFilter:
         -R {params.mt_ref} \
         -O {output.filtered_vcf} \
         --stats {input.raw_vcf_stats} \
-        #~{m2_extra_filtering_args} \
         --max-alt-allele-count {params.max_alt_allele_count} \
         --mitochondria-mode \
-        --min-allele-fraction {params.vaf_filter_threshold} \
-        #~{"--f-score-beta " + f_score_beta} \
-        #~{"--contamination-estimate " + max_contamination}
+        --min-allele-fraction {params.vaf_filter_threshold} 
 
         {params.gatk} VariantFiltration \
         -V {output.filtered_vcf}\
