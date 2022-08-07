@@ -4,8 +4,12 @@ configfile: "config/samples.yaml"
 rule all:
     input:
         expand("results/SubsetBamtoChrM/{tumor}/{tumor}.bam", tumor=config["pairings"]),
-        expand("results/RevertSam/{tumor}/{tumor}.bam", tumor=config["pairings"])
-
+        expand("results/RevertSam/{tumor}/{tumor}.bam", tumor=config["pairings"]),
+        expand("results/AlignAndMarkDuplicates/{tumor}/{tumor}_mba.bam", tumor=config["pairings"]),
+        expand("results/AlignAndMarkDuplicates/{tumor}/{tumor}_md.bam", tumor=config["pairings"]),
+        expand("results/AlignAndMarkDuplicates/{tumor}/{tumor}.bam", tumor=config["pairings"]),
+        expand("results/AlignAndMarkDuplicates/{tumor}/{tumor}.metrics", tumor=config["pairings"])
+        
 rule SubsetBamtoChrM:
     input:
         tumor_filepath = lambda wildcards: config["samples"][wildcards.tumor],
@@ -53,8 +57,8 @@ rule AlignAndMarkDuplicates:
         bam = "results/RevertSam/{tumor}/{tumor}.bam",
     output:
         mba_bam = "results/AlignAndMarkDuplicates/{tumor}/{tumor}_mba.bam",
-        md.bam = "results/AlignAndMarkDuplicates/{tumor}/{tumor}_md.bam"
-        bam = "results/AlignAndMarkDuplicates/{tumor}/{tumor}.bam"
+        md.bam = "results/AlignAndMarkDuplicates/{tumor}/{tumor}_md.bam",
+        bam = "results/AlignAndMarkDuplicates/{tumor}/{tumor}.bam",
         metrics = "results/AlignAndMarkDuplicates/{tumor}/{tumor}.metrics"
     params:
         bwa = config["bwa"],
