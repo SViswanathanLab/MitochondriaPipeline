@@ -88,8 +88,6 @@ rule AlignAndMarkDuplicates:
         """(set -o pipefail
          set -e
          
-         #bwa_version=$({params.bwa} 2>&1 | grep -e '^Version' | sed 's/Version: //')
-         
          {params.java} -Xms5000m -jar {params.picard_jar} \
          SamToFastq \
          INPUT={input.bam} \
@@ -174,8 +172,6 @@ rule AlignShiftedMTAndMarkDuplicates:
         """(set -o pipefail
          set -e
          
-         #bwa_version=$({params.bwa} 2>&1 | grep -e '^Version' | sed 's/Version: //')
-         
          {params.java} -Xms5000m -jar {params.picard_jar} \
          SamToFastq \
          INPUT={input.bam} \
@@ -233,7 +229,39 @@ rule AlignShiftedMTAndMarkDuplicates:
 
 rule CollectWgsMetrics:
     input:
+        bam = "results/AlignAndMarkDuplicates/{tumor}/{tumor}.bam",
+        bai = "results/AlignAndMarkDuplicates/{tumor}/{tumor}.bai"
     output:
+        metrics = "results/CollectWgsMetrics/{tumor}/metrics.txt",
+        theoretical_sensitivity = "results/CollectWgsMetrics/{tumor}/theoretical_sensitivity.txt",
+        mean_coverage = "results/CollectWgsMetrics/{tumor}/mean_coverage.txt",
+        median_coverage = "results/CollectWgsMetrics/{tumor}/median_coverage.txt"
     params:
+        coverage_cap = config["coverage_cap"],
+        mt_ref = config["mt_ref"],
+        mt_ref_index = config["mt_ref_index"],
+        java = config["java"],
+        picard_jar = config["picard_jar"],
+        gatk = config["gatk_path"]
     logs:
+        "logs/CollectWgsMetrics/{tumor}.txt"
     shell:
+        """(set -e
+
+        {params.java} -Xms2000m -jar {params.picard_jar} \
+        CollectWgsMetrics \
+        INPUT={input.bam} \
+        VALIDATION_STRINGENCY=SILENT \
+        REFERENCE_SEQUENCE={mt_ref} \
+        OUTPUT={output.metrics} \
+        USE_FAST_ALGORITHM=true \
+        READ_LENGTH=~{read_length_for_optimization} \
+        COVERAGE_CAP= {params.coverage_cap}\
+        INCLUDE_BQ_HISTOGRAM=true \
+        THEORETICAL_SENSITIVITY_OUTPUT={output.theoretical_sensitivity}
+
+        R --vanilla <<CODE
+        df = read.table({output.metrics},skip=6,header=TRUE,stringsAsFactors=FALSE,sep='\t',nrows=1)
+        write.table(floor(df[,"MEAN_COVERAGE"]), {output.mean_coverage}, quote=F, col.names=F, row.names=F)
+        write.table(df[,"MEDIAN_COVERAGE"], {output.median_coverage}, quote=F, col.names=F, row.names=F)
+        CODE)) 2> {log}"""
