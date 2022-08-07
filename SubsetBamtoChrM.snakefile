@@ -488,7 +488,7 @@ rule GetContamination:
         """(set -e
         touch {output.output_noquotes}
         touch {output.headers}
-        touch  {output.output_data}
+        touch {output.output_data}
         touch {output.contamination}
         touch {output.major_hg}
         touch {output.minor_hg}
@@ -498,7 +498,4 @@ rule GetContamination:
         {params.java} -jar {params.haplocheckCLI_path} "$(dirname "{input.input_vcf}")" | \
         sed 's/\\\"//g' /dev/stdin > {output.output_noquotes}
         
-        grep \"SampleID\" {output.output_noquotes} > {output.headers}
-        if [ `awk '{{print $2}}' {output.headers}` != \"Contamination\" ]; then
-          echo \"Bad contamination file format\"; exit 1
-        fi) 2> {log}"""
+        grep \"SampleID\" {output.output_noquotes} > {output.headers}) 2> {log}"""
