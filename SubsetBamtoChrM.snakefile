@@ -72,5 +72,5 @@ rule AlignAndMarkDuplicates:
         "logs/AlignAndMarkDuplicates/{tumor}.txt"
     shell:
         """tumor=$(basename -- {input.bam})
-           basefile_name=$(${tumor%.*})
+           basefile_name=$($tumor%.*})
         echo $basefile_name"""
