@@ -256,7 +256,7 @@ rule CollectWgsMetrics:
         CollectWgsMetrics \
         INPUT={input.bam} \
         VALIDATION_STRINGENCY=SILENT \
-        REFERENCE_SEQUENCE={mt_ref} \
+        REFERENCE_SEQUENCE={params.mt_ref} \
         OUTPUT={output.metrics} \
         USE_FAST_ALGORITHM=true \
         READ_LENGTH=~{read_length_for_optimization} \
