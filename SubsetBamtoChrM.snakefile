@@ -57,7 +57,7 @@ rule AlignAndMarkDuplicates:
         bam = "results/RevertSam/{tumor}/{tumor}.bam",
     output:
         mba_bam = "results/AlignAndMarkDuplicates/{tumor}/{tumor}_mba.bam",
-        md.bam = "results/AlignAndMarkDuplicates/{tumor}/{tumor}_md.bam",
+        md_bam = "results/AlignAndMarkDuplicates/{tumor}/{tumor}_md.bam",
         bam = "results/AlignAndMarkDuplicates/{tumor}/{tumor}.bam",
         metrics = "results/AlignAndMarkDuplicates/{tumor}/{tumor}.metrics"
     params:
@@ -113,7 +113,7 @@ rule AlignAndMarkDuplicates:
          {params.java} -Xms4000m -jar {params.picard_jar} \
          MarkDuplicates \
          INPUT={output.mba_bam} \
-         OUTPUT={output.md.bam} \
+         OUTPUT={output.md_bam} \
          METRICS_FILE={output.metrics} \
          VALIDATION_STRINGENCY=SILENT \
          ~{"READ_NAME_REGEX=" + read_name_regex} \
@@ -124,7 +124,7 @@ rule AlignAndMarkDuplicates:
 
          {params.java} -Xms4000m -jar {params.picard_jar} \
          SortSam \
-         INPUT={output.md.bam} \
+         INPUT={output.md_bam} \
          OUTPUT={output.bam} \
          SORT_ORDER="coordinate" \
          CREATE_INDEX=true \
