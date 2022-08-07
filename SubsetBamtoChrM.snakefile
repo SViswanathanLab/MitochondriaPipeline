@@ -14,7 +14,11 @@ rule all:
         expand("results/AlignShiftedMTAndMarkDuplicates/{tumor}/{tumor}_mba.bam", tumor=config["pairings"]),
         expand("results/AlignShiftedMTAndMarkDuplicates/{tumor}/{tumor}_md.bam", tumor=config["pairings"]),
         expand("results/AlignShiftedMTAndMarkDuplicates/{tumor}/{tumor}.bam", tumor=config["pairings"]),
-        expand("results/AlignShiftedMTAndMarkDuplicates/{tumor}/{tumor}.metrics", tumor=config["pairings"])
+        expand("results/AlignShiftedMTAndMarkDuplicates/{tumor}/{tumor}.metrics", tumor=config["pairings"]),
+        expand("results/CollectWgsMetrics/{tumor}/metrics.txt", tumor=config["pairings"]),
+        expand("results/CollectWgsMetrics/{tumor}/theoretical_sensitivity.txt", tumor=config["pairings"]),
+        expand("results/CollectWgsMetrics/{tumor}/mean_coverage.txt", tumor=config["pairings"]),
+        expand("results/CollectWgsMetrics/{tumor}/median_coverage.txt", tumor=config["pairings"])
         
         
 rule SubsetBamtoChrM:
