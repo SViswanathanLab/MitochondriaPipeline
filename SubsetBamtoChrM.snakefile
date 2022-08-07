@@ -492,7 +492,7 @@ rule GetContamination:
 
         grep "SampleID" {output.output_noquotes} > {output.headers}
         FORMAT_ERROR="Bad contamination file format"
-        if [ `awk '{print $2}' {output.headers}` != "Contamination" ]; then
+        if [ awk '{print $2}' {output.headers} != "Contamination" ]; then
           echo $FORMAT_ERROR; exit 1
         fi
         if [ `awk '{print $6}' {output.headers}` != "HgMajor" ]; then
