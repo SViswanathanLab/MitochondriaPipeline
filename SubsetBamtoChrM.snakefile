@@ -367,12 +367,12 @@ rule LiftoverAndCombineVcfs:
         O={output.shifted_back} \
         R={params.mt_ref} \
         CHAIN={params.shift_back_chain} \
-        REJECT={params.rejected}
+        REJECT={output.rejected}
 
         {params.java} -jar {params.picard_jar} MergeVcfs \
         I={input.shifted_vcf} \
         I={input.vcf} \
-        O={params.merged}) 2> {log}"""
+        O={output.merged}) 2> {log}"""
  
 rule MergeStats:
     input:
