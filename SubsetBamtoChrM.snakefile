@@ -26,9 +26,12 @@ rule all:
         expand("results/CallShiftedMt/{tumor}/{tumor}.vcf.gz", tumor=config["pairings"]),
         expand("results/CallShiftedMt/{tumor}/{tumor}.vcf.gz.tbi", tumor=config["pairings"]),
         expand("results/CallShiftedMt/{tumor}/{tumor}.vcf.gz.stats", tumor=config["pairings"]),
-        expand("results/CallShiftedMt/{tumor}/bamout.bam", tumor=config["pairings"])
-        
-        
+        expand("results/CallShiftedMt/{tumor}/bamout.bam", tumor=config["pairings"]),
+        expand("results/LiftoverAndCombineVcfs/{tumor}/{tumor}.shifted_back.vcf", tumor=config["pairings"]),
+        expand("results/LiftoverAndCombineVcfs/{tumor}/{tumor}.rejected.vcf", tumor=config["pairings"]),
+        expand("results/LiftoverAndCombineVcfs/{tumor}/{tumor}.merged.vcf", tumor=config["pairings"]),
+        expand("results/MergeStats/{tumor}/{tumor}.raw.combined.stats", tumor=config["pairings"])
+               
 rule SubsetBamtoChrM:
     input:
         tumor_filepath = lambda wildcards: config["samples"][wildcards.tumor],
@@ -371,3 +374,86 @@ rule LiftoverAndCombineVcfs:
         I={input.vcf} \
         O={params.merged}) 2> {log}"""
  
+rule MergeStats:
+    input:
+        shifted_stats = "results/CallShiftedMt/{tumor}/{tumor}.vcf.gz.stats",
+        non_shifted_stats = "results/CallMt/{tumor}/{tumor}.vcf.gz.stats"
+    output:
+        raw_combined_stats = "results/MergeStats/{tumor}/{tumor}.raw.combined.stats"
+    params:
+        gatk = config["gatk_path"]
+    log:
+        "logs/MergeStats/{tumor}.txt"
+    shell:
+        """(set -e
+
+        {params.gatk} MergeMutectStats --stats ~{input.shifted_stats} --stats ~{input.non_shifted_stats} -O {params.raw_combined_stats}) 2> {log}"""
+    
+rule InitialFilter:
+
+rule SplitMultiAllelicsAndRemoveNonPassSites:
+    input:
+    output:
+        split_vcf = 
+        splitAndPassOnly_vcf
+        
+    log:
+        "logs/SplitMultiAllelicsAndRemoveNonPassSites/{tumor}.txt"
+    params:
+        gatk = config["gatk_path"]
+    shell:
+        """(set -e
+
+        {params.gatk} LeftAlignAndTrimVariants \
+        -R {params.ref_fasta} \
+        -V ~{filtered_vcf} \
+        -O {output.split_vcf} \
+        --split-multi-allelics \
+        --dont-trim-alleles \
+        --keep-original-ac
+
+        {params.gatk} SelectVariants \
+        -V {output.split_vcf} \
+        -O {output.splitAndPassOnly_vcf} \
+        --exclude-filtered) 2> {log}"""
+
+rule GetContamination:
+    params:
+        java = config["java"],
+        picard_jar = config["picard_jar"]
+    log:
+        "logs/GetContamination/{tumor}.txt"
+    shell:
+        """(set -e
+        PARENT_DIR="$(dirname "~{input_vcf}")"
+        {params.java} -jar /usr/mtdnaserver/haplocheckCLI.jar "${PARENT_DIR}"
+
+        sed 's/\"//g' output > output-noquotes
+
+        grep "SampleID" output-noquotes > headers
+        FORMAT_ERROR="Bad contamination file format"
+        if [ `awk '{print $2}' headers` != "Contamination" ]; then
+          echo $FORMAT_ERROR; exit 1
+        fi
+        if [ `awk '{print $6}' headers` != "HgMajor" ]; then
+          echo $FORMAT_ERROR; exit 1
+        fi
+        if [ `awk '{print $8}' headers` != "HgMinor" ]; then
+          echo $FORMAT_ERROR; exit 1
+        fi
+        if [ `awk '{print $14}' headers` != "MeanHetLevelMajor" ]; then
+          echo $FORMAT_ERROR; exit 1
+        fi
+        if [ `awk '{print $15}' headers` != "MeanHetLevelMinor" ]; then
+          echo $FORMAT_ERROR; exit 1
+        fi
+
+        grep -v "SampleID" output-noquotes > output-data
+        awk -F "\t" '{print $2}' output-data > contamination.txt
+        awk -F "\t" '{print $6}' output-data > major_hg.txt
+        awk -F "\t" '{print $8}' output-data > minor_hg.txt
+        awk -F "\t" '{print $14}' output-data > mean_het_major.txt
+        awk -F "\t" '{print $15}' output-data > mean_het_minor.txt) 2> {log}"""
+
+rule FilterContamination:
+    
