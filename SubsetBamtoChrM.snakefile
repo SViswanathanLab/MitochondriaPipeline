@@ -34,7 +34,15 @@ rule all:
         expand("results/InitialFilter/{tumor}/{tumor}.filtered.vcf", tumor=config["pairings"]),
         expand("results/InitialFilter/{tumor}/{tumor}.vcf", tumor=config["pairings"]),
         expand("results/SplitMultiAllelicsAndRemoveNonPassSites/{tumor}/{tumor}_split.vcf", tumor=config["pairings"]),
-        expand("results/SplitMultiAllelicsAndRemoveNonPassSites/{tumor}/{tumor}_splitAndPassOnly.vcf", tumor=config["pairings"])
+        expand("results/SplitMultiAllelicsAndRemoveNonPassSites/{tumor}/{tumor}_splitAndPassOnly.vcf", tumor=config["pairings"]),
+        expand("results/GetContamination/{tumor}/{tumor}_output_noquotes.txt", tumor=config["pairings"]),
+        expand("results/GetContamination/{tumor}/{tumor}_headers.txt", tumor=config["pairings"]),
+        expand("results/GetContamination/{tumor}/{tumor}_output_data.txt", tumor=config["pairings"]),
+        expand("results/GetContamination/{tumor}/{tumor}_contamination.txt", tumor=config["pairings"]),
+        expand("results/GetContamination/{tumor}/{tumor}_major_hg.txt", tumor=config["pairings"]),
+        expand("results/GetContamination/{tumor}/{tumor}_minor_hg.txt", tumor=config["pairings"]),
+        expand("results/GetContamination/{tumor}/{tumor}_mean_het_major.txt", tumor=config["pairings"]),
+        expand("results/GetContamination/{tumor}/{tumor}_mean_het_minor.txt", tumor=config["pairings"])
                
 rule SubsetBamtoChrM:
     input:
