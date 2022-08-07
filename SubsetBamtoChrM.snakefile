@@ -230,3 +230,10 @@ rule AlignShiftedMTAndMarkDuplicates:
          SORT_ORDER="coordinate" \
          CREATE_INDEX=true \
          MAX_RECORDS_IN_RAM=300000) 2> {log}"""
+
+rule CollectWgsMetrics:
+    input:
+    output:
+    params:
+    logs:
+    shell:
