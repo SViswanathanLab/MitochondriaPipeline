@@ -22,7 +22,7 @@ rule all:
         expand("results/CallMt/{tumor}/{tumor}.vcf.gz", tumor=config["pairings"]),
         expand("results/CallMt/{tumor}/{tumor}.vcf.gz.tbi", tumor=config["pairings"]),
         expand("results/CallMt/{tumor}/{tumor}.vcf.gz.stats", tumor=config["pairings"]),
-        expand("results/CallMt/{tumor}/{tumor}_bamout.bam", tumor=config["pairings"])
+        expand("results/CallMt/{tumor}/bamout.bam", tumor=config["pairings"])
         
         
 rule SubsetBamtoChrM:
@@ -278,7 +278,7 @@ rule CallMt:
         vcf = protected("results/CallMt/{tumor}/{tumor}.vcf.gz"),
         tbi = protected("results/CallMt/{tumor}/{tumor}.vcf.gz.tbi"),
         stats = protected("results/CallMt/{tumor}/{tumor}.vcf.gz.stats"),
-        bamout = protected("results/CallMt/{tumor}/{tumor}_bamout.bam")
+        bamout = protected("results/CallMt/{tumor}/bamout.bam")
     params:
         gatk = config["gatk_path"],
         max_reads_per_alignment_start = config["max_reads_per_alignment_start"],
