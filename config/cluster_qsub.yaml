@@ -11,3 +11,8 @@ AlignAndMarkDuplicates:
     pe: smp 1
     binding:    linear:1
     
+AlignShiftedMTAndMarkDuplicates:
+    h_vmem:    100G  
+    h_rt:    300:00:00
+    pe: smp 1
+    binding:    linear:1
