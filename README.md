@@ -4,18 +4,25 @@ Snakefile to call Mitochondria Short Variant Discovery. Converting the Terra [WD
 ## How to run
 /mnt/storage/apps/anaconda3/bin/snakemake -s /home/mi724/Tools/MitochondriaPipeline/MitochondriaPipeline.snakefile --cluster-config /home/mi724/Tools/MitochondriaPipeline/config/cluster_qsub.yaml --cluster "qsub -l h_vmem={cluster.h_vmem},h_rt={cluster.h_rt} -pe {cluster.pe} -binding {cluster.binding}" --jobs 30 --rerun-incomplete
 
-## Steps in each file
+## Steps in order
+1. SubsetBamToChrM
+2. RevertSam
+3. AlignAndMarkDuplicates
 
-### SubsetBamToChrM.snakefile
+
+
+## Steps in each WDL file
+
+### SubsetBamToChrM.wdl
 1. SubsetBamToChrM
 2. RevertSam
 3. AlignAndCall.AlignAndCall as AlignAndCall
 4. CoverageAtEveryBase 
 5. SplitMultiAllelicSites
-### AlignmentPipeline.snakefile
+### AlignmentPipeline.wdl
 1. GetBwaVersion
 2. AlignAndMarkDuplicates
-### AlignAndCall.snakefile
+### AlignAndCall.wdl
 1. AlignAndMarkDuplicates.AlignmentPipeline as AlignToMt
 2. AlignAndMarkDuplicates.AlignmentPipeline as AlignToShiftedMt
 3. CollectWgsMetrics
@@ -27,7 +34,4 @@ Snakefile to call Mitochondria Short Variant Discovery. Converting the Terra [WD
 9. SplitMultiAllelicsAndRemoveNonPassSites
 10. GetContamination
 11. Filter as FilterContamination
-
-## Steps in order
-
 
