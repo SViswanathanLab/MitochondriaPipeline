@@ -287,8 +287,7 @@ rule CallMt:
     shell:
         """(set -e
 
-        # We need to create these files regardless, even if they stay empty
-        #touch bamout.bam
+        touch {output.bamout}
 
         {params.gatk} --java-options "-Xmx2000m" Mutect2 \
         -R {params.mt_ref} \
