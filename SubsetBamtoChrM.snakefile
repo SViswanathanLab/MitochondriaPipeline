@@ -247,7 +247,7 @@ rule CollectWgsMetrics:
         java = config["java"],
         picard_jar = config["picard_jar"],
         gatk = config["gatk_path"]
-    logs:
+    log:
         "logs/CollectWgsMetrics/{tumor}.txt"
     shell:
         """(set -e
