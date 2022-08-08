@@ -585,7 +585,9 @@ rule CoverageAtEveryBase:
         shifted_bam = "results/AlignShiftedMTAndMarkDuplicates/{tumor}/{tumor}.bam",
         shifted_bai = "results/AlignShiftedMTAndMarkDuplicates/{tumor}/{tumor}.bai"
     output:
-        table = "results/CoverageAtEveryBase/{tumor}/{tumor}_per_base_coverage.tsv"
+        table = "results/CoverageAtEveryBase/{tumor}/{tumor}_per_base_coverage.tsv",
+        non_control_regions = "results/CoverageAtEveryBase/{tumor}/{tumor}_non_control_region.metrics",
+        control_region_shifted = "results/CoverageAtEveryBase/{tumor}/{tumor}_control_region_shifted.metrics"
     params:
         control_region_shifted_reference_interval_list = config["control_region_shifted_reference_interval_list"],
         non_control_region_interval_list = config["non_control_region_interval_list"],
@@ -593,7 +595,8 @@ rule CoverageAtEveryBase:
         mt_shifted_ref = config["mt_shifted_ref"],
         shift_back_chain = config["shift_back_chain"],
         java = config["java"],
-        picard_jar = config["picard_jar"]
+        picard_jar = config["picard_jar"],
+        CoverageAtEveryBase = config["CoverageAtEveryBase"]
     log:
         "logs/CoverageAtEveryBase/{tumor}.txt"
     shell:
@@ -603,7 +606,7 @@ rule CoverageAtEveryBase:
         I={input.normal_bam} \
         R={params.mt_ref} \
         PER_BASE_COVERAGE=non_control_region.tsv \
-        O=non_control_region.metrics \
+        O={output.non_control_regions}\
         TI={params.non_control_region_interval_list} \
         BI={params.non_control_region_interval_list} \
         COVMAX=20000 \
@@ -613,13 +616,13 @@ rule CoverageAtEveryBase:
         I={input.shifted_bam} \
         R={params.mt_shifted_ref} \
         PER_BASE_COVERAGE=control_region_shifted.tsv \
-        O=control_region_shifted.metrics \
+        O={output.control_region_shifted} \
         TI={params.control_region_shifted_reference_interval_list} \
         BI={params.control_region_shifted_reference_interval_list} \
         COVMAX=20000 \
         SAMPLE_SIZE=1
         
-        Rscript {params.coverage_script} --input {output.metrics} --mean_output {output.mean_coverage} --median_output {output.median_coverage}) 2> {log}
+        Rscript {params.CoverageAtEveryBase} --control_region_shifted {output.control_region_shifted} --non_control_region {output.non_control_regions} --output {output.table}) 2> {log}
         """
     
    
