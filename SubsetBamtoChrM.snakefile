@@ -417,7 +417,8 @@ rule InitialFilter:
         raw_vcf_stats = "results/MergeStats/{tumor}.raw.combined.stats"
     output:
         filtered_vcf = "results/InitialFilter/{tumor}.filtered.vcf",
-        output_vcf = "results/InitialFilter/{tumor}.vcf"
+        output_vcf = "results/InitialFilter/{tumor}.vcf",
+        bamout = ""
     params:
         gatk = config["gatk_path"],
         mt_ref = config["mt_ref"],
@@ -430,7 +431,7 @@ rule InitialFilter:
         """(set -e
         
         # We need to create these files regardless, even if they stay empty
-        touch bamout.bam
+        touch {output.bamout}
 
         {params.gatk} --java-options "-Xmx2500m" FilterMutectCalls \
         -V {input.raw_vcf} \
@@ -541,7 +542,8 @@ rule FilterContamination:
         raw_vcf_stats = "results/MergeStats/{tumor}.raw.combined.stats"
     output:
         output_vcf = "results/FilterContamination/{tumor}.vcf",
-        filtered_vcf = "results/FilterContamination/{tumor}.filtered.vcf"
+        filtered_vcf = "results/FilterContamination/{tumor}.filtered.vcf",
+        bamout = ""
     params:
         gatk = config["gatk_path"],
         mt_ref = config["mt_ref"],
@@ -560,7 +562,7 @@ rule FilterContamination:
         fi
         
         # We need to create these files regardless, even if they stay empty
-        touch bamout.bam
+        touch {output.bamout}
         
         CONTAMINATION="$(cat "{input.hasContamination}")"
         MAJOR="$(cat "{input.contamination_major}")"
