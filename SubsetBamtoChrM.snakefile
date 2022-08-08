@@ -489,7 +489,8 @@ rule GetContamination:
         major_hg = "results/GetContamination/{tumor}/{tumor}_major_hg.txt",
         minor_hg = "results/GetContamination/{tumor}/{tumor}_minor_hg.txt",
         mean_het_major = "results/GetContamination/{tumor}/{tumor}_mean_het_major.txt",
-        mean_het_minor = "results/GetContamination/{tumor}/{tumor}_mean_het_minor.txt"
+        mean_het_minor = "results/GetContamination/{tumor}/{tumor}_mean_het_minor.txt",
+        haplocheckCLI_newpath = "results/GetContamination/{tumor}"
     params:
         java = config["java"],
         picard_jar = config["picard_jar"],
@@ -507,8 +508,10 @@ rule GetContamination:
         touch {output.minor_hg}
         touch {output.mean_het_major}
         touch {output.mean_het_minor}
-
-        {params.java} -jar {params.haplocheckCLI_path} "$(dirname "{input.input_vcf}")" > {output.outputs}
+        
+        cp {params.haplocheckCLI_path} {output.haplocheckCLI_newpath}
+        
+        {params.java} -jar {output.haplocheckCLI_newpath} "$(dirname "{input.input_vcf}")" 
         sed 's/\\\"//g' {output.outputs} > {output.output_noquotes}
         
         grep "SampleID" {output.output_noquotes} > {output.headers}
