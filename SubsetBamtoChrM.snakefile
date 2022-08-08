@@ -5,49 +5,50 @@ configfile: "config/samples.yaml"
 
 rule all:
     input:
-        expand("results/SubsetBamtoChrM/{tumor}.bam", tumor=config["pairings"]),
-        expand("results/RevertSam/{tumor}.bam", tumor=config["pairings"]),
-        expand("results/AlignAndMarkDuplicates/{tumor}_mba.bam", tumor=config["pairings"]),
-        expand("results/AlignAndMarkDuplicates/{tumor}_md.bam", tumor=config["pairings"]),
-        expand("results/AlignAndMarkDuplicates/{tumor}.bam", tumor=config["pairings"]),
-        expand("results/AlignAndMarkDuplicates/{tumor}.metrics", tumor=config["pairings"]),
-        expand("results/AlignShiftedMTAndMarkDuplicates/{tumor}_mba.bam", tumor=config["pairings"]),
-        expand("results/AlignShiftedMTAndMarkDuplicates/{tumor}_md.bam", tumor=config["pairings"]),
-        expand("results/AlignShiftedMTAndMarkDuplicates/{tumor}.bam", tumor=config["pairings"]),
-        expand("results/AlignShiftedMTAndMarkDuplicates/{tumor}.metrics", tumor=config["pairings"]),
-        expand("results/CollectWgsMetrics/{tumor}/metrics.txt", tumor=config["pairings"]),
-        expand("results/CollectWgsMetrics/{tumor}/theoretical_sensitivity.txt", tumor=config["pairings"]),
-        expand("results/CollectWgsMetrics/{tumor}/mean_coverage.txt", tumor=config["pairings"]),
-        expand("results/CollectWgsMetrics/{tumor}/median_coverage.txt", tumor=config["pairings"]),
-        expand("results/CallMt/{tumor}.vcf.gz", tumor=config["pairings"]),
-        expand("results/CallMt/{tumor}.vcf.gz.tbi", tumor=config["pairings"]),
-        expand("results/CallMt/{tumor}.vcf.gz.stats", tumor=config["pairings"]),
+        expand("results/SubsetBamtoChrM/{tumor}/{tumor}.bam", tumor=config["pairings"]),
+        expand("results/RevertSam/{tumor}/{tumor}.bam", tumor=config["pairings"]),
+        expand("results/AlignAndMarkDuplicates/{tumor}/{tumor}_mba.bam", tumor=config["pairings"]),
+        expand("results/AlignAndMarkDuplicates/{tumor}/{tumor}_md.bam", tumor=config["pairings"]),
+        expand("results/AlignAndMarkDuplicates/{tumor}/{tumor}.bam", tumor=config["pairings"]),
+        expand("results/AlignAndMarkDuplicates/{tumor}/{tumor}.metrics", tumor=config["pairings"]),
+        expand("results/AlignShiftedMTAndMarkDuplicates/{tumor}/{tumor}_mba.bam", tumor=config["pairings"]),
+        expand("results/AlignShiftedMTAndMarkDuplicates/{tumor}/{tumor}_md.bam", tumor=config["pairings"]),
+        expand("results/AlignShiftedMTAndMarkDuplicates/{tumor}/{tumor}.bam", tumor=config["pairings"]),
+        expand("results/AlignShiftedMTAndMarkDuplicates/{tumor}/{tumor}.metrics", tumor=config["pairings"]),
+        expand("results/CollectWgsMetrics/{tumor}/{tumor}/metrics.txt", tumor=config["pairings"]),
+        expand("results/CollectWgsMetrics/{tumor}/{tumor}/theoretical_sensitivity.txt", tumor=config["pairings"]),
+        expand("results/CollectWgsMetrics/{tumor}/{tumor}/mean_coverage.txt", tumor=config["pairings"]),
+        expand("results/CollectWgsMetrics/{tumor}/{tumor}/median_coverage.txt", tumor=config["pairings"]),
+        expand("results/CallMt/{tumor}/{tumor}.vcf.gz", tumor=config["pairings"]),
+        expand("results/CallMt/{tumor}/{tumor}.vcf.gz.tbi", tumor=config["pairings"]),
+        expand("results/CallMt/{tumor}/{tumor}.vcf.gz.stats", tumor=config["pairings"]),
         expand("results/CallMt/{tumor}/bamout.bam", tumor=config["pairings"]),
-        expand("results/CallShiftedMt/{tumor}.vcf.gz", tumor=config["pairings"]),
-        expand("results/CallShiftedMt/{tumor}.vcf.gz.tbi", tumor=config["pairings"]),
-        expand("results/CallShiftedMt/{tumor}.vcf.gz.stats", tumor=config["pairings"]),
+        expand("results/CallShiftedMt/{tumor}/{tumor}.vcf.gz", tumor=config["pairings"]),
+        expand("results/CallShiftedMt/{tumor}/{tumor}.vcf.gz.tbi", tumor=config["pairings"]),
+        expand("results/CallShiftedMt/{tumor}/{tumor}.vcf.gz.stats", tumor=config["pairings"]),
         expand("results/CallShiftedMt/{tumor}/bamout.bam", tumor=config["pairings"]),
-        expand("results/LiftoverAndCombineVcfs/{tumor}.shifted_back.vcf", tumor=config["pairings"]),
-        expand("results/LiftoverAndCombineVcfs/{tumor}.rejected.vcf", tumor=config["pairings"]),
-        expand("results/LiftoverAndCombineVcfs/{tumor}.merged.vcf", tumor=config["pairings"]),
-        expand("results/MergeStats/{tumor}.raw.combined.stats", tumor=config["pairings"]),
-        expand("results/InitialFilter/{tumor}.filtered.vcf", tumor=config["pairings"]),
-        expand("results/InitialFilter/{tumor}.vcf", tumor=config["pairings"]),
-        expand("results/SplitMultiAllelicsAndRemoveNonPassSites/{tumor}_splitAndPassOnly.vcf", tumor=config["pairings"]),
-        expand("results/GetContamination/{tumor}_headers.txt", tumor=config["pairings"]),
-        expand("results/GetContamination/{tumor}_output_data.txt", tumor=config["pairings"]),
-        expand("results/GetContamination/{tumor}_contamination.txt", tumor=config["pairings"]),
-        expand("results/GetContamination/{tumor}_major_hg.txt", tumor=config["pairings"]),
-        expand("results/GetContamination/{tumor}_minor_hg.txt", tumor=config["pairings"]),
-        expand("results/GetContamination/{tumor}_mean_het_major.txt", tumor=config["pairings"]),
-        expand("results/GetContamination/{tumor}_mean_het_minor.txt", tumor=config["pairings"]),
-        expand("results/FilterContamination/{tumor}.vcf", tumor=config["pairings"]),
-        expand("results/FilterContamination/{tumor}.filtered.vcf", tumor=config["pairings"]),
-        expand("results/CoverageAtEveryBase/{tumor}_per_base_coverage.tsv", tumor=config["pairings"]),
-        expand("results/CoverageAtEveryBase/{tumor}_non_control_region.metrics", tumor=config["pairings"]),
-        expand("results/CoverageAtEveryBase/{tumor}_control_region_shifted.metrics", tumor=config["pairings"]),
-        expand("results/CoverageAtEveryBase/{tumor}/non_control_region.tsv", tumor=config["pairings"]),
-        expand("results/CoverageAtEveryBase/{tumor}/control_region_shifted.tsv", tumor=config["pairings"])
+        expand("results/LiftoverAndCombineVcfs/{tumor}/{tumor}.shifted_back.vcf", tumor=config["pairings"]),
+        expand("results/LiftoverAndCombineVcfs/{tumor}/{tumor}.rejected.vcf", tumor=config["pairings"]),
+        expand("results/LiftoverAndCombineVcfs/{tumor}/{tumor}.merged.vcf", tumor=config["pairings"]),
+        expand("results/MergeStats/{tumor}/{tumor}.raw.combined.stats", tumor=config["pairings"]),
+        expand("results/InitialFilter/{tumor}/{tumor}.filtered.vcf", tumor=config["pairings"]),
+        expand("results/InitialFilter/{tumor}/{tumor}.vcf", tumor=config["pairings"]),
+        expand("results/SplitMultiAllelicsAndRemoveNonPassSites/{tumor}/{tumor}_splitAndPassOnly.vcf", tumor=config["pairings"]),
+        expand("results/GetContamination/{tumor}/{tumor}_output_noquotes.txt", tumor=config["pairings"]),
+        expand("results/GetContamination/{tumor}/{tumor}_headers.txt", tumor=config["pairings"]),
+        expand("results/GetContamination/{tumor}/{tumor}_output_data.txt", tumor=config["pairings"]),
+        expand("results/GetContamination/{tumor}/{tumor}_contamination.txt", tumor=config["pairings"]),
+        expand("results/GetContamination/{tumor}/{tumor}_major_hg.txt", tumor=config["pairings"]),
+        expand("results/GetContamination/{tumor}/{tumor}_minor_hg.txt", tumor=config["pairings"]),
+        expand("results/GetContamination/{tumor}/{tumor}_mean_het_major.txt", tumor=config["pairings"]),
+        expand("results/GetContamination/{tumor}/{tumor}_mean_het_minor.txt", tumor=config["pairings"]),
+        expand("results/FilterContamination/{tumor}/{tumor}.vcf", tumor=config["pairings"]),
+        expand("results/FilterContamination/{tumor}/{tumor}.filtered.vcf", tumor=config["pairings"]),
+        expand("results/CoverageAtEveryBase/{tumor}/{tumor}_per_base_coverage.tsv", tumor=config["pairings"]),
+        expand("results/CoverageAtEveryBase/{tumor}/{tumor}_non_control_region.metrics", tumor=config["pairings"]),
+        expand("results/CoverageAtEveryBase/{tumor}/{tumor}_control_region_shifted.metrics", tumor=config["pairings"]),
+        expand("results/CoverageAtEveryBase/{tumor}/{tumor}/non_control_region.tsv", tumor=config["pairings"]),
+        expand("results/CoverageAtEveryBase/{tumor}/{tumor}/control_region_shifted.tsv", tumor=config["pairings"])
         
                
 rule SubsetBamtoChrM:
@@ -55,13 +56,13 @@ rule SubsetBamtoChrM:
         tumor_filepath = lambda wildcards: config["samples"][wildcards.tumor],
         #normal_filepath = lambda wildcards: config["samples"][config["pairings"][wildcards.tumor]]
     output:
-        bam = "results/SubsetBamtoChrM/{tumor}.bam",
-        bai = "results/SubsetBamtoChrM/{tumor}.bai"
+        bam = "results/SubsetBamtoChrM/{tumor}/{tumor}.bam",
+        bai = "results/SubsetBamtoChrM/{tumor}/{tumor}.bai"
     params:
         gatk = config["gatk_path"],
         contig_name = config["contig_name"]
     log:
-        "logs/SubsetBamtoChrM/{tumor}.txt"
+        "logs/SubsetBamtoChrM/{tumor}/{tumor}.txt"
     shell:
         "({params.gatk} PrintReads \
         -L {params.contig_name} \
@@ -72,14 +73,14 @@ rule SubsetBamtoChrM:
 
 rule RevertSam:
     input:
-        bam = "results/SubsetBamtoChrM/{tumor}.bam"
+        bam = "results/SubsetBamtoChrM/{tumor}/{tumor}.bam"
     output:
-        bam = "results/RevertSam/{tumor}.bam",
+        bam = "results/RevertSam/{tumor}/{tumor}.bam",
     params:
         java = config["java"],
         picard_jar = config["picard_jar"]
     log:
-        "logs/RevertSam/{tumor}.txt"
+        "logs/RevertSam/{tumor}/{tumor}.txt"
     shell:
         "({params.java} -Xmx1000m -jar {params.picard_jar} \
         RevertSam \
@@ -94,7 +95,7 @@ rule RevertSam:
 
 rule AlignAndMarkDuplicates:
     input:
-        bam = "results/RevertSam/{tumor}.bam",
+        bam = "results/RevertSam/{tumor}/{tumor}.bam",
         mt_ref = "/mnt/storage/labs/sviswanathan/mt_gs_files/Homo_sapiens_assembly38.chrM.fasta",
         mt_ref_index = "/mnt/storage/labs/sviswanathan/mt_gs_files/Homo_sapiens_assembly38.chrM.fasta.fai",
         mt_ref_dict = "/mnt/storage/labs/sviswanathan/mt_gs_files/Homo_sapiens_assembly38.chrM.dict",
@@ -104,12 +105,12 @@ rule AlignAndMarkDuplicates:
         mt_bwt = "/mnt/storage/labs/sviswanathan/mt_gs_files/Homo_sapiens_assembly38.chrM.fasta.bwt",
         mt_pac = "/mnt/storage/labs/sviswanathan/mt_gs_files/Homo_sapiens_assembly38.chrM.fasta.pac"
     output:
-        bwa_log = "results/AlignAndMarkDuplicates/{tumor}.bwa.stderr.log",
-        mba_bam = "results/AlignAndMarkDuplicates/{tumor}_mba.bam",
-        md_bam = "results/AlignAndMarkDuplicates/{tumor}_md.bam",
-        bam = "results/AlignAndMarkDuplicates/{tumor}.bam",
-        bai = "results/AlignAndMarkDuplicates/{tumor}.bai",
-        metrics = "results/AlignAndMarkDuplicates/{tumor}.metrics",
+        bwa_log = "results/AlignAndMarkDuplicates/{tumor}/{tumor}.bwa.stderr.log",
+        mba_bam = "results/AlignAndMarkDuplicates/{tumor}/{tumor}_mba.bam",
+        md_bam = "results/AlignAndMarkDuplicates/{tumor}/{tumor}_md.bam",
+        bam = "results/AlignAndMarkDuplicates/{tumor}/{tumor}.bam",
+        bai = "results/AlignAndMarkDuplicates/{tumor}/{tumor}.bai",
+        metrics = "results/AlignAndMarkDuplicates/{tumor}/{tumor}.metrics",
     params:
         bwa = config["bwa"],
         java = config["java"],
@@ -117,7 +118,7 @@ rule AlignAndMarkDuplicates:
         gatk = config["gatk_path"],
         reference_genome = config["mt_ref"]
     log:
-        "logs/AlignAndMarkDuplicates/{tumor}.txt"
+        "logs/AlignAndMarkDuplicates/{tumor}/{tumor}.txt"
     shell:
         """(set -o pipefail
          set -e
@@ -179,7 +180,7 @@ rule AlignAndMarkDuplicates:
          
 rule AlignShiftedMTAndMarkDuplicates:
     input:
-        bam = "results/RevertSam/{tumor}.bam",
+        bam = "results/RevertSam/{tumor}/{tumor}.bam",
         mt_ref = "/mnt/storage/labs/sviswanathan/mt_gs_files/Homo_sapiens_assembly38.chrM.shifted_by_8000_bases.fasta",
         mt_ref_index = "/mnt/storage/labs/sviswanathan/mt_gs_files/Homo_sapiens_assembly38.chrM.shifted_by_8000_bases.fasta.fai",
         mt_ref_dict = "/mnt/storage/labs/sviswanathan/mt_gs_files/Homo_sapiens_assembly38.chrM.shifted_by_8000_bases.dict",
@@ -189,12 +190,12 @@ rule AlignShiftedMTAndMarkDuplicates:
         mt_bwt = "/mnt/storage/labs/sviswanathan/mt_gs_files/Homo_sapiens_assembly38.chrM.shifted_by_8000_bases.fasta.bwt",
         mt_pac = "/mnt/storage/labs/sviswanathan/mt_gs_files/Homo_sapiens_assembly38.chrM.shifted_by_8000_bases.fasta.pac"
     output:
-        bwa_log = "results/AlignShiftedMTAndMarkDuplicates/{tumor}.bwa.stderr.log",
-        mba_bam = "results/AlignShiftedMTAndMarkDuplicates/{tumor}_mba.bam",
-        md_bam = "results/AlignShiftedMTAndMarkDuplicates/{tumor}_md.bam",
-        bam = "results/AlignShiftedMTAndMarkDuplicates/{tumor}.bam",
-        bai = "results/AlignShiftedMTAndMarkDuplicates/{tumor}.bai",
-        metrics = "results/AlignShiftedMTAndMarkDuplicates/{tumor}.metrics",
+        bwa_log = "results/AlignShiftedMTAndMarkDuplicates/{tumor}/{tumor}.bwa.stderr.log",
+        mba_bam = "results/AlignShiftedMTAndMarkDuplicates/{tumor}/{tumor}_mba.bam",
+        md_bam = "results/AlignShiftedMTAndMarkDuplicates/{tumor}/{tumor}_md.bam",
+        bam = "results/AlignShiftedMTAndMarkDuplicates/{tumor}/{tumor}.bam",
+        bai = "results/AlignShiftedMTAndMarkDuplicates/{tumor}/{tumor}.bai",
+        metrics = "results/AlignShiftedMTAndMarkDuplicates/{tumor}/{tumor}.metrics",
     params:
         bwa = config["bwa"],
         java = config["java"],
@@ -202,7 +203,7 @@ rule AlignShiftedMTAndMarkDuplicates:
         gatk = config["gatk_path"],
         reference_genome = config["mt_shifted_ref"]
     log:
-        "logs/AlignShiftedMTAndMarkDuplicates/{tumor}.txt"
+        "logs/AlignShiftedMTAndMarkDuplicates/{tumor}/{tumor}.txt"
     shell:
         """(set -o pipefail
          set -e
@@ -264,8 +265,8 @@ rule AlignShiftedMTAndMarkDuplicates:
 
 rule CollectWgsMetrics:
     input:
-        bam = "results/AlignAndMarkDuplicates/{tumor}.bam",
-        bai = "results/AlignAndMarkDuplicates/{tumor}.bai"
+        bam = "results/AlignAndMarkDuplicates/{tumor}/{tumor}.bam",
+        bai = "results/AlignAndMarkDuplicates/{tumor}/{tumor}.bai"
     output:
         metrics = "results/CollectWgsMetrics/{tumor}/metrics.txt",
         theoretical_sensitivity = "results/CollectWgsMetrics/{tumor}/theoretical_sensitivity.txt",
@@ -280,7 +281,7 @@ rule CollectWgsMetrics:
         read_length_for_optimization = config["read_length_for_optimization"],
         coverage_script = config["coverage_script"]
     log:
-        "logs/CollectWgsMetrics/{tumor}.txt"
+        "logs/CollectWgsMetrics/{tumor}/{tumor}.txt"
     shell:
         """(set -e
 
@@ -292,7 +293,7 @@ rule CollectWgsMetrics:
         OUTPUT={output.metrics} \
         USE_FAST_ALGORITHM=true \
         READ_LENGTH={params.read_length_for_optimization} \
-        COVERAGE_CAP={params.coverage_cap}\
+        COVERAGE_CAP= {params.coverage_cap}\
         INCLUDE_BQ_HISTOGRAM=true \
         THEORETICAL_SENSITIVITY_OUTPUT={output.theoretical_sensitivity}
         
@@ -300,19 +301,19 @@ rule CollectWgsMetrics:
 
 rule CallMt:
     input:
-        bam = "results/AlignAndMarkDuplicates/{tumor}.bam",
-        bai = "results/AlignAndMarkDuplicates/{tumor}.bai"
+        bam = "results/AlignAndMarkDuplicates/{tumor}/{tumor}.bam",
+        bai = "results/AlignAndMarkDuplicates/{tumor}/{tumor}.bai"
     output:
-        vcf = protected("results/CallMt/{tumor}.vcf.gz"),
-        tbi = protected("results/CallMt/{tumor}.vcf.gz.tbi"),
-        stats = protected("results/CallMt/{tumor}.vcf.gz.stats"),
+        vcf = protected("results/CallMt/{tumor}/{tumor}.vcf.gz"),
+        tbi = protected("results/CallMt/{tumor}/{tumor}.vcf.gz.tbi"),
+        stats = protected("results/CallMt/{tumor}/{tumor}.vcf.gz.stats"),
         bamout = protected("results/CallMt/{tumor}/bamout.bam")
     params:
         gatk = config["gatk_path"],
         max_reads_per_alignment_start = config["max_reads_per_alignment_start"],
         mt_ref = config["mt_ref"]
     log:
-        "logs/CallMt/{tumor}.txt"
+        "logs/CallMt/{tumor}/{tumor}.txt"
     shell:
         """(set -e
 
@@ -333,19 +334,19 @@ rule CallMt:
 
 rule CallShiftedMt:
     input:
-        bam = "results/AlignShiftedMTAndMarkDuplicates/{tumor}.bam",
-        bai = "results/AlignShiftedMTAndMarkDuplicates/{tumor}.bai"
+        bam = "results/AlignShiftedMTAndMarkDuplicates/{tumor}/{tumor}.bam",
+        bai = "results/AlignShiftedMTAndMarkDuplicates/{tumor}/{tumor}.bai"
     output:
-        vcf = protected("results/CallShiftedMt/{tumor}.vcf.gz"),
-        tbi = protected("results/CallShiftedMt/{tumor}.vcf.gz.tbi"),
-        stats = protected("results/CallShiftedMt/{tumor}.vcf.gz.stats"),
+        vcf = protected("results/CallShiftedMt/{tumor}/{tumor}.vcf.gz"),
+        tbi = protected("results/CallShiftedMt/{tumor}/{tumor}.vcf.gz.tbi"),
+        stats = protected("results/CallShiftedMt/{tumor}/{tumor}.vcf.gz.stats"),
         bamout = protected("results/CallShiftedMt/{tumor}/bamout.bam")
     params:
         gatk = config["gatk_path"],
         max_reads_per_alignment_start = config["max_reads_per_alignment_start"],
         mt_ref = config["mt_shifted_ref"]
     log:
-        "logs/CallShiftedMt/{tumor}.txt"
+        "logs/CallShiftedMt/{tumor}/{tumor}.txt"
     shell:
         """(set -e
 
@@ -366,19 +367,19 @@ rule CallShiftedMt:
 
 rule LiftoverAndCombineVcfs:
     input:
-        vcf = "results/CallMt/{tumor}.vcf.gz",
-        shifted_vcf = "results/CallShiftedMt/{tumor}.vcf.gz"
+        vcf = "results/CallMt/{tumor}/{tumor}.vcf.gz",
+        shifted_vcf = "results/CallShiftedMt/{tumor}/{tumor}.vcf.gz"
     output:
-        shifted_back = "results/LiftoverAndCombineVcfs/{tumor}.shifted_back.vcf",
-        rejected = "results/LiftoverAndCombineVcfs/{tumor}.rejected.vcf",
-        merged = "results/LiftoverAndCombineVcfs/{tumor}.merged.vcf"
+        shifted_back = "results/LiftoverAndCombineVcfs/{tumor}/{tumor}.shifted_back.vcf",
+        rejected = "results/LiftoverAndCombineVcfs/{tumor}/{tumor}.rejected.vcf",
+        merged = "results/LiftoverAndCombineVcfs/{tumor}/{tumor}.merged.vcf"
     params:
         mt_ref = config["mt_ref"],
         java = config["java"],
         picard_jar = config["picard_jar"],
         shift_back_chain = config["shift_back_chain"]
     log:
-        "logs/LiftoverAndCombineVcfs/{tumor}.txt"
+        "logs/LiftoverAndCombineVcfs/{tumor}/{tumor}.txt"
     shell:
         """(set -e
 
@@ -396,15 +397,15 @@ rule LiftoverAndCombineVcfs:
  
 rule MergeStats:
     input:
-        shifted_stats = "results/CallShiftedMt/{tumor}.vcf.gz.stats",
-        non_shifted_stats = "results/CallMt/{tumor}.vcf.gz.stats"
+        shifted_stats = "results/CallShiftedMt/{tumor}/{tumor}.vcf.gz.stats",
+        non_shifted_stats = "results/CallMt/{tumor}/{tumor}.vcf.gz.stats"
     output:
-        raw_combined_stats = "results/MergeStats/{tumor}.raw.combined.stats"
+        raw_combined_stats = "results/MergeStats/{tumor}/{tumor}.raw.combined.stats"
     params:
         gatk = config["gatk_path"]
         
     log:
-        "logs/MergeStats/{tumor}.txt"
+        "logs/MergeStats/{tumor}/{tumor}.txt"
     shell:
         """(set -e
 
@@ -412,11 +413,11 @@ rule MergeStats:
 
 rule InitialFilter:
     input:
-        raw_vcf = "results/LiftoverAndCombineVcfs/{tumor}.merged.vcf",
-        raw_vcf_stats = "results/MergeStats/{tumor}.raw.combined.stats"
+        raw_vcf = "results/LiftoverAndCombineVcfs/{tumor}/{tumor}.merged.vcf",
+        raw_vcf_stats = "results/MergeStats/{tumor}/{tumor}.raw.combined.stats"
     output:
-        filtered_vcf = "results/InitialFilter/{tumor}.filtered.vcf",
-        output_vcf = "results/InitialFilter/{tumor}.vcf"
+        filtered_vcf = "results/InitialFilter/{tumor}/{tumor}.filtered.vcf",
+        output_vcf = "results/InitialFilter/{tumor}/{tumor}.vcf"
     params:
         gatk = config["gatk_path"],
         mt_ref = config["mt_ref"],
@@ -424,7 +425,7 @@ rule InitialFilter:
         vaf_filter_threshold = config["vaf_filter_threshold"],
         blacklisted_sites = config["blacklisted_sites"]
     log:
-        "logs/InitialFilter/{tumor}.txt"
+        "logs/InitialFilter/{tumor}/{tumor}.txt"
     shell:
         """(set -e
         
@@ -449,12 +450,12 @@ rule InitialFilter:
 
 rule SplitMultiAllelicsAndRemoveNonPassSites:
     input:
-        filtered_vcf = "results/InitialFilter/{tumor}.vcf"
+        filtered_vcf = "results/InitialFilter/{tumor}/{tumor}.vcf"
     output:
-        split_vcf = temp("results/SplitMultiAllelicsAndRemoveNonPassSites/{tumor}_split.vcf"),
-        splitAndPassOnly_vcf = "results/SplitMultiAllelicsAndRemoveNonPassSites/{tumor}_splitAndPassOnly.vcf"
+        split_vcf = temp("results/SplitMultiAllelicsAndRemoveNonPassSites/{tumor}/{tumor}_split.vcf"),
+        splitAndPassOnly_vcf = "results/SplitMultiAllelicsAndRemoveNonPassSites/{tumor}/{tumor}_splitAndPassOnly.vcf"
     log:
-        "logs/SplitMultiAllelicsAndRemoveNonPassSites/{tumor}.txt"
+        "logs/SplitMultiAllelicsAndRemoveNonPassSites/{tumor}/{tumor}.txt"
     params:
         gatk = config["gatk_path"],
         mt_ref = config["mt_ref"]
@@ -476,21 +477,21 @@ rule SplitMultiAllelicsAndRemoveNonPassSites:
 
 rule GetContamination:
     input:
-        input_vcf = "results/SplitMultiAllelicsAndRemoveNonPassSites/{tumor}_splitAndPassOnly.vcf"
+        input_vcf = "results/SplitMultiAllelicsAndRemoveNonPassSites/{tumor}/{tumor}_splitAndPassOnly.vcf"
     output:
-        headers = "results/GetContamination/{tumor}_headers.txt",
-        output_data = "results/GetContamination/{tumor}_output_data.txt",
-        contamination = "results/GetContamination/{tumor}_contamination.txt",
-        major_hg = "results/GetContamination/{tumor}_major_hg.txt",
-        minor_hg = "results/GetContamination/{tumor}_minor_hg.txt",
-        mean_het_major = "results/GetContamination/{tumor}_mean_het_major.txt",
-        mean_het_minor = "results/GetContamination/{tumor}_mean_het_minor.txt"
+        headers = "results/GetContamination/{tumor}/{tumor}_headers.txt",
+        output_data = "results/GetContamination/{tumor}/{tumor}_output_data.txt",
+        contamination = "results/GetContamination/{tumor}/{tumor}_contamination.txt",
+        major_hg = "results/GetContamination/{tumor}/{tumor}_major_hg.txt",
+        minor_hg = "results/GetContamination/{tumor}/{tumor}_minor_hg.txt",
+        mean_het_major = "results/GetContamination/{tumor}/{tumor}_mean_het_major.txt",
+        mean_het_minor = "results/GetContamination/{tumor}/{tumor}_mean_het_minor.txt"
     params:
         java = config["java"],
         picard_jar = config["picard_jar"],
         haplocheckCLI_path = config["haplocheckCLI_path"]
     log:
-        "logs/GetContamination/{tumor}.txt"
+        "logs/GetContamination/{tumor}/{tumor}.txt"
     shell:
         """(set -e
         touch {output.headers}
@@ -530,14 +531,14 @@ rule GetContamination:
         
 rule FilterContamination:
     input:
-        hasContamination = "results/GetContamination/{tumor}_contamination.txt",
-        contamination_major = "results/GetContamination/{tumor}_mean_het_major.txt",
-        contamination_minor = "results/GetContamination/{tumor}_mean_het_minor.txt",
-        filtered_vcf = "results/InitialFilter/{tumor}.vcf",
-        raw_vcf_stats = "results/MergeStats/{tumor}.raw.combined.stats"
+        hasContamination = "results/GetContamination/{tumor}/{tumor}_contamination.txt",
+        contamination_major = "results/GetContamination/{tumor}/{tumor}_mean_het_major.txt",
+        contamination_minor = "results/GetContamination/{tumor}/{tumor}_mean_het_minor.txt",
+        filtered_vcf = "results/InitialFilter/{tumor}/{tumor}.vcf",
+        raw_vcf_stats = "results/MergeStats/{tumor}/{tumor}.raw.combined.stats"
     output:
-        output_vcf = "results/FilterContamination/{tumor}.vcf",
-        filtered_vcf = "results/FilterContamination/{tumor}.filtered.vcf"
+        output_vcf = "results/FilterContamination/{tumor}/{tumor}.vcf",
+        filtered_vcf = "results/FilterContamination/{tumor}/{tumor}.filtered.vcf"
     params:
         gatk = config["gatk_path"],
         mt_ref = config["mt_ref"],
@@ -546,7 +547,7 @@ rule FilterContamination:
         blacklisted_sites = config["blacklisted_sites"],
         contamination_flag = config["contamination_flag"]
     log:
-        "logs/FilterContamination/{tumor}.txt"
+        "logs/FilterContamination/{tumor}/{tumor}.txt"
     shell:
         """
         (set -e
@@ -587,16 +588,16 @@ rule FilterContamination:
 
 rule CoverageAtEveryBase:
     input:
-        normal_bam = "results/AlignAndMarkDuplicates/{tumor}.bam",
-        normal_bai = "results/AlignAndMarkDuplicates/{tumor}.bai",
-        shifted_bam = "results/AlignShiftedMTAndMarkDuplicates/{tumor}.bam",
-        shifted_bai = "results/AlignShiftedMTAndMarkDuplicates/{tumor}.bai"
+        normal_bam = "results/AlignAndMarkDuplicates/{tumor}/{tumor}.bam",
+        normal_bai = "results/AlignAndMarkDuplicates/{tumor}/{tumor}.bai",
+        shifted_bam = "results/AlignShiftedMTAndMarkDuplicates/{tumor}/{tumor}.bam",
+        shifted_bai = "results/AlignShiftedMTAndMarkDuplicates/{tumor}/{tumor}.bai"
     output:
-        table = "results/CoverageAtEveryBase/{tumor}_per_base_coverage.tsv",
-        non_control_regions = "results/CoverageAtEveryBase/{tumor}_non_control_region.metrics",
-        control_region_shifted = "results/CoverageAtEveryBase/{tumor}_control_region_shifted.metrics",
-        non_control_region_tsv = "results/CoverageAtEveryBase/{tumor}/non_control_region.tsv",
-        control_region_shifted_tsv = "results/CoverageAtEveryBase/{tumor}/control_region_shifted.tsv"
+        table = "results/CoverageAtEveryBase/{tumor}/{tumor}_per_base_coverage.tsv",
+        non_control_regions = "results/CoverageAtEveryBase/{tumor}/{tumor}_non_control_region.metrics",
+        control_region_shifted = "results/CoverageAtEveryBase/{tumor}/{tumor}_control_region_shifted.metrics",
+        non_control_region_tsv = "results/CoverageAtEveryBase/{tumor}/{tumor}/non_control_region.tsv",
+        control_region_shifted_tsv = "results/CoverageAtEveryBase/{tumor}/{tumor}/control_region_shifted.tsv"
     params:
         control_region_shifted_reference_interval_list = config["control_region_shifted_reference_interval_list"],
         non_control_region_interval_list = config["non_control_region_interval_list"],
@@ -607,7 +608,7 @@ rule CoverageAtEveryBase:
         picard_jar = config["picard_jar"],
         CoverageAtEveryBase = config["CoverageAtEveryBase"]
     log:
-        "logs/CoverageAtEveryBase/{tumor}.txt"
+        "logs/CoverageAtEveryBase/{tumor}/{tumor}.txt"
     shell:
         """(set -e
 
@@ -636,14 +637,14 @@ rule CoverageAtEveryBase:
 
 rule SplitMultiAllelicSites:
     input:
-        input_vcf = "results/FilterContamination/{tumor}.vcf"
+        input_vcf = "results/FilterContamination/{tumor}/{tumor}.vcf"
     output:
-        split_vcf = "results/SplitMultiAllelicSites/{tumor}.vcf"
+        split_vcf = "results/SplitMultiAllelicSites/{tumor}/{tumor}.vcf"
     params:
         gatk = config["gatk_path"],
         mt_ref = config["mt_ref"]
     log:
-        "logs/SplitMultiAllelicSites/{tumor}.txt"
+        "logs/SplitMultiAllelicSites/{tumor}/{tumor}.txt"
     shell:
         """(set -e
         
