@@ -501,6 +501,6 @@ rule GetContamination:
 
         grep "SampleID" output-noquotes > headers
         FORMAT_ERROR="Bad contamination file format"
-        if [ `awk '{print $2}' headers` != "Contamination" ]; then
+        if [ `awk '{{print $2}}' headers` != "Contamination" ]; then
             echo $FORMAT_ERROR; exit 1
         fi) 2> {log}"""
