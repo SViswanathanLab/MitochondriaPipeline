@@ -469,14 +469,13 @@ rule GetContamination:
     input:
         input_vcf = "results/SplitMultiAllelicsAndRemoveNonPassSites/{tumor}/{tumor}_splitAndPassOnly.vcf"
     output:
-        output_noquotes = protected("results/GetContamination/{tumor}/{tumor}_output_noquotes.txt"),
-        headers = protected("results/GetContamination/{tumor}/{tumor}_headers.txt"),
-        output_data = protected("results/GetContamination/{tumor}/{tumor}_output_data.txt"),
-        contamination = protected("results/GetContamination/{tumor}/{tumor}_contamination.txt"),
-        major_hg = protected("results/GetContamination/{tumor}/{tumor}_major_hg.txt"),
-        minor_hg = protected("results/GetContamination/{tumor}/{tumor}_minor_hg.txt"),
-        mean_het_major = protected("results/GetContamination/{tumor}/{tumor}_mean_het_major.txt"),
-        mean_het_minor = protected("results/GetContamination/{tumor}/{tumor}_mean_het_minor.txt")
+        headers = "results/GetContamination/{tumor}/{tumor}_headers.txt",
+        output_data = "results/GetContamination/{tumor}/{tumor}_output_data.txt",
+        contamination = "results/GetContamination/{tumor}/{tumor}_contamination.txt",
+        major_hg = "results/GetContamination/{tumor}/{tumor}_major_hg.txt",
+        minor_hg = "results/GetContamination/{tumor}/{tumor}_minor_hg.txt",
+        mean_het_major = "results/GetContamination/{tumor}/{tumor}_mean_het_major.txt",
+        mean_het_minor = "results/GetContamination/{tumor}/{tumor}_mean_het_minor.txt"
     params:
         java = config["java"],
         picard_jar = config["picard_jar"],
@@ -486,7 +485,6 @@ rule GetContamination:
         "logs/GetContamination/{tumor}.txt"
     shell:
         """(set -e
-        touch {output.output_noquotes}
         touch {output.headers}
         touch {output.output_data}
         touch {output.contamination}
@@ -521,3 +519,61 @@ rule GetContamination:
         awk -F \"\\t\" '{{print $8}}' {output.output_data} > {output.minor_hg}
         awk -F \"\\t\" '{{print $14}}' {output.output_data} > {output.mean_het_major}
         awk -F \"\\t\" '{{print $15}}' {output.output_data} > {output.mean_het_minor}) 2> {log}"""
+        
+rule FilterContamination:
+    input:
+        hasContamination = "results/GetContamination/{tumor}/{tumor}_contamination.txt",
+        contamination_major = "results/GetContamination/{tumor}/{tumor}_mean_het_major.txt",
+        contamination_minor = "results/GetContamination/{tumor}/{tumor}_mean_het_minor.txt",
+        filtered_vcf = "results/InitialFilter/{tumor}/{tumor}.vcf",
+        raw_vcf_stats = "results/MergeStats/{tumor}/{tumor}.raw.combined.stats"
+    output:
+        output_vcf = "results/FilterContamination/{tumor}/{tumor}.vcf",
+        filtered_vcf = "results/FilterContamination/{tumor}/{tumor}.filtered.vcf"
+    params:
+        gatk = config["gatk_path"],
+        mt_ref = config["mt_ref"],
+        max_alt_allele_count = config["max_alt_allele_count"],
+        vaf_filter_threshold = config["vaf_filter_threshold"],
+        blacklisted_sites = config["blacklisted_sites"],
+        contamination_flag = config["contamination_flag"]
+    log:
+        "logs/FilterContamination/{tumor}.txt"
+    shell:
+        """
+        (set -e
+        
+        if [ {params.contamination_flag} == "NO" ]; then
+            exit 1
+        fi
+        
+        # We need to create these files regardless, even if they stay empty
+        touch bamout.bam
+        
+        CONTAMINATION="$(cat "{input.hasContamination}")"
+        MAJOR="$(cat "{input.contamination_major}")"
+        MINOR="$(cat "{input.contamination_minor}")"
+        if [ $MAJOR == 0.0 ]; then
+          max_contamination=$MINOR
+        else
+          max_contamination=1.0-$MAJOR
+        fi
+        
+        {params.gatk} --java-options "-Xmx2500m" FilterMutectCalls \
+        -V {input.filtered_vcf} \
+        -R {params.mt_ref} \
+        -O {output.filtered_vcf} \
+        --stats {input.raw_vcf_stats} \
+        --max-alt-allele-count {params.max_alt_allele_count} \
+        --mitochondria-mode \
+        --contamination-estimate $max_contamination\
+        --min-allele-fraction {params.vaf_filter_threshold} 
+
+        {params.gatk} VariantFiltration \
+        -V {output.filtered_vcf}\
+        -O {output.output_vcf} \
+        --apply-allele-specific-filters \
+        --mask {params.blacklisted_sites} \
+        --mask-name "blacklisted_site") 2> {log}
+        """
+
