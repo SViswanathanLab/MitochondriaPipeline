@@ -33,7 +33,6 @@ rule all:
         expand("results/MergeStats/{tumor}/{tumor}.raw.combined.stats", tumor=config["pairings"]),
         expand("results/InitialFilter/{tumor}/{tumor}.filtered.vcf", tumor=config["pairings"]),
         expand("results/InitialFilter/{tumor}/{tumor}.vcf", tumor=config["pairings"]),
-        expand("results/SplitMultiAllelicsAndRemoveNonPassSites/{tumor}/{tumor}_split.vcf", tumor=config["pairings"]),
         expand("results/SplitMultiAllelicsAndRemoveNonPassSites/{tumor}/{tumor}_splitAndPassOnly.vcf", tumor=config["pairings"]),
         expand("results/GetContamination/{tumor}/{tumor}_output_noquotes.txt", tumor=config["pairings"]),
         expand("results/GetContamination/{tumor}/{tumor}_headers.txt", tumor=config["pairings"]),
@@ -443,7 +442,7 @@ rule SplitMultiAllelicsAndRemoveNonPassSites:
     input:
         filtered_vcf = "results/InitialFilter/{tumor}/{tumor}.vcf"
     output:
-        split_vcf = "results/SplitMultiAllelicsAndRemoveNonPassSites/{tumor}/{tumor}_split.vcf",
+        split_vcf = temp("results/SplitMultiAllelicsAndRemoveNonPassSites/{tumor}/{tumor}_split.vcf"),
         splitAndPassOnly_vcf = "results/SplitMultiAllelicsAndRemoveNonPassSites/{tumor}/{tumor}_splitAndPassOnly.vcf"
     log:
         "logs/SplitMultiAllelicsAndRemoveNonPassSites/{tumor}.txt"
@@ -466,4 +465,40 @@ rule SplitMultiAllelicsAndRemoveNonPassSites:
         -O {output.splitAndPassOnly_vcf} \
         --exclude-filtered) 2> {log}"""
 
+rule GetContamination:
+    input:
+        input_vcf = "results/SplitMultiAllelicsAndRemoveNonPassSites/{tumor}/{tumor}_splitAndPassOnly.vcf"
+    output:
+        output_noquotes = protected("results/GetContamination/{tumor}/{tumor}_output_noquotes.txt"),
+        headers = protected("results/GetContamination/{tumor}/{tumor}_headers.txt"),
+        output_data = protected("results/GetContamination/{tumor}/{tumor}_output_data.txt"),
+        contamination = protected("results/GetContamination/{tumor}/{tumor}_contamination.txt"),
+        major_hg = protected("results/GetContamination/{tumor}/{tumor}_major_hg.txt"),
+        minor_hg = protected("results/GetContamination/{tumor}/{tumor}_minor_hg.txt"),
+        mean_het_major = protected("results/GetContamination/{tumor}/{tumor}_mean_het_major.txt"),
+        mean_het_minor = protected("results/GetContamination/{tumor}/{tumor}_mean_het_minor.txt")
+    params:
+        java = config["java"],
+        picard_jar = config["picard_jar"],
+        haplocheckCLI_path = config["haplocheckCLI_path"],
+        GetContamination = config["GetContamination"]
+    log:
+        "logs/GetContamination/{tumor}.txt"
+    shell:
+        """(set -e
+        touch {output.output_noquotes}
+        touch {output.headers}
+        touch {output.output_data}
+        touch {output.contamination}
+        touch {output.major_hg}
+        touch {output.minor_hg}
+        touch {output.mean_het_major}
+        touch {output.mean_het_minor}
 
+        {params.java} -jar {params.haplocheckCLI_path} "$(dirname "{input.input_vcf}")" | \
+        sed 's/\\\"//g' output > output-noquotes
+
+        grep "SampleID" ./output-noquotes > ./headers
+        if [ `awk '{{print $2}}' ./headers` != \"Contamination\" ]; then
+          echo \"Bad contamination file format\"; exit 1
+        fi) 2> {log}"""
