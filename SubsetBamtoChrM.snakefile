@@ -15,10 +15,10 @@ rule all:
         expand("results/AlignShiftedMTAndMarkDuplicates/{tumor}/{tumor}_md.bam", tumor=config["pairings"]),
         expand("results/AlignShiftedMTAndMarkDuplicates/{tumor}/{tumor}.bam", tumor=config["pairings"]),
         expand("results/AlignShiftedMTAndMarkDuplicates/{tumor}/{tumor}.metrics", tumor=config["pairings"]),
-        expand("results/CollectWgsMetrics/{tumor}/metrics.txt", tumor=config["pairings"]),
-        expand("results/CollectWgsMetrics/{tumor}/theoretical_sensitivity.txt", tumor=config["pairings"]),
-        expand("results/CollectWgsMetrics/{tumor}/mean_coverage.txt", tumor=config["pairings"]),
-        expand("results/CollectWgsMetrics/{tumor}/median_coverage.txt", tumor=config["pairings"]),
+        expand("results/CollectWgsMetrics/{tumor}/{tumor}/metrics.txt", tumor=config["pairings"]),
+        expand("results/CollectWgsMetrics/{tumor}/{tumor}/theoretical_sensitivity.txt", tumor=config["pairings"]),
+        expand("results/CollectWgsMetrics/{tumor}/{tumor}/mean_coverage.txt", tumor=config["pairings"]),
+        expand("results/CollectWgsMetrics/{tumor}/{tumor}/median_coverage.txt", tumor=config["pairings"]),
         expand("results/CallMt/{tumor}/{tumor}.vcf.gz", tumor=config["pairings"]),
         expand("results/CallMt/{tumor}/{tumor}.vcf.gz.tbi", tumor=config["pairings"]),
         expand("results/CallMt/{tumor}/{tumor}.vcf.gz.stats", tumor=config["pairings"]),
@@ -47,8 +47,8 @@ rule all:
         expand("results/CoverageAtEveryBase/{tumor}/{tumor}_per_base_coverage.tsv", tumor=config["pairings"]),
         expand("results/CoverageAtEveryBase/{tumor}/{tumor}_non_control_region.metrics", tumor=config["pairings"]),
         expand("results/CoverageAtEveryBase/{tumor}/{tumor}_control_region_shifted.metrics", tumor=config["pairings"]),
-        expand("results/CoverageAtEveryBase/{tumor}/non_control_region.tsv", tumor=config["pairings"]),
-        expand("results/CoverageAtEveryBase/{tumor}/control_region_shifted.tsv", tumor=config["pairings"])
+        expand("results/CoverageAtEveryBase/{tumor}/{tumor}/non_control_region.tsv", tumor=config["pairings"]),
+        expand("results/CoverageAtEveryBase/{tumor}/{tumor}/control_region_shifted.tsv", tumor=config["pairings"])
         
                
 rule SubsetBamtoChrM:
@@ -593,8 +593,8 @@ rule CoverageAtEveryBase:
         table = "results/CoverageAtEveryBase/{tumor}/{tumor}_per_base_coverage.tsv",
         non_control_regions = "results/CoverageAtEveryBase/{tumor}/{tumor}_non_control_region.metrics",
         control_region_shifted = "results/CoverageAtEveryBase/{tumor}/{tumor}_control_region_shifted.metrics",
-        non_control_region_tsv = "results/CoverageAtEveryBase/{tumor}/non_control_region.tsv",
-        control_region_shifted_tsv = "results/CoverageAtEveryBase/{tumor}/control_region_shifted.tsv"
+        non_control_region_tsv = "results/CoverageAtEveryBase/{tumor}/{tumor}/non_control_region.tsv",
+        control_region_shifted_tsv = "results/CoverageAtEveryBase/{tumor}/{tumor}/control_region_shifted.tsv"
     params:
         control_region_shifted_reference_interval_list = config["control_region_shifted_reference_interval_list"],
         non_control_region_interval_list = config["non_control_region_interval_list"],
