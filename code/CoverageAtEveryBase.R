@@ -22,7 +22,7 @@ shift_back = function(x) {
   return (x - 8569)}
 }
 
-control_region_shifted = read.table(control_region_shifted, header=T,fill=T)
+control_region_shifted = read.table(control_region_shifted, header=T)
 shifted_back = sapply(control_region_shifted[,"pos"], shift_back)
 control_region_shifted[,"pos"] = shifted_back
 
