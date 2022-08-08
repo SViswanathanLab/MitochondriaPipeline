@@ -54,7 +54,7 @@ rule all:
                
 rule SubsetBamtoChrM:
     input:
-        tumor_filepath = lambda wildcards: config["samples"][wildcards.tumor] + lambda wildcards: config["samples"][config["pairings"][wildcards.tumor]]
+        tumor_filepath = lambda wildcards: config["samples"][wildcards.tumor]
     output:
         bam = "results/SubsetBamtoChrM/{tumor}/{tumor}.bam",
         bai = "results/SubsetBamtoChrM/{tumor}/{tumor}.bai"
