@@ -1,6 +1,5 @@
 FROM java:openjdk-8-jre
 
-WORKDIR /home/mi724/Tools/MitochondriaPipeline
+WORKDIR /home/mi724/Tools/MitochondriaPipeline/haplocheckCLI
 
-RUN wget https://github.com/leklab/haplocheckCLI/raw/master/haplocheckCLI.jar
-RUN jar cvfe haplocheckCLI/haplocheckCLI.jar haplocheck_contam *
+RUN jar cvfe haplocheckCLI.jar haplocheck_contam *
