@@ -499,8 +499,4 @@ rule GetContamination:
         {params.java} -jar {params.haplocheckCLI_path} "$(dirname "{input.input_vcf}")" | \
         sed 's/\\\"//g' /dev/stdin > output-noquotes
 
-        grep "SampleID" output-noquotes > headers
-        FORMAT_ERROR="Bad contamination file format"
-        if [ `awk '{{print $2}}' headers` != "Contamination" ]; then
-            echo $FORMAT_ERROR; exit 1
-        fi) 2> {log}"""
+        grep "SampleID" output-noquotes > headers) 2> {log}"""
