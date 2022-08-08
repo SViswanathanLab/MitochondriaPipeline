@@ -43,7 +43,9 @@ rule all:
         expand("results/GetContamination/{tumor}/{tumor}_mean_het_major.txt", tumor=config["pairings"]),
         expand("results/GetContamination/{tumor}/{tumor}_mean_het_minor.txt", tumor=config["pairings"]),
         expand("results/FilterContamination/{tumor}/{tumor}.vcf", tumor=config["pairings"]),
-        expand("results/FilterContamination/{tumor}/{tumor}.filtered.vcf", tumor=config["pairings"])
+        expand("results/FilterContamination/{tumor}/{tumor}.filtered.vcf", tumor=config["pairings"]),
+        expand("results/CoverageAtEveryBase/{tumor}/{tumor}_per_base_coverage.tsv", tumor=config["pairings"]),
+        expand("results/SplitMultiAllelicSites/{tumor}/{tumor}.vcf", tumor=config["pairings"])
                
 rule SubsetBamtoChrM:
     input:
@@ -648,6 +650,3 @@ rule SplitMultiAllelicSites:
         --dont-trim-alleles \
         --keep-original-ac) 2> {log}
         """
-
-
-   
