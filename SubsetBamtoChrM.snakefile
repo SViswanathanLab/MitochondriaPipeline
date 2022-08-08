@@ -511,7 +511,7 @@ rule GetContamination:
         
         cp {params.haplocheckCLI_path} {params.haplocheckCLI_newpath}
         
-        {params.java} -jar {params.haplocheckCLI_newpath} "$(dirname "{input.input_vcf}")" 
+        {params.java} -jar {params.haplocheckCLI_newpath}haplocheckCLI.jar "$(dirname "{input.input_vcf}")" 
         sed 's/\\\"//g' {output.outputs} > {output.output_noquotes}
         
         grep "SampleID" {output.output_noquotes} > {output.headers}
