@@ -554,10 +554,10 @@ rule FilterContamination:
         CONTAMINATION="$(cat "{input.hasContamination}")"
         MAJOR="$(cat "{input.contamination_major}")"
         MINOR="$(cat "{input.contamination_minor}")"
-        if [ $MAJOR == 0.0 ]; then
+        if [ $MAJOR == 0.000 ]; then
           max_contamination=$MINOR
         else
-          max_contamination=1.0-$MAJOR
+          max_contamination=$((1.0-$MAJOR))
         fi
         
         {params.gatk} --java-options "-Xmx2500m" FilterMutectCalls \
