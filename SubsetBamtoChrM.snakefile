@@ -520,10 +520,4 @@ rule GetContamination:
         awk -F \"\\t\" '{{print $6}}' ./output-data > {output.major_hg}
         awk -F \"\\t\" '{{print $8}}' ./output-data > {output.minor_hg}
         awk -F \"\\t\" '{{print $14}}' ./output-data > {output.mean_het_major}
-        awk -F \"\\t\" '{{print $15}}' ./output-data > {output.mean_het_minor}
-        
-        rm ./headers
-        rm ./output-noquotes
-        rm ./output-data
-        rm ./output_json
-        rm ./output_summary) 2> {log}"""
+        awk -F \"\\t\" '{{print $15}}' ./output-data > {output.mean_het_minor}) 2> {log}"""
