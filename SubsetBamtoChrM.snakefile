@@ -645,7 +645,7 @@ rule SplitMultiAllelicSites:
         {params.gatk} LeftAlignAndTrimVariants \
         -R {params.mt_ref} \
         -V {input.input_vcf} \
-        -O {output_vcf} \
+        -O {output.split_vcf} \
         --split-multi-allelics \
         --dont-trim-alleles \
         --keep-original-ac) 2> {log}
