@@ -480,6 +480,8 @@ rule GetContamination:
     input:
         input_vcf = "results/SplitMultiAllelicsAndRemoveNonPassSites/{tumor}/{tumor}_splitAndPassOnly.vcf"
     output:
+        outputs = "results/GetContamination/{tumor}/output",
+        output_noquotes = "results/GetContamination/{tumor}/output_noquotes",
         headers = "results/GetContamination/{tumor}/{tumor}_headers.txt",
         output_data = "results/GetContamination/{tumor}/{tumor}_output_data.txt",
         contamination = "results/GetContamination/{tumor}/{tumor}_contamination.txt",
@@ -503,10 +505,10 @@ rule GetContamination:
         touch {output.mean_het_major}
         touch {output.mean_het_minor}
 
-        {params.java} -jar {params.haplocheckCLI_path} "$(dirname "{input.input_vcf}")" | \
-        sed 's/\\\"//g' output > output-noquotes
+        {params.java} -jar {params.haplocheckCLI_path} "$(dirname "{input.input_vcf}")" > {output.outputs}
+        sed 's/\\\"//g' {output.outputs} > {output.output-noquotes}
         
-        grep "SampleID" output-noquotes > {output.headers}
+        grep "SampleID" {output.output-noquotes} > {output.headers}
         if [ `awk '{{print $2}}' {output.headers}` != \"Contamination\" ]; then
           echo \"Bad contamination file format\"; exit 1
         fi
@@ -523,7 +525,7 @@ rule GetContamination:
           echo $FORMAT_ERROR; exit 1
         fi
         
-        grep -v "SampleID" output-noquotes > {output.output_data}
+        grep -v "SampleID" {output.output-noquotes}  > {output.output_data}
         awk -F \"\\t\" '{{print $2}}' {output.output_data} > {output.contamination}
         awk -F \"\\t\" '{{print $6}}' {output.output_data} > {output.major_hg}
         awk -F \"\\t\" '{{print $8}}' {output.output_data} > {output.minor_hg}
