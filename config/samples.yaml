@@ -3,3 +3,4 @@ samples:
   f0bb345a-2e8b-4af6-8320-fc9be302a5ff_wxs_gdc_realn:  /home/zeb2/gdc_download_8_5_2022/gdc_client/b3e374ff-50f4-4c98-84b8-8cecbb9a6816/f0bb345a-2e8b-4af6-8320-fc9be302a5ff_wxs_gdc_realn.bam
 pairings:
   aa1c7a5a-c790-4454-a6b9-3e6510dd803a_wxs_gdc_realn:  f0bb345a-2e8b-4af6-8320-fc9be302a5ff_wxs_gdc_realn
+  f0bb345a-2e8b-4af6-8320-fc9be302a5ff_wxs_gdc_realn: aa1c7a5a-c790-4454-a6b9-3e6510dd803a_wxs_gdc_realn
