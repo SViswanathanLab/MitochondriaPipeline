@@ -507,11 +507,12 @@ rule GetContamination:
         touch {output.minor_hg}
         touch {output.mean_het_major}
         touch {output.mean_het_minor}
-             
+         
+        cd {params.haplocheckCLI_newpath}
         {params.java} -jar {params.haplocheckCLI_path} "$(dirname "{input.input_vcf}")" 
-        mv output {output.outputs}
+        #mv output {output.outputs}
         sed 's/\\\"//g' {output.outputs} > {output.output_noquotes}
-        
+        cd ../../../
         grep "SampleID" {output.output_noquotes} > {output.headers}
         if [ `awk '{{print $2}}' {output.headers}` != \"Contamination\" ]; then
           echo \"Bad contamination file format\"; exit 1
