@@ -418,7 +418,7 @@ rule InitialFilter:
     output:
         filtered_vcf = "results/InitialFilter/{tumor}.filtered.vcf",
         output_vcf = "results/InitialFilter/{tumor}.vcf",
-        bamout = ""
+        bamout = "results/InitialFilter/{tumor}_bamout.bam"
     params:
         gatk = config["gatk_path"],
         mt_ref = config["mt_ref"],
@@ -543,7 +543,7 @@ rule FilterContamination:
     output:
         output_vcf = "results/FilterContamination/{tumor}.vcf",
         filtered_vcf = "results/FilterContamination/{tumor}.filtered.vcf",
-        bamout = ""
+        bamout = "results/FilterContamination/{tumor}_bamout.bam"
     params:
         gatk = config["gatk_path"],
         mt_ref = config["mt_ref"],
