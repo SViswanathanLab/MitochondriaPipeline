@@ -494,7 +494,8 @@ rule GetContamination:
         java = config["java"],
         picard_jar = config["picard_jar"],
         haplocheckCLI_path = config["haplocheckCLI_path"],
-        haplocheckCLI_newpath = "results/GetContamination/{tumor}/"
+        haplocheckCLI_newpath = "results/GetContamination/{tumor}/",
+        MitochondriaPipeline_path = config["MitochondriaPipeline_path"]
     log:
         "logs/GetContamination/{tumor}.txt"
     shell:
@@ -509,10 +510,10 @@ rule GetContamination:
         touch {output.mean_het_minor}
          
         cd {params.haplocheckCLI_newpath}
-        {params.java} -jar {params.haplocheckCLI_path} "$(dirname "{input.input_vcf}")" 
+        {params.java} -jar {params.haplocheckCLI_path} "$(dirname "{params.MitochondriaPipeline_path}{input.input_vcf}")" 
         #mv output {output.outputs}
         sed 's/\\\"//g' {output.outputs} > {output.output_noquotes}
-        cd ../../../
+        cd {params.MitochondriaPipeline_path}
         grep "SampleID" {output.output_noquotes} > {output.headers}
         if [ `awk '{{print $2}}' {output.headers}` != \"Contamination\" ]; then
           echo \"Bad contamination file format\"; exit 1
