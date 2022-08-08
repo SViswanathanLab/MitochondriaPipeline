@@ -575,7 +575,7 @@ rule FilterContamination:
         if [ $MAJOR == 0.000 ]; then
           max_contamination=$MINOR
         else
-          max_contamination=$((1.0-$MAJOR))
+          max_contamination=$(echo "1 - $MAJOR" | bc)
         fi
         
         {params.gatk} --java-options "-Xmx2500m" FilterMutectCalls \
