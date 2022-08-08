@@ -578,3 +578,48 @@ rule FilterContamination:
         --mask-name "blacklisted_site") 2> {log}
         """
 
+rule CoverageAtEveryBase:
+    input:
+        normal_bam = "results/AlignAndMarkDuplicates/{tumor}/{tumor}.bam",
+        normal_bai = "results/AlignAndMarkDuplicates/{tumor}/{tumor}.bai",
+        shifted_bam = "results/AlignShiftedMTAndMarkDuplicates/{tumor}/{tumor}.bam",
+        shifted_bai = "results/AlignShiftedMTAndMarkDuplicates/{tumor}/{tumor}.bai"
+    output:
+        table = "results/CoverageAtEveryBase/{tumor}/{tumor}_per_base_coverage.tsv"
+    params:
+        control_region_shifted_reference_interval_list = config["control_region_shifted_reference_interval_list"],
+        non_control_region_interval_list = config["non_control_region_interval_list"],
+        mt_ref = config["mt_ref"],
+        mt_shifted_ref = config["mt_shifted_ref"],
+        shift_back_chain = config["shift_back_chain"],
+        java = config["java"],
+        picard_jar = config["picard_jar"]
+    log:
+        "logs/CoverageAtEveryBase/{tumor}.txt"
+    shell:
+        """(set -e
+
+        {params.java} -jar {params.picard_jar} CollectHsMetrics \
+        I={input.normal_bam} \
+        R={params.mt_ref} \
+        PER_BASE_COVERAGE=non_control_region.tsv \
+        O=non_control_region.metrics \
+        TI={params.non_control_region_interval_list} \
+        BI={params.non_control_region_interval_list} \
+        COVMAX=20000 \
+        SAMPLE_SIZE=1
+
+        {params.java} -jar {params.picard_jar} CollectHsMetrics \
+        I={input.shifted_bam} \
+        R={params.mt_shifted_ref} \
+        PER_BASE_COVERAGE=control_region_shifted.tsv \
+        O=control_region_shifted.metrics \
+        TI={params.control_region_shifted_reference_interval_list} \
+        BI={params.control_region_shifted_reference_interval_list} \
+        COVMAX=20000 \
+        SAMPLE_SIZE=1
+        
+        Rscript {params.coverage_script} --input {output.metrics} --mean_output {output.mean_coverage} --median_output {output.median_coverage}) 2> {log}
+        """
+    
+   
