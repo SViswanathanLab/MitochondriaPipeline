@@ -499,4 +499,4 @@ rule GetContamination:
         {params.java} -jar {params.haplocheckCLI_path} "$(dirname "{input.input_vcf}")" | \
         sed 's/\\\"//g' /dev/stdin > output-noquotes
 
-        grep "SampleID" output-noquotes > headers) 2> {log}"""
+        grep "SampleID" ./output-noquotes > headers) 2> {log}"""
