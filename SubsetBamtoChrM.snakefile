@@ -507,9 +507,9 @@ rule GetContamination:
         touch {output.mean_het_minor}
 
         {params.java} -jar {params.haplocheckCLI_path} "$(dirname "{input.input_vcf}")" > {output.outputs}
-        sed 's/\\\"//g' {output.outputs} > {output.output-noquotes}
+        sed 's/\\\"//g' {output.outputs} > {output.output_noquotes}
         
-        grep "SampleID" {output.output-noquotes} > {output.headers}
+        grep "SampleID" {output.output_noquotes} > {output.headers}
         if [ `awk '{{print $2}}' {output.headers}` != \"Contamination\" ]; then
           echo \"Bad contamination file format\"; exit 1
         fi
@@ -526,7 +526,7 @@ rule GetContamination:
           echo $FORMAT_ERROR; exit 1
         fi
         
-        grep -v "SampleID" {output.output-noquotes}  > {output.output_data}
+        grep -v "SampleID" {output.output_noquotes}  > {output.output_data}
         awk -F \"\\t\" '{{print $2}}' {output.output_data} > {output.contamination}
         awk -F \"\\t\" '{{print $6}}' {output.output_data} > {output.major_hg}
         awk -F \"\\t\" '{{print $8}}' {output.output_data} > {output.minor_hg}
