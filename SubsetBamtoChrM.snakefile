@@ -624,10 +624,7 @@ rule CoverageAtEveryBase:
         TI={params.control_region_shifted_reference_interval_list} \
         BI={params.control_region_shifted_reference_interval_list} \
         COVMAX=20000 \
-        SAMPLE_SIZE=1
-        
-        Rscript {params.CoverageAtEveryBase} --control_region_shifted {output.control_region_shifted} --non_control_region {output.non_control_regions} --output {output.table}) 2> {log}
-        """
+        SAMPLE_SIZE=1) 2> {log}"""
 
 rule SplitMultiAllelicSites:
     input:
