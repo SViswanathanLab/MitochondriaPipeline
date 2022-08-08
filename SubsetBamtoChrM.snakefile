@@ -516,4 +516,14 @@ rule GetContamination:
         fi
         
         grep -v "SampleID" ./output-noquotes > {output.output_data}
-        awk -F \"\\t\" '{{print $2}}' {output.output_data} > {output.contamination}) 2> {log}"""
+        awk -F \"\\t\" '{{print $2}}' {output.output_data} > {output.contamination}
+        awk -F \"\\t\" '{{print $6}}' {output.output_data} > {output.major_hg}
+        awk -F \"\\t\" '{{print $8}}' {output.output_data} > {output.minor_hg}
+        awk -F \"\\t\" '{{print $14}}' {output.output_data} > {output.mean_het_major}
+        awk -F \"\\t\" '{{print $15}}' {output.output_data} > {output.mean_het_minor}
+        
+        rm ./headers
+        rm ./output-noquotes
+        rm ./output-data
+        rm ./output_json
+        rm ./output_summary) 2> {log}"""
