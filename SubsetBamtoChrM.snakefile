@@ -513,17 +513,4 @@ rule GetContamination:
         fi
         if [ `awk '{{print $15}}' headers` != "MeanHetLevelMinor" ]; then
           echo $FORMAT_ERROR; exit 1
-        fi
-
-        grep -v "SampleID" output-noquotes > {output.output_data}
-        awk -F \"\\t\" '{{print $2}}' output-data > {output.contamination}
-        awk -F \"\\t\" '{{print $6}}' output-data > {output.major_hg}
-        awk -F \"\\t\" '{{print $8}}' output-data > {output.minor_hg}
-        awk -F \"\\t\" '{{print $14}}' output-data > {output.mean_het_major}
-        awk -F \"\\t\" '{{print $15}}' output-data > {output.mean_het_minor}
-        
-        rm headers
-        rm output-noquotes
-        rm output-data
-        rm output_json
-        rm output_summary) 2> {log}"""
+        fi) 2> {log}"""
