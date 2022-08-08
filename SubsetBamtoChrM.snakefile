@@ -587,7 +587,9 @@ rule CoverageAtEveryBase:
     output:
         table = "results/CoverageAtEveryBase/{tumor}/{tumor}_per_base_coverage.tsv",
         non_control_regions = "results/CoverageAtEveryBase/{tumor}/{tumor}_non_control_region.metrics",
-        control_region_shifted = "results/CoverageAtEveryBase/{tumor}/{tumor}_control_region_shifted.metrics"
+        control_region_shifted = "results/CoverageAtEveryBase/{tumor}/{tumor}_control_region_shifted.metrics",
+        non_control_region_tsv = "results/CoverageAtEveryBase/{tumor}/{tumor}_non_control_region.tsv",
+        control_region_shifted_tsv = "results/CoverageAtEveryBase/{tumor}/{tumor}_control_region_shifted.tsv"
     params:
         control_region_shifted_reference_interval_list = config["control_region_shifted_reference_interval_list"],
         non_control_region_interval_list = config["non_control_region_interval_list"],
@@ -605,7 +607,7 @@ rule CoverageAtEveryBase:
         {params.java} -jar {params.picard_jar} CollectHsMetrics \
         I={input.normal_bam} \
         R={params.mt_ref} \
-        PER_BASE_COVERAGE=non_control_region.tsv \
+        PER_BASE_COVERAGE={output.non_control_regions_tsv}\
         O={output.non_control_regions}\
         TI={params.non_control_region_interval_list} \
         BI={params.non_control_region_interval_list} \
@@ -615,7 +617,7 @@ rule CoverageAtEveryBase:
         {params.java} -jar {params.picard_jar} CollectHsMetrics \
         I={input.shifted_bam} \
         R={params.mt_shifted_ref} \
-        PER_BASE_COVERAGE=control_region_shifted.tsv \
+        PER_BASE_COVERAGE={output.control_region_shifted_tsv} \
         O={output.control_region_shifted} \
         TI={params.control_region_shifted_reference_interval_list} \
         BI={params.control_region_shifted_reference_interval_list} \
