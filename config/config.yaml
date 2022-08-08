@@ -17,6 +17,7 @@ read_length_for_optimization: 151
 max_reads_per_alignment_start: 75
 max_alt_allele_count: 4
 vaf_filter_threshold: 0
+contamination_flag: "YES"
 
 ## Path to Reference Files
 reference_genome: /mnt/storage/labs/sviswanathan/GATK_ref/Homo_sapiens_assembly38.fasta
