@@ -513,4 +513,7 @@ rule GetContamination:
         fi
         if [ `awk '{{print $15}}' headers` != "MeanHetLevelMinor" ]; then
           echo $FORMAT_ERROR; exit 1
-        fi) 2> {log}"""
+        fi
+        
+        grep -v "SampleID" ./output-noquotes > {output.output_data}
+        ) 2> {log}"""
