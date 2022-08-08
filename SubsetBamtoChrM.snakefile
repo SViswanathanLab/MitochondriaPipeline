@@ -45,7 +45,12 @@ rule all:
         expand("results/FilterContamination/{tumor}/{tumor}.vcf", tumor=config["pairings"]),
         expand("results/FilterContamination/{tumor}/{tumor}.filtered.vcf", tumor=config["pairings"]),
         expand("results/CoverageAtEveryBase/{tumor}/{tumor}_per_base_coverage.tsv", tumor=config["pairings"]),
-        expand("results/SplitMultiAllelicSites/{tumor}/{tumor}.vcf", tumor=config["pairings"])
+        expand(""results/CoverageAtEveryBase/{tumor}/{tumor}_non_control_region.metrics", tumor=config["pairings"]),
+        expand(""results/CoverageAtEveryBase/{tumor}/{tumor}_control_region_shifted.metrics", tumor=config["pairings"]),
+        expand(""results/CoverageAtEveryBase/{tumor}/non_control_region.tsv", tumor=config["pairings"]),
+        expand(""results/CoverageAtEveryBase/{tumor}/control_region_shifted.tsv", tumor=config["pairings"])
+        
+        
                
 rule SubsetBamtoChrM:
     input:
@@ -615,7 +620,7 @@ rule CoverageAtEveryBase:
         BI={params.non_control_region_interval_list} \
         COVMAX=20000 \
         SAMPLE_SIZE=1
-
+        
         {params.java} -jar {params.picard_jar} CollectHsMetrics \
         I={input.shifted_bam} \
         R={params.mt_shifted_ref} \
