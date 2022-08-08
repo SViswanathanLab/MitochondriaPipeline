@@ -498,6 +498,6 @@ rule GetContamination:
         {params.java} -jar {params.haplocheckCLI_path} "$(dirname "{input.input_vcf}")" | \
         sed 's/\\\"//g' output > output-noquotes
         
-        mv ./headers {output.headers}
-        mv ./output-noquotes {output.output_noquotes}
+        mv ./headers ./{output.headers}
+        mv ./output-noquotes ./{output.output_noquotes}
         ) 2> {log}"""
