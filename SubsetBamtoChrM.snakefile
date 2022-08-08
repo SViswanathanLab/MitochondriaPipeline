@@ -33,14 +33,14 @@ rule all:
         expand("results/MergeStats/{tumor}.raw.combined.stats", tumor=config["pairings"]),
         expand("results/InitialFilter/{tumor}.filtered.vcf", tumor=config["pairings"]),
         expand("results/InitialFilter/{tumor}.vcf", tumor=config["pairings"]),
-        expand("results/SplitMultiAllelicsAndRemoveNonPassSites/{tumor}_splitAndPassOnly.vcf", tumor=config["pairings"]),
-        expand("results/GetContamination/{tumor}_headers.txt", tumor=config["pairings"]),
-        expand("results/GetContamination/{tumor}_output_data.txt", tumor=config["pairings"]),
-        expand("results/GetContamination/{tumor}_contamination.txt", tumor=config["pairings"]),
-        expand("results/GetContamination/{tumor}_major_hg.txt", tumor=config["pairings"]),
-        expand("results/GetContamination/{tumor}_minor_hg.txt", tumor=config["pairings"]),
-        expand("results/GetContamination/{tumor}_mean_het_major.txt", tumor=config["pairings"]),
-        expand("results/GetContamination/{tumor}_mean_het_minor.txt", tumor=config["pairings"]),
+        expand("results/SplitMultiAllelicsAndRemoveNonPassSites/{tumor}/{tumor}_splitAndPassOnly.vcf", tumor=config["pairings"]),
+        expand("results/GetContamination/{tumor}/{tumor}_headers.txt", tumor=config["pairings"]),
+        expand("results/GetContamination/{tumor}/{tumor}_output_data.txt", tumor=config["pairings"]),
+        expand("results/GetContamination/{tumor}/{tumor}_contamination.txt", tumor=config["pairings"]),
+        expand("results/GetContamination/{tumor}/{tumor}_major_hg.txt", tumor=config["pairings"]),
+        expand("results/GetContamination/{tumor}/{tumor}_minor_hg.txt", tumor=config["pairings"]),
+        expand("results/GetContamination/{tumor}/{tumor}_mean_het_major.txt", tumor=config["pairings"]),
+        expand("results/GetContamination/{tumor}/{tumor}_mean_het_minor.txt", tumor=config["pairings"]),
         expand("results/FilterContamination/{tumor}.vcf", tumor=config["pairings"]),
         expand("results/FilterContamination/{tumor}.filtered.vcf", tumor=config["pairings"]),
         expand("results/CoverageAtEveryBase/{tumor}_per_base_coverage.tsv", tumor=config["pairings"]),
@@ -451,8 +451,9 @@ rule SplitMultiAllelicsAndRemoveNonPassSites:
     input:
         filtered_vcf = "results/InitialFilter/{tumor}.vcf"
     output:
-        split_vcf = temp("results/SplitMultiAllelicsAndRemoveNonPassSites/{tumor}_split.vcf"),
-        splitAndPassOnly_vcf = "results/SplitMultiAllelicsAndRemoveNonPassSites/{tumor}_splitAndPassOnly.vcf"
+        split_vcf = temp("results/SplitMultiAllelicsAndRemoveNonPassSites/{tumor}/{tumor}_split.vcf"),
+        split_vcf_idx = temp("results/SplitMultiAllelicsAndRemoveNonPassSites/{tumor}/{tumor}_split.vcf.idx"),
+        splitAndPassOnly_vcf = "results/SplitMultiAllelicsAndRemoveNonPassSites/{tumor}/{tumor}_splitAndPassOnly.vcf"
     log:
         "logs/SplitMultiAllelicsAndRemoveNonPassSites/{tumor}.txt"
     params:
@@ -476,15 +477,15 @@ rule SplitMultiAllelicsAndRemoveNonPassSites:
 
 rule GetContamination:
     input:
-        input_vcf = "results/SplitMultiAllelicsAndRemoveNonPassSites/{tumor}_splitAndPassOnly.vcf"
+        input_vcf = "results/SplitMultiAllelicsAndRemoveNonPassSites/{tumor}/{tumor}_splitAndPassOnly.vcf"
     output:
-        headers = "results/GetContamination/{tumor}_headers.txt",
-        output_data = "results/GetContamination/{tumor}_output_data.txt",
-        contamination = "results/GetContamination/{tumor}_contamination.txt",
-        major_hg = "results/GetContamination/{tumor}_major_hg.txt",
-        minor_hg = "results/GetContamination/{tumor}_minor_hg.txt",
-        mean_het_major = "results/GetContamination/{tumor}_mean_het_major.txt",
-        mean_het_minor = "results/GetContamination/{tumor}_mean_het_minor.txt"
+        headers = "results/GetContamination/{tumor}/{tumor}_headers.txt",
+        output_data = "results/GetContamination/{tumor}/{tumor}_output_data.txt",
+        contamination = "results/GetContamination/{tumor}/{tumor}_contamination.txt",
+        major_hg = "results/GetContamination/{tumor}/{tumor}_major_hg.txt",
+        minor_hg = "results/GetContamination/{tumor}/{tumor}_minor_hg.txt",
+        mean_het_major = "results/GetContamination/{tumor}/{tumor}_mean_het_major.txt",
+        mean_het_minor = "results/GetContamination/{tumor}/{tumor}_mean_het_minor.txt"
     params:
         java = config["java"],
         picard_jar = config["picard_jar"],
@@ -530,9 +531,9 @@ rule GetContamination:
         
 rule FilterContamination:
     input:
-        hasContamination = "results/GetContamination/{tumor}_contamination.txt",
-        contamination_major = "results/GetContamination/{tumor}_mean_het_major.txt",
-        contamination_minor = "results/GetContamination/{tumor}_mean_het_minor.txt",
+        hasContamination = "results/GetContamination/{tumor}/{tumor}_contamination.txt",
+        contamination_major = "results/GetContamination/{tumor}/{tumor}_mean_het_major.txt",
+        contamination_minor = "results/GetContamination/{tumor}/{tumor}_mean_het_minor.txt",
         filtered_vcf = "results/InitialFilter/{tumor}.vcf",
         raw_vcf_stats = "results/MergeStats/{tumor}.raw.combined.stats"
     output:
