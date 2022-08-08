@@ -44,7 +44,7 @@ rule all:
         expand("results/GetContamination/{tumor}/{tumor}_mean_het_minor.txt", tumor=config["pairings"]),
         expand("results/FilterContamination/{tumor}/{tumor}.vcf", tumor=config["pairings"]),
         expand("results/FilterContamination/{tumor}/{tumor}.filtered.vcf", tumor=config["pairings"]),
-        #expand("results/CoverageAtEveryBase/{tumor}/{tumor}_per_base_coverage.tsv", tumor=config["pairings"]),
+        expand("results/CoverageAtEveryBase/{tumor}/{tumor}_per_base_coverage.tsv", tumor=config["pairings"]),
         expand("results/CoverageAtEveryBase/{tumor}/{tumor}_non_control_region.metrics", tumor=config["pairings"]),
         expand("results/CoverageAtEveryBase/{tumor}/{tumor}_control_region_shifted.metrics", tumor=config["pairings"]),
         expand("results/CoverageAtEveryBase/{tumor}/non_control_region.tsv", tumor=config["pairings"]),
@@ -592,7 +592,7 @@ rule CoverageAtEveryBase:
         shifted_bam = "results/AlignShiftedMTAndMarkDuplicates/{tumor}/{tumor}.bam",
         shifted_bai = "results/AlignShiftedMTAndMarkDuplicates/{tumor}/{tumor}.bai"
     output:
-        #table = "results/CoverageAtEveryBase/{tumor}/{tumor}_per_base_coverage.tsv",
+        table = "results/CoverageAtEveryBase/{tumor}/{tumor}_per_base_coverage.tsv",
         non_control_regions = "results/CoverageAtEveryBase/{tumor}/{tumor}_non_control_region.metrics",
         control_region_shifted = "results/CoverageAtEveryBase/{tumor}/{tumor}_control_region_shifted.metrics",
         non_control_region_tsv = "results/CoverageAtEveryBase/{tumor}/non_control_region.tsv",
@@ -629,7 +629,9 @@ rule CoverageAtEveryBase:
         TI={params.control_region_shifted_reference_interval_list} \
         BI={params.control_region_shifted_reference_interval_list} \
         COVMAX=20000 \
-        SAMPLE_SIZE=1) 2> {log}
+        SAMPLE_SIZE=1
+        
+        Rscript {params.CoverageAtEveryBase} --control_region_shifted {output.control_region_shifted_tsv} --non_control_region {output.non_control_region_tsv} --output {output.table}) 2> {log}
         """
 
 rule SplitMultiAllelicSites:
