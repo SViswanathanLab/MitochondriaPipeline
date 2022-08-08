@@ -508,10 +508,9 @@ rule GetContamination:
         touch {output.minor_hg}
         touch {output.mean_het_major}
         touch {output.mean_het_minor}
-        
-        cp -r {params.haplocheckCLI_path} {params.haplocheckCLI_newpath}
-        
-        {params.java} -jar {params.haplocheckCLI_newpath}haplocheckCLI/haplocheckCLI.jar "$(dirname "{input.input_vcf}")" 
+             
+        {params.java} -jar {params.haplocheckCLI_path} "$(dirname "{input.input_vcf}")" 
+        mv output {output.outputs}
         sed 's/\\\"//g' {output.outputs} > {output.output_noquotes}
         
         grep "SampleID" {output.output_noquotes} > {output.headers}
