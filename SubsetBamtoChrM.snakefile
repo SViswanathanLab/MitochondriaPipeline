@@ -109,6 +109,7 @@ rule AlignAndMarkDuplicates:
         mba_bam = "results/AlignAndMarkDuplicates/{tumor}_mba.bam",
         md_bam = "results/AlignAndMarkDuplicates/{tumor}_md.bam",
         bam = "results/AlignAndMarkDuplicates/{tumor}.bam",
+        bai = "results/AlignAndMarkDuplicates/{tumor}.bai",
         metrics = "results/AlignAndMarkDuplicates/{tumor}.metrics",
     params:
         bwa = config["bwa"],
@@ -193,6 +194,7 @@ rule AlignShiftedMTAndMarkDuplicates:
         mba_bam = "results/AlignShiftedMTAndMarkDuplicates/{tumor}_mba.bam",
         md_bam = "results/AlignShiftedMTAndMarkDuplicates/{tumor}_md.bam",
         bam = "results/AlignShiftedMTAndMarkDuplicates/{tumor}.bam",
+        bai = "results/AlignShiftedMTAndMarkDuplicates/{tumor}.bai",
         metrics = "results/AlignShiftedMTAndMarkDuplicates/{tumor}.metrics",
     params:
         bwa = config["bwa"],
