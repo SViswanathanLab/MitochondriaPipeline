@@ -50,11 +50,10 @@ rule all:
         expand("results/CoverageAtEveryBase/{tumor}/non_control_region.tsv", tumor=config["pairings"]),
         expand("results/CoverageAtEveryBase/{tumor}/control_region_shifted.tsv", tumor=config["pairings"])
         
-        
                
 rule SubsetBamtoChrM:
     input:
-        tumor_filepath = lambda wildcards: config["samples"]
+        tumor_filepath = lambda wildcards: config["samples"][wildcards.tumor]
     output:
         bam = "results/SubsetBamtoChrM/{tumor}/{tumor}.bam",
         bai = "results/SubsetBamtoChrM/{tumor}/{tumor}.bai"
