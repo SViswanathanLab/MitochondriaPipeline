@@ -509,7 +509,7 @@ rule GetContamination:
         touch {output.mean_het_major}
         touch {output.mean_het_minor}
         
-        cp {params.haplocheckCLI_path} {params.haplocheckCLI_newpath}
+        cp -r {params.haplocheckCLI_path} {params.haplocheckCLI_newpath}
         
         {params.java} -jar {params.haplocheckCLI_newpath}haplocheckCLI/haplocheckCLI.jar "$(dirname "{input.input_vcf}")" 
         sed 's/\\\"//g' {output.outputs} > {output.output_noquotes}
