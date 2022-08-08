@@ -4,7 +4,7 @@ java: /usr/bin/java
 tabix: /usr/bin/tabix
 picard_jar: /home/ma1111/tools/picard.jar
 bwa: /usr/bin/bwa
-haplocheckCLI_path: /home/mi724/Tools/MitochondriaPipeline/haplocheckCLI
+haplocheckCLI_path: /home/mi724/Tools/MitochondriaPipeline/haplocheckCLI/haplocheckCLI.jar
 
 ## Code Scripts
 coverage_script: code/coverage.R
