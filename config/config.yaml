@@ -42,9 +42,11 @@ mt_shifted_fai: /mnt/storage/labs/sviswanathan/mt_gs_files/Homo_sapiens_assembly
 mt_shifted_pac: /mnt/storage/labs/sviswanathan/mt_gs_files/Homo_sapiens_assembly38.chrM.shifted_by_8000_bases.fasta.pac
 mt_shifted_amb: /mnt/storage/labs/sviswanathan/mt_gs_files/Homo_sapiens_assembly38.chrM.shifted_by_8000_bases.fasta.amb
 
-
+## Path to files
 shift_back_chain: /mnt/storage/labs/sviswanathan/mt_gs_files/ShiftBack.chain
 blacklisted_sites: /mnt/storage/labs/sviswanathan/mt_gs_files/blacklist_sites.hg38.chrM.bed
+control_region_shifted_reference_interval_list: /mnt/storage/labs/sviswanathan/mt_gs_files/control_region_shifted.chrM.interval_list
+non_control_region_interval_list: /mnt/storage/labs/sviswanathan/mt_gs_files/non_control_region.interval_list
 
 
 
