@@ -8,6 +8,7 @@ haplocheckCLI_path: /home/mi724/Tools/MitochondriaPipeline/haplocheckCLI/haploch
 
 ## Code Scripts
 coverage_script: code/coverage.R
+CoverageAtEveryBase: code/CoverageAtEveryBase.R
 GetContamination: code/GetContamination.sh
 
 ## Parameters
@@ -47,9 +48,4 @@ shift_back_chain: /mnt/storage/labs/sviswanathan/mt_gs_files/ShiftBack.chain
 blacklisted_sites: /mnt/storage/labs/sviswanathan/mt_gs_files/blacklist_sites.hg38.chrM.bed
 control_region_shifted_reference_interval_list: /mnt/storage/labs/sviswanathan/mt_gs_files/control_region_shifted.chrM.interval_list
 non_control_region_interval_list: /mnt/storage/labs/sviswanathan/mt_gs_files/non_control_region.interval_list
-
-
-
-
-
 
