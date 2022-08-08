@@ -41,7 +41,9 @@ rule all:
         expand("results/GetContamination/{tumor}/{tumor}_major_hg.txt", tumor=config["pairings"]),
         expand("results/GetContamination/{tumor}/{tumor}_minor_hg.txt", tumor=config["pairings"]),
         expand("results/GetContamination/{tumor}/{tumor}_mean_het_major.txt", tumor=config["pairings"]),
-        expand("results/GetContamination/{tumor}/{tumor}_mean_het_minor.txt", tumor=config["pairings"])
+        expand("results/GetContamination/{tumor}/{tumor}_mean_het_minor.txt", tumor=config["pairings"]),
+        expand("results/FilterContamination/{tumor}/{tumor}.vcf", tumor=config["pairings"]),
+        expand("results/FilterContamination/{tumor}/{tumor}.filtered.vcf", tumor=config["pairings"])
                
 rule SubsetBamtoChrM:
     input:
