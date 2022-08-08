@@ -609,7 +609,7 @@ rule CoverageAtEveryBase:
         {params.java} -jar {params.picard_jar} CollectHsMetrics \
         I={input.normal_bam} \
         R={params.mt_ref} \
-        PER_BASE_COVERAGE={output.non_control_regions_tsv}\
+        PER_BASE_COVERAGE={output.non_control_region_tsv}\
         O={output.non_control_regions}\
         TI={params.non_control_region_interval_list} \
         BI={params.non_control_region_interval_list} \
