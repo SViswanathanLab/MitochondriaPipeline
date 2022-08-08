@@ -516,4 +516,4 @@ rule GetContamination:
         fi
         
         grep -v "SampleID" ./output-noquotes > {output.output_data}
-        awk -F \"\\t\" '{{print $2}}' ./output-data > {output.contamination}) 2> {log}"""
+        awk -F \"\\t\" '{{print $2}}' {output.output_data} > {output.contamination}) 2> {log}"""
