@@ -34,7 +34,6 @@ rule all:
         expand("results/InitialFilter/{tumor}.filtered.vcf", tumor=config["pairings"]),
         expand("results/InitialFilter/{tumor}.vcf", tumor=config["pairings"]),
         expand("results/SplitMultiAllelicsAndRemoveNonPassSites/{tumor}_splitAndPassOnly.vcf", tumor=config["pairings"]),
-        expand("results/GetContamination/{tumor}_output_noquotes.txt", tumor=config["pairings"]),
         expand("results/GetContamination/{tumor}_headers.txt", tumor=config["pairings"]),
         expand("results/GetContamination/{tumor}_output_data.txt", tumor=config["pairings"]),
         expand("results/GetContamination/{tumor}_contamination.txt", tumor=config["pairings"]),
