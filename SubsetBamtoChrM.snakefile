@@ -56,7 +56,7 @@ rule SubsetBamtoChrM:
         gatk = config["gatk_path"],
         contig_name = config["contig_name"]
     log:
-        "logs/SubsetBamtoChrM/{tumor}.txt"
+        "logs/SubsetBamtoChrM/{tumor}/{tumor}.txt"
     shell:
         "({params.gatk} PrintReads \
         -L {params.contig_name} \
@@ -74,7 +74,7 @@ rule RevertSam:
         java = config["java"],
         picard_jar = config["picard_jar"]
     log:
-        "logs/RevertSam/{tumor}.txt"
+        "logs/RevertSam/{tumor}/{tumor}.txt"
     shell:
         "({params.java} -Xmx1000m -jar {params.picard_jar} \
         RevertSam \
@@ -111,7 +111,7 @@ rule AlignAndMarkDuplicates:
         gatk = config["gatk_path"],
         reference_genome = config["mt_ref"]
     log:
-        "logs/AlignAndMarkDuplicates/{tumor}.txt"
+        "logs/AlignAndMarkDuplicates/{tumor}/{tumor}.txt"
     shell:
         """(set -o pipefail
          set -e
@@ -195,7 +195,7 @@ rule AlignShiftedMTAndMarkDuplicates:
         gatk = config["gatk_path"],
         reference_genome = config["mt_shifted_ref"]
     log:
-        "logs/AlignShiftedMTAndMarkDuplicates/{tumor}.txt"
+        "logs/AlignShiftedMTAndMarkDuplicates/{tumor}/{tumor}.txt"
     shell:
         """(set -o pipefail
          set -e
@@ -273,7 +273,7 @@ rule CollectWgsMetrics:
         read_length_for_optimization = config["read_length_for_optimization"],
         coverage_script = config["coverage_script"]
     log:
-        "logs/CollectWgsMetrics/{tumor}.txt"
+        "logs/CollectWgsMetrics/{tumor}/{tumor}.txt"
     shell:
         """(set -e
 
@@ -305,7 +305,7 @@ rule CallMt:
         max_reads_per_alignment_start = config["max_reads_per_alignment_start"],
         mt_ref = config["mt_ref"]
     log:
-        "logs/CallMt/{tumor}.txt"
+        "logs/CallMt/{tumor}/{tumor}.txt"
     shell:
         """(set -e
 
@@ -338,7 +338,7 @@ rule CallShiftedMt:
         max_reads_per_alignment_start = config["max_reads_per_alignment_start"],
         mt_ref = config["mt_shifted_ref"]
     log:
-        "logs/CallShiftedMt/{tumor}.txt"
+        "logs/CallShiftedMt/{tumor}/{tumor}.txt"
     shell:
         """(set -e
 
@@ -371,7 +371,7 @@ rule LiftoverAndCombineVcfs:
         picard_jar = config["picard_jar"],
         shift_back_chain = config["shift_back_chain"]
     log:
-        "logs/LiftoverAndCombineVcfs/{tumor}.txt"
+        "logs/LiftoverAndCombineVcfs/{tumor}/{tumor}.txt"
     shell:
         """(set -e
 
@@ -397,7 +397,7 @@ rule MergeStats:
         gatk = config["gatk_path"]
         
     log:
-        "logs/MergeStats/{tumor}.txt"
+        "logs/MergeStats/{tumor}/{tumor}.txt"
     shell:
         """(set -e
 
@@ -417,7 +417,7 @@ rule InitialFilter:
         vaf_filter_threshold = config["vaf_filter_threshold"],
         blacklisted_sites = config["blacklisted_sites"]
     log:
-        "logs/InitialFilter/{tumor}.txt"
+        "logs/InitialFilter/{tumor}/{tumor}.txt"
     shell:
         """(set -e
         
@@ -447,7 +447,7 @@ rule SplitMultiAllelicsAndRemoveNonPassSites:
         split_vcf = temp("results/SplitMultiAllelicsAndRemoveNonPassSites/{tumor}/{tumor}_split.vcf"),
         splitAndPassOnly_vcf = "results/SplitMultiAllelicsAndRemoveNonPassSites/{tumor}/{tumor}_splitAndPassOnly.vcf"
     log:
-        "logs/SplitMultiAllelicsAndRemoveNonPassSites/{tumor}.txt"
+        "logs/SplitMultiAllelicsAndRemoveNonPassSites/{tumor}/{tumor}.txt"
     params:
         gatk = config["gatk_path"],
         mt_ref = config["mt_ref"]
@@ -483,7 +483,7 @@ rule GetContamination:
         picard_jar = config["picard_jar"],
         haplocheckCLI_path = config["haplocheckCLI_path"]
     log:
-        "logs/GetContamination/{tumor}.txt"
+        "logs/GetContamination/{tumor}/{tumor}.txt"
     shell:
         """(set -e
         touch {output.headers}
@@ -539,7 +539,7 @@ rule FilterContamination:
         blacklisted_sites = config["blacklisted_sites"],
         contamination_flag = config["contamination_flag"]
     log:
-        "logs/FilterContamination/{tumor}.txt"
+        "logs/FilterContamination/{tumor}/{tumor}.txt"
     shell:
         """
         (set -e
@@ -600,7 +600,7 @@ rule CoverageAtEveryBase:
         picard_jar = config["picard_jar"],
         CoverageAtEveryBase = config["CoverageAtEveryBase"]
     log:
-        "logs/CoverageAtEveryBase/{tumor}.txt"
+        "logs/CoverageAtEveryBase/{tumor}/{tumor}.txt"
     shell:
         """(set -e
 
@@ -626,5 +626,28 @@ rule CoverageAtEveryBase:
         
         Rscript {params.CoverageAtEveryBase} --control_region_shifted {output.control_region_shifted} --non_control_region {output.non_control_regions} --output {output.table}) 2> {log}
         """
-    
+
+rule SplitMultiAllelicSites:
+    input:
+        input_vcf = "results/FilterContamination/{tumor}/{tumor}.vcf"
+    output:
+        split_vcf = "results/SplitMultiAllelicSites/{tumor}/{tumor}.vcf"
+    params:
+        gatk = config["gatk_path"],
+        mt_ref = config["mt_ref"]
+    log:
+        "logs/SplitMultiAllelicSites/{tumor}/{tumor}.txt"
+    shell:
+        """(set -e
+        
+        {params.gatk} LeftAlignAndTrimVariants \
+        -R {params.mt_ref} \
+        -V {input.input_vcf} \
+        -O {output_vcf} \
+        --split-multi-allelics \
+        --dont-trim-alleles \
+        --keep-original-ac) 2> {log}
+        """
+
+
    
