@@ -1,3 +1,6 @@
+### Based on WDL script in: https://portal.firecloud.org/?return=terra#methods/cricker/vcf2maf_CR/
+
+
 import os
 
 configfile: "config/config.yaml"
