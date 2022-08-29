@@ -8,24 +8,28 @@ configfile: "config/samples.yaml"
 
 rule all:
     input:
-         expand("results/vcf2maf/{tumor}.vcf", tumor=config["pairings"])
+         expand("results/SplitMultiAllelicSites/{tumor}.vcf", tumor=config["pairings"])
          
          
 rule vcf2maf:
     input:
-        tumor_vcf = results/SplitMultiAllelicSites/{tumor}.vcf,
-        normal_vcf = results/SplitMultiAllelicSites/{normal}.vcf
+        tumor_vcf = "results/SplitMultiAllelicSites/{tumor}.vcf"
     output:
-        maf = "results/SubsetBamtoChrM/{tumor}.maf"
+        maf = "results/vcf2maf/{tumor}.maf"
     params:
-        gatk = config["gatk_path"],
-        contig_name = config["contig_name"]
+        perl = config["perl"],
+        vcf2maf = config["vcf2maf"],
+        vep = config["vep"],
+        vep_cache = config["vep_cache"],
+        reference_genome = config["mt_ref"]
     log:
-        "logs/SubsetBamtoChrM/{tumor}.txt"
+        "logs/vcf2maf/{tumor}.txt"
     shell:
-        "({params.gatk} PrintReads \
-        -L {params.contig_name} \
-        --read-filter MateOnSameContigOrNoMappedMateReadFilter \
-        --read-filter MateUnmappedAndUnmappedReadFilter \
-        -I {input.tumor_filepath} \
-        -O {output.bam}) 2> {log}"
+        "({params.perl} {params.vcf2maf} \
+        --ref-fasta  {params.reference_genome} \
+        --vep-path {params.vep} \
+        --vep-data {params.vep_cache} \
+        --filter-vcf 0 \
+        --ncbi-build GRCh38 \
+        --input-vcf {input.tumor_vcf} \
+        --output-maf {output.maf}) 2> {log}"
