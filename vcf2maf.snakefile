@@ -29,7 +29,6 @@ rule vcf2maf:
         """(set -e
         
         "({params.perl} {params.vcf2maf} \
-        --samtools-exec {params.samtools} \
         --ref-fasta  {params.reference_genome} \
         --vep-path {params.vep} \
         --vep-data {params.vep_cache} \
