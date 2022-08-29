@@ -10,6 +10,7 @@ perl: /usr/bin/perl
 vep: /mnt/storage/apps/ensembl-vep-release-106/
 samtools: /home/qx022/.conda/envs/tRCC/bin/samtools
 vcf2maf: /mnt/storage/apps/vcf2maf-1.6.17/vcf2maf.pl
+vep_cache: /mnt/storage/apps/ensembl-vep-release-106/.vep/
 
 ## Code Scripts
 coverage_script: code/coverage.R
