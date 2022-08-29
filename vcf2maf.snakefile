@@ -25,6 +25,8 @@ rule vcf2maf:
     log:
         "logs/vcf2maf/{tumor}.txt"
     shell:
+        """(set -e
+        
         "({params.perl} {params.vcf2maf} \
         --ref-fasta  {params.reference_genome} \
         --vep-path {params.vep} \
@@ -32,4 +34,5 @@ rule vcf2maf:
         --filter-vcf 0 \
         --ncbi-build GRCh38 \
         --input-vcf {input.tumor_vcf} \
-        --output-maf {output.maf}) 2> {log}"
+        --output-maf {output.maf}) 2> {log}
+        """
