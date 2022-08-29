@@ -1,4 +1,4 @@
-### Based on WDL script in: https://portal.firecloud.org/?return=terra#methods/cricker/vcf2maf_CR/
+### Based on WDL script in: https://github.com/OpenGenomics/vcf2maf-tools/blob/master/vcf2maf.wdl
 
 
 import os
