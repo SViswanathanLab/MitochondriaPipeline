@@ -8,9 +8,9 @@ configfile: "config/samples.yaml"
 
 rule all:
     input:
-         expand("results/SplitMultiAllelicSites/{tumor}.vcf", tumor=config["pairings"])
-         
-         
+         expand("results/SplitMultiAllelicSites/{tumor}.vcf", tumor=config["pairings"]),
+         expand("results/vcf2maf/{tumor}.maf", tumor=config["pairings"])
+                  
 rule vcf2maf:
     input:
         tumor_vcf = "results/SplitMultiAllelicSites/{tumor}.vcf"
@@ -21,6 +21,7 @@ rule vcf2maf:
         vcf2maf = config["vcf2maf"],
         vep = config["vep"],
         vep_cache = config["vep_cache"],
+        samtools = config["samtools"],
         reference_genome = config["mt_ref"]
     log:
         "logs/vcf2maf/{tumor}.txt"
@@ -28,6 +29,7 @@ rule vcf2maf:
         """(set -e
         
         "({params.perl} {params.vcf2maf} \
+        --samtools-exec {params.samtools} \
         --ref-fasta  {params.reference_genome} \
         --vep-path {params.vep} \
         --vep-data {params.vep_cache} \
