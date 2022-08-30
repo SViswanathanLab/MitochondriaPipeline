@@ -27,6 +27,9 @@ rule vcf2maf:
         "logs/vcf2maf/{tumor}.txt"
     shell:
         """(set -e
+        
+        export PATH=$PATH:{params.samtools}
+        
         {params.perl} {params.vcf2maf} \
         --ref-fasta  {params.reference_genome} \
         --vep-path {params.vep} \
