@@ -19,7 +19,7 @@ AlignShiftedMTAndMarkDuplicates:
     
 vcf2maf:
     h_vmem: 20G
-    h_rt:100:0:0
+    h_rt:   100:0:0
     pe: smp 8
     binding:    linear:1
     
