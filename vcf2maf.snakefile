@@ -29,6 +29,9 @@ rule vcf2maf:
         """(set -e
         
         export PATH=$PATH:{params.samtools}
+        export PERL5LIB={params.vep}
+        export HTSLIB_DIR={params.vep}/htslib
+        export LD_LIBRARY_PATH=/mnt/storage/apps/htslib/1.9
         
         {params.perl} {params.vcf2maf} \
         --ref-fasta  {params.reference_genome} \
