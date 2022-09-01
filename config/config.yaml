@@ -5,7 +5,7 @@ tabix: /usr/bin/tabix
 picard_jar: /home/ma1111/tools/picard.jar
 bwa: /usr/bin/bwa
 haplocheckCLI_path: /home/mi724/Tools/MitochondriaPipeline/haplocheckCLI/haplocheckCLI.jar
-MitochondriaPipeline_path: /home/mi724/Tools/MitochondriaPipeline/ #change to your own folder
+MitochondriaPipeline_path: /home/mi724/Tools/MitochondriaPipeline/ #change to your own 
 perl: /mnt/storage/apps/perl-5.26.2/bin/perl
 vep: /mnt/storage/apps/ensembl-vep-release-106
 samtools: /mnt/storage/apps/samtools/1.9/bin
