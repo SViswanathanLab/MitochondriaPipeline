@@ -1,0 +1,10 @@
+samples:
+  TCGA-6D-AA2E_N:  results/AlignAndMarkDuplicates/49f97575-9f0f-485e-9544-77d27701dbbb_wxs_gdc_realn.bam
+  TCGA-6D-AA2E_T:  results/AlignAndMarkDuplicates/788afebc-05b2-4e0e-8da8-780371663445_wxs_gdc_realn.bam
+
+samples2:
+  TCGA-6D-AA2E_N:  results/AlignShiftedMTAndMarkDuplicates/49f97575-9f0f-485e-9544-77d27701dbbb_wxs_gdc_realn.bam
+  TCGA-6D-AA2E_T:  results/AlignShiftedMTAndMarkDuplicates/788afebc-05b2-4e0e-8da8-780371663445_wxs_gdc_realn.bam
+
+pairings:
+  TCGA-6D-AA2E_T: TCGA-6D-AA2E_N
