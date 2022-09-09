@@ -60,6 +60,9 @@ rule CallMt:
         --read-filter MateOnSameContigOrNoMappedMateReadFilter \
         --read-filter MateUnmappedAndUnmappedReadFilter \
         -O {output.vcf} \
+        --f1r2-median-mq 10 \
+        --min-base-quality-score 20 \
+        --pcr-indel-model AGGRESSIVE \
         --annotation StrandBiasBySample \
         --bam-output {output.bamout} \
         --mitochondria-mode \
@@ -94,6 +97,9 @@ rule CallShiftedMt:
         --read-filter MateOnSameContigOrNoMappedMateReadFilter \
         --read-filter MateUnmappedAndUnmappedReadFilter \
         -O {output.vcf} \
+        --f1r2-median-mq 10 \
+        --min-base-quality-score 20 \
+        --pcr-indel-model AGGRESSIVE \
         --annotation StrandBiasBySample \
         --bam-output {output.bamout} \
         --mitochondria-mode \
@@ -229,7 +235,7 @@ rule GetContamination:
         java = config["java"],
         picard_jar = config["picard_jar"],
         haplocheckCLI_path = config["haplocheckCLI_path"],
-        haplocheckCLI_newpath = "results/GetContamination/{tumor}/",
+        haplocheckCLI_newpath = "results2/GetContamination/{tumor}/",
         MitochondriaPipeline_path = config["MitochondriaPipeline_path"]
     log:
         "logs/GetContamination/{tumor}.txt"
@@ -381,7 +387,7 @@ rule vcf2maf:
         --vep-data {params.vep_cache} \
         --filter-vcf 0 \
         --ncbi-build GRCh38 \
+        --tumor-id XXXXXX \
         --input-vcf {input.tumor_vcf} \
         --output-maf {output.maf}) 2> {log}
         """
-
