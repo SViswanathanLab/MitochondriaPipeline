@@ -518,7 +518,7 @@ rule GetContamination:
          
         cd {params.haplocheckCLI_newpath}
         {params.java} -jar {params.haplocheckCLI_path} "$(dirname "{params.MitochondriaPipeline_path}{input.input_vcf}")" 
-        mv output {params.MitochondriaPipeline_path}{output.outputs}
+        mv -f output {params.MitochondriaPipeline_path}{output.outputs}
         sed 's/\\\"//g' {params.MitochondriaPipeline_path}{output.outputs} > {params.MitochondriaPipeline_path}{output.output_noquotes}
         cd {params.MitochondriaPipeline_path}
         grep "SampleID" {output.output_noquotes} > {output.headers}
