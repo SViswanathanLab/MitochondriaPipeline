@@ -49,7 +49,8 @@ rule GetContamination:
         touch {output.mean_het_major}
         touch {output.mean_het_minor}
         
-        cd {params.haplocheckCLI_newpath}) 2> {log}
+        cd {params.haplocheckCLI_newpath}
+        {params.java} -jar {params.haplocheckCLI_path} "$(dirname "{params.MitochondriaPipeline_path}{input.input_vcf}")") 2> {log}
         """
 
 
