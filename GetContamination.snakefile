@@ -49,8 +49,8 @@ rule GetContamination:
          
         cd {params.haplocheckCLI_newpath}
         {params.java} -jar {params.haplocheckCLI_path} "$(dirname "{params.MitochondriaPipeline_path}{input.input_vcf}")" 
-        mv --force output {params.MitochondriaPipeline_path}{output.outputs}
-        sed 's/\\\"//g' {params.MitochondriaPipeline_path}{output.outputs} > {params.MitochondriaPipeline_path}{output.output_noquotes}
+        #mv --force output {params.MitochondriaPipeline_path}{output.outputs}
+        sed 's/\\\"//g' output > {params.MitochondriaPipeline_path}{output.output_noquotes}
         cd {params.MitochondriaPipeline_path}
         grep "SampleID" {output.output_noquotes} > {output.headers}
         if [ `awk '{{print $2}}' {output.headers}` != \"Contamination\" ]; then
