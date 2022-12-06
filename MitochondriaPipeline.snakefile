@@ -38,9 +38,7 @@ rule all:
         expand("results/CoverageAtEveryBase/{tumor}_non_control_region.metrics", tumor=config["pairings"]),
         expand("results/CoverageAtEveryBase/{tumor}_control_region_shifted.metrics", tumor=config["pairings"]),
         expand("results/CoverageAtEveryBase/{tumor}_non_control_region.tsv", tumor=config["pairings"]),
-        expand("results/CoverageAtEveryBase/{tumor}_control_region_shifted.tsv", tumor=config["pairings"]),
-        expand("results/SplitMultiAllelicSites/{tumor}.vcf", tumor=config["pairings"]),
-        expand("results/vcf2maf/{tumor}.maf", tumor=config["pairings"])
+        expand("results/CoverageAtEveryBase/{tumor}_control_region_shifted.tsv", tumor=config["pairings"])
         
                
 rule SubsetBamtoChrM:
