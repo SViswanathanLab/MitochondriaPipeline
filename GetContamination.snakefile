@@ -17,7 +17,8 @@ rule all:
  
 rule GetContamination:
     input:
-        input_vcf = "results/SplitMultiAllelicsAndRemoveNonPassSites/{tumor}/{tumor}_splitAndPassOnly.vcf"
+        input_vcf = "results/SplitMultiAllelicsAndRemoveNonPassSites/{tumor}/{tumor}_splitAndPassOnly.vcf",
+        input_tumor = "{tumor}"
     output:
         outputs = "results/GetContamination/{tumor}/output",
         output_noquotes = "results/GetContamination/{tumor}/output-noquotes",
@@ -38,7 +39,7 @@ rule GetContamination:
         "logs/GetContamination/{tumor}.txt"
     shell:
         """
-        (mkdir ./results/GetContamination/{tumor}
+        (mkdir results/GetContamination/{input.input_tumor}
         
         touch {output.headers}
         touch {output.output_data}
