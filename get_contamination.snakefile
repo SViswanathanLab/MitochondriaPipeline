@@ -12,7 +12,7 @@ rule all:
         expand("results/GetContamination/{tumor}/{tumor}_major_hg.txt", tumor=config["pairings"]),
         expand("results/GetContamination/{tumor}/{tumor}_minor_hg.txt", tumor=config["pairings"]),
         expand("results/GetContamination/{tumor}/{tumor}_mean_het_major.txt", tumor=config["pairings"]),
-        expand("results/GetContamination/{tumor}/{tumor}_mean_het_minor.txt", tumor=config["pairings"]),
+        expand("results/GetContamination/{tumor}/{tumor}_mean_het_minor.txt", tumor=config["pairings"])
  
 rule GetContamination:
     input:
