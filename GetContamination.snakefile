@@ -32,7 +32,6 @@ rule GetContamination:
     params:
         java = config["java"],
         picard_jar = config["picard_jar"],
-        input_tumor = "{tumor}",
         haplocheckCLI_path = config["haplocheckCLI_path"],
         haplocheckCLI_newpath = "results/GetContamination/{tumor}/",
         MitochondriaPipeline_path = config["MitochondriaPipeline_path"]
@@ -40,7 +39,7 @@ rule GetContamination:
         "logs/GetContamination/{tumor}.txt"
     shell:
         """
-        (mkdir results/GetContamination/{params.input_tumor}
+        (mkdir {params.haplocheckCLI_newpath}
         
         touch {output.headers}
         touch {output.output_data}
