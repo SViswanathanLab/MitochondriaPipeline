@@ -5,8 +5,8 @@ configfile: "config/samples.yaml"
 
 rule all:
     input:
-        expand("results/GetContamination/{tumor}/output", tumor=config["pairings"]),
-        expand("results/GetContamination/{tumor}/output-noquotes", tumor=config["pairings"]),
+        #expand("results/GetContamination/{tumor}/output", tumor=config["pairings"]),
+        #expand("results/GetContamination/{tumor}/output-noquotes", tumor=config["pairings"]),
         expand("results/GetContamination/{tumor}/{tumor}_headers.txt", tumor=config["pairings"]),
         expand("results/GetContamination/{tumor}/{tumor}_output_data.txt", tumor=config["pairings"]),
         expand("results/GetContamination/{tumor}/{tumor}_contamination.txt", tumor=config["pairings"]),
@@ -20,8 +20,8 @@ rule GetContamination:
         input_vcf = "results/SplitMultiAllelicsAndRemoveNonPassSites/{tumor}/{tumor}_splitAndPassOnly.vcf"
         
     output:
-        outputs = "results/GetContamination/{tumor}/output",
-        output_noquotes = "results/GetContamination/{tumor}/output-noquotes",
+        #outputs = "results/GetContamination/{tumor}/output",
+        #output_noquotes = "results/GetContamination/{tumor}/output-noquotes",
         headers = "results/GetContamination/{tumor}/{tumor}_headers.txt",
         output_data = "results/GetContamination/{tumor}/{tumor}_output_data.txt",
         contamination = "results/GetContamination/{tumor}/{tumor}_contamination.txt",
