@@ -47,7 +47,9 @@ rule GetContamination:
         touch {output.major_hg}
         touch {output.minor_hg}
         touch {output.mean_het_major}
-        touch {output.mean_het_minor}) 2> {log}
+        touch {output.mean_het_minor}
+        
+        cd {params.haplocheckCLI_newpath}) 2> {log}
         """
 
 
