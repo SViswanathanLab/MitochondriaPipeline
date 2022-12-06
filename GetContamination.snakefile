@@ -46,3 +46,5 @@ rule GetContamination:
         touch {output.mean_het_major}
         touch {output.mean_het_minor}) 2> {log}
         """
+
+
