@@ -38,6 +38,7 @@ rule GetContamination:
         "logs/GetContamination/{tumor}.txt"
     shell:
         """(set -e
+        
         touch {output.headers}
         touch {output.output_data}
         touch {output.contamination}
