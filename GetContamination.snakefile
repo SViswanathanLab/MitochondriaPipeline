@@ -17,8 +17,8 @@ rule all:
  
 rule GetContamination:
     input:
-        input_vcf = "results/SplitMultiAllelicsAndRemoveNonPassSites/{tumor}/{tumor}_splitAndPassOnly.vcf",
-        input_tumor = "{tumor}"
+        input_vcf = "results/SplitMultiAllelicsAndRemoveNonPassSites/{tumor}/{tumor}_splitAndPassOnly.vcf"
+        
     output:
         outputs = "results/GetContamination/{tumor}/output",
         output_noquotes = "results/GetContamination/{tumor}/output-noquotes",
@@ -32,6 +32,7 @@ rule GetContamination:
     params:
         java = config["java"],
         picard_jar = config["picard_jar"],
+        input_tumor = "{tumor}",
         haplocheckCLI_path = config["haplocheckCLI_path"],
         haplocheckCLI_newpath = "results/GetContamination/{tumor}/",
         MitochondriaPipeline_path = config["MitochondriaPipeline_path"]
@@ -39,7 +40,7 @@ rule GetContamination:
         "logs/GetContamination/{tumor}.txt"
     shell:
         """
-        (mkdir results/GetContamination/{input.input_tumor}
+        (mkdir results/GetContamination/{params.input_tumor}
         
         touch {output.headers}
         touch {output.output_data}
