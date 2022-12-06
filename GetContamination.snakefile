@@ -15,7 +15,7 @@ rule all:
         expand("results/GetContamination/{tumor}/{tumor}_mean_het_major.txt", tumor=config["pairings"]),
         expand("results/GetContamination/{tumor}/{tumor}_mean_het_minor.txt", tumor=config["pairings"])
  
-for sample in {samples}:
+for sample in samples:
     rule GetContamination:
         input:
             input_vcf = "results/SplitMultiAllelicsAndRemoveNonPassSites/{tumor}/{tumor}_splitAndPassOnly.vcf"
