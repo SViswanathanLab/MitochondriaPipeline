@@ -38,7 +38,9 @@ rule GetContamination:
         "logs/GetContamination/{tumor}.txt"
     shell:
         """
-        (touch {output.headers}
+        (mkdir ./results/GetContamination/{tumor}
+        
+        touch {output.headers}
         touch {output.output_data}
         touch {output.contamination}
         touch {output.major_hg}
