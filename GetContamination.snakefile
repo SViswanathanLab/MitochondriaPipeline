@@ -39,7 +39,7 @@ rule GetContamination:
         "logs/GetContamination/{tumor}.txt"
     shell:
         """
-        (mkdir {params.haplocheckCLI_newpath}
+        (mkdir -p {params.haplocheckCLI_newpath}
         
         touch {output.headers}
         touch {output.output_data}
