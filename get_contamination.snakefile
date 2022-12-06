@@ -38,11 +38,11 @@ rule GetContamination:
         "logs/GetContamination/{tumor}.txt"
     shell:
         """
-        touch {output.headers}
+        (touch {output.headers}
         touch {output.output_data}
         touch {output.contamination}
         touch {output.major_hg}
         touch {output.minor_hg}
         touch {output.mean_het_major}
-        touch {output.mean_het_minor}
+        touch {output.mean_het_minor}) 2> {log}
         """
