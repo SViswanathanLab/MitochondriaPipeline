@@ -43,6 +43,6 @@ rule GetContamination:
         touch {output.major_hg}
         touch {output.minor_hg}
         touch {output.mean_het_major}
-        touch {output.mean_het_minor}
+        touch {output.mean_het_minor})
          
         """
