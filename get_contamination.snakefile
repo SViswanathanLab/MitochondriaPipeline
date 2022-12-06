@@ -6,7 +6,7 @@ configfile: "config/samples.yaml"
 rule all:
     input:
         
-        expand("results/GetContamination/{tumor}/{tumor}_headers.txt", tumor=config["pairings"]),
+        expand("results/GetContamination/{tumor}/{tumor}_headers.txt", tumor=config["pairings"]) +
         expand("results/GetContamination/{tumor}/{tumor}_output_data.txt", tumor=config["pairings"]),
         expand("results/GetContamination/{tumor}/{tumor}_contamination.txt", tumor=config["pairings"]),
         expand("results/GetContamination/{tumor}/{tumor}_major_hg.txt", tumor=config["pairings"]),
