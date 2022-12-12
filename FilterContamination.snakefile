@@ -120,7 +120,7 @@ rule vcf2maf:
         --vep-data {params.vep_cache} \
         --filter-vcf 0 \
         --ncbi-build GRCh38 \
-        --tumor-id XXXXXX \
+        --tumor-id `grep "tumor_sample" {input.tumor_vcf} | awk -F "=" '{{print $2}}'` \
         --input-vcf {input.tumor_vcf} \
         --output-maf {output.maf}) 2> {log}
         """
